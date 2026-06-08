@@ -1,0 +1,2565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DA218D — Frontend Dev Techniques · Exam Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1115; --bg2:#161a21; --panel:#1b212b; --panel2:#222a36;
+  --ink:#e8ecf1; --ink-dim:#9aa6b6; --line:#2c3542;
+  --grn:#7ec64a; --grn-deep:#5aa233; --grn-soft:#a9e07f;
+  --amber:#f4b740; --red:#ef5f5f; --blue:#5bb0e6; --violet:#b48ce0;
+  --ok:#3ecf8e; --shadow:0 18px 50px -20px rgba(0,0,0,.7);
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --disp:'Fraunces',Georgia,serif;
+  --body:'Space Grotesk',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(1100px 600px at 88% -8%, rgba(126,198,74,.10), transparent 60%),
+    radial-gradient(900px 500px at -5% 12%, rgba(91,176,230,.08), transparent 55%),
+    var(--bg);
+  color:var(--ink); font-family:var(--body); line-height:1.55;
+  -webkit-font-smoothing:antialiased; padding-bottom:90px;
+}
+a{color:var(--grn-soft)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+/* ---------- top bar ---------- */
+header.top{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(12px);
+  background:linear-gradient(180deg, rgba(15,17,21,.92), rgba(15,17,21,.72));
+  border-bottom:1px solid var(--line);
+}
+.top-inner{display:flex;align-items:center;gap:16px;padding:13px 22px;max-width:1180px;margin:0 auto;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto}
+.logo{
+  width:42px;height:42px;border-radius:11px;flex:none;
+  background:linear-gradient(135deg,var(--grn),var(--grn-deep));
+  display:grid;place-items:center;font-family:var(--disp);font-weight:900;
+  color:#0c1408;font-size:21px;box-shadow:0 6px 18px -6px rgba(126,198,74,.7);
+}
+.brand h1{font-family:var(--disp);font-weight:900;font-size:19px;letter-spacing:-.4px;line-height:1.05}
+.brand span{display:block;font-size:11.5px;color:var(--ink-dim);font-weight:500;letter-spacing:.3px}
+.progress-mini{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--ink-dim);font-family:var(--mono)}
+.pbar{width:128px;height:7px;border-radius:99px;background:var(--panel2);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--grn-deep),var(--grn));transition:width .5s ease;border-radius:99px}
+
+/* ---------- nav tabs ---------- */
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 22px;max-width:1180px;margin:0 auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:none;border:1px solid var(--line);background:var(--panel);
+  color:var(--ink-dim);padding:8px 15px;border-radius:99px;font-size:13px;
+  font-weight:500;cursor:pointer;white-space:nowrap;transition:.18s;font-family:var(--body)}
+.tab:hover{color:var(--ink);border-color:#3a4655}
+.tab.active{background:linear-gradient(135deg,var(--grn),var(--grn-deep));color:#0c1408;border-color:transparent;font-weight:700}
+.tab .em{font-size:14px;margin-right:5px}
+
+/* ---------- views ---------- */
+.view{display:none;animation:fade .4s ease}
+.view.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+section.block{padding:34px 0 8px}
+
+/* hero */
+.hero{padding:46px 0 22px}
+.hero .kicker{font-family:var(--mono);color:var(--grn);font-size:12.5px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px}
+.hero h2{font-family:var(--disp);font-size:clamp(33px,5.4vw,58px);font-weight:900;line-height:1.02;letter-spacing:-1.4px;margin-bottom:16px}
+.hero h2 em{font-style:italic;color:var(--grn-soft)}
+.hero p.lead{font-size:17px;color:var(--ink-dim);max-width:660px}
+.exam-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:11px;padding:11px 15px;font-size:13px;display:flex;align-items:center;gap:9px}
+.chip b{font-family:var(--mono);color:var(--grn-soft)}
+
+/* section structure cards */
+.struct{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.scard{border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),var(--bg2));border-radius:16px;padding:22px;position:relative;overflow:hidden}
+.scard::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;background:var(--accent,var(--grn))}
+.scard .sec-no{font-family:var(--mono);font-size:12px;color:var(--ink-dim)}
+.scard h3{font-family:var(--disp);font-size:21px;font-weight:600;margin:6px 0 4px}
+.scard .pts{font-family:var(--mono);font-size:13px;color:var(--accent,var(--grn-soft));font-weight:700}
+.scard p{font-size:13.5px;color:var(--ink-dim);margin-top:9px}
+.scard .scoring{margin-top:13px;font-size:12px;font-family:var(--mono);color:var(--ink-dim);border-top:1px dashed var(--line);padding-top:11px}
+
+/* grade ladder */
+.grades{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
+.gcard{border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center;background:var(--panel)}
+.gcard .g{font-family:var(--disp);font-size:42px;font-weight:900;line-height:1}
+.gcard.g3 .g{color:var(--blue)} .gcard.g4 .g{color:var(--amber)} .gcard.g5 .g{color:var(--grn)}
+.gcard .req{font-size:13px;margin-top:8px;color:var(--ink-dim)}
+.gcard .req b{color:var(--ink);font-family:var(--mono)}
+
+/* generic heading */
+.sec-head{display:flex;align-items:baseline;gap:14px;margin:4px 0 20px}
+.sec-head h2{font-family:var(--disp);font-size:30px;font-weight:900;letter-spacing:-.7px}
+.sec-head .tag{font-family:var(--mono);font-size:12px;color:var(--grn);border:1px solid var(--line);padding:4px 10px;border-radius:99px}
+.sec-head p{color:var(--ink-dim);font-size:14px}
+.lede{color:var(--ink-dim);font-size:15px;max-width:720px;margin-bottom:24px}
+
+/* topic accordions */
+.topic{border:1px solid var(--line);border-radius:14px;margin-bottom:13px;background:var(--panel);overflow:hidden;transition:.2s}
+.topic.open{border-color:#3c4a5b;box-shadow:var(--shadow)}
+.t-head{display:flex;align-items:center;gap:14px;padding:17px 19px;cursor:pointer;user-select:none}
+.t-head:hover{background:var(--panel2)}
+.t-ico{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:17px;flex:none;background:var(--bg2);border:1px solid var(--line)}
+.t-head h3{font-size:16px;font-weight:600;flex:1;font-family:var(--body)}
+.t-head .lec{font-family:var(--mono);font-size:11px;color:var(--ink-dim);background:var(--bg);padding:3px 9px;border-radius:99px;border:1px solid var(--line)}
+.t-head .caret{transition:.25s;color:var(--ink-dim);font-size:13px}
+.topic.open .caret{transform:rotate(90deg);color:var(--grn)}
+.t-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.t-inner{padding:4px 22px 22px;border-top:1px solid var(--line)}
+.t-inner h4{font-family:var(--disp);font-size:16px;font-weight:600;margin:18px 0 8px;color:var(--grn-soft)}
+.t-inner p{font-size:14.5px;margin:8px 0;color:#d2d9e2}
+.t-inner ul{margin:8px 0 8px 4px;list-style:none}
+.t-inner li{font-size:14px;margin:7px 0;padding-left:22px;position:relative;color:#cfd6e0}
+.t-inner li::before{content:'▸';position:absolute;left:4px;color:var(--grn);font-size:12px;top:1px}
+.t-inner li b, .t-inner p b{color:#fff}
+kbd,code.inl{font-family:var(--mono);font-size:.86em;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--grn-soft)}
+.callout{border-left:3px solid var(--amber);background:rgba(244,183,64,.07);padding:12px 15px;border-radius:0 10px 10px 0;margin:14px 0;font-size:13.5px}
+.callout.tip{border-color:var(--grn);background:rgba(126,198,74,.07)}
+.callout.warn{border-color:var(--red);background:rgba(239,95,95,.07)}
+.callout b{color:#fff}
+
+/* code blocks */
+pre.code{font-family:var(--mono);font-size:13px;background:#0a0c10;border:1px solid var(--line);border-radius:11px;padding:15px 16px;overflow-x:auto;margin:12px 0;line-height:1.6;position:relative}
+pre.code .cm{color:#5f6b7a;font-style:italic}
+pre.code .kw{color:#b48ce0}
+pre.code .str{color:#a9e07f}
+pre.code .tag{color:#5bb0e6}
+pre.code .at{color:#f4b740}
+pre.code .fn{color:#7ec64a}
+pre.code .num{color:#f4b740}
+.code-label{position:absolute;top:8px;right:12px;font-size:10px;color:var(--ink-dim);letter-spacing:1px;text-transform:uppercase}
+
+/* compare table */
+.ctable{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+.ctable th,.ctable td{border:1px solid var(--line);padding:10px 13px;text-align:left;vertical-align:top}
+.ctable th{background:var(--bg2);font-family:var(--mono);font-size:12px;color:var(--grn-soft);font-weight:700}
+.ctable td code{color:var(--blue)}
+
+/* ===== PLAYGROUND ===== */
+.pg-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
+.pg-pane{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden;display:flex;flex-direction:column;min-height:440px}
+.pg-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--bg2)}
+.pg-bar .dot{width:11px;height:11px;border-radius:50%}
+.pg-bar .ttl{font-family:var(--mono);font-size:12px;color:var(--ink-dim);margin-left:4px}
+.pg-bar .right{margin-left:auto;display:flex;gap:7px}
+.pg-editor{flex:1;font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--ink);background:#0a0c10;border:0;outline:0;padding:14px;resize:none;tab-size:2;width:100%}
+.pg-out{flex:1;background:#fff;border:0}
+.pg-out iframe{width:100%;height:100%;border:0;background:#fff}
+.lint{border-top:1px solid var(--line);max-height:150px;overflow:auto;background:var(--bg2);font-family:var(--mono);font-size:12px}
+.lint .row{padding:8px 14px;border-bottom:1px solid var(--line);display:flex;gap:9px;align-items:flex-start}
+.lint .row:last-child{border-bottom:0}
+.lint .row.err{color:#ffb4b4}.lint .row.warn{color:#ffd98a}.lint .row.ok{color:var(--grn-soft)}
+.lint .ln{flex:none;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:0 7px;font-size:11px}
+.minibtn{font-family:var(--body);font-size:12px;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;border-radius:8px;cursor:pointer;transition:.15s}
+.minibtn:hover{border-color:var(--grn);color:var(--grn-soft)}
+.minibtn.primary{background:linear-gradient(135deg,var(--grn),var(--grn-deep));color:#0c1408;border-color:transparent}
+.lang-pick{display:flex;gap:6px}
+.snip-pick{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+.snip{font-size:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink-dim);padding:7px 12px;border-radius:9px;cursor:pointer;transition:.15s}
+.snip:hover{color:var(--ink);border-color:#3a4655}
+
+/* ===== QUIZ ===== */
+.quiz-setup{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:6px 0 22px}
+.qmode{border:1px solid var(--line);border-radius:14px;padding:20px;cursor:pointer;transition:.18s;background:var(--panel);text-align:left}
+.qmode:hover{border-color:var(--grn);transform:translateY(-3px)}
+.qmode .em{font-size:26px}
+.qmode h3{font-family:var(--disp);font-size:18px;font-weight:600;margin:9px 0 5px}
+.qmode p{font-size:12.5px;color:var(--ink-dim)}
+.q-card{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:24px;box-shadow:var(--shadow)}
+.q-top{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.q-counter{font-family:var(--mono);font-size:12px;color:var(--ink-dim)}
+.q-badge{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:99px;border:1px solid var(--line)}
+.q-badge.html{color:#e88}.q-badge.css{color:var(--blue)}.q-badge.js{color:var(--amber)}.q-badge.new{color:var(--grn);border-color:var(--grn-deep)}
+.q-stem{font-size:16.5px;font-weight:500;margin-bottom:6px;line-height:1.5}
+.q-stem code{font-family:var(--mono);font-size:.9em;background:var(--bg);padding:1px 6px;border-radius:5px;color:var(--grn-soft)}
+.q-opts{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.opt{border:1px solid var(--line);border-radius:11px;padding:13px 15px;cursor:pointer;transition:.13s;display:flex;gap:12px;align-items:flex-start;font-size:14.5px;background:var(--bg2)}
+.opt:hover{border-color:#46566a}
+.opt .ltr{font-family:var(--mono);font-weight:700;color:var(--ink-dim);flex:none;width:20px}
+.opt code{font-family:var(--mono);font-size:.9em;color:var(--grn-soft)}
+.opt.correct{border-color:var(--ok);background:rgba(62,207,142,.12)}
+.opt.correct .ltr{color:var(--ok)}
+.opt.wrong{border-color:var(--red);background:rgba(239,95,95,.12)}
+.opt.wrong .ltr{color:var(--red)}
+.opt.dim{opacity:.5}
+.explain{margin-top:16px;border-top:1px solid var(--line);padding-top:15px;font-size:14px;display:none;animation:fade .3s}
+.explain.show{display:block}
+.explain .verdict{font-weight:700;font-family:var(--disp);font-size:16px;margin-bottom:7px}
+.explain .verdict.right{color:var(--ok)}.explain .verdict.miss{color:var(--red)}
+.explain p{color:#d2d9e2;font-size:14px}
+.explain code{font-family:var(--mono);font-size:.88em;background:var(--bg);padding:1px 6px;border-radius:5px;color:var(--grn-soft)}
+.q-nav{display:flex;gap:10px;margin-top:20px;align-items:center}
+.q-nav .spacer{flex:1}
+.bigbtn{font-family:var(--body);font-weight:700;font-size:14px;border:0;border-radius:11px;padding:12px 22px;cursor:pointer;transition:.15s;background:linear-gradient(135deg,var(--grn),var(--grn-deep));color:#0c1408}
+.bigbtn:hover{filter:brightness(1.08)}
+.bigbtn.ghost{background:var(--panel);border:1px solid var(--line);color:var(--ink)}
+.bigbtn:disabled{opacity:.4;cursor:not-allowed}
+
+/* find-error quiz */
+.fe-code{font-family:var(--mono);font-size:13.5px;background:#0a0c10;border:1px solid var(--line);border-radius:12px;padding:18px;line-height:1.85;margin:14px 0;white-space:pre;overflow-x:auto}
+.tok{cursor:pointer;border-radius:4px;padding:1px 2px;transition:.12s;border:1px solid transparent}
+.tok:hover{background:rgba(255,255,255,.07)}
+.tok.picked{background:rgba(244,183,64,.25);border-color:var(--amber)}
+.tok.hit{background:rgba(62,207,142,.28);border-color:var(--ok)}
+.tok.miss-pick{background:rgba(239,95,95,.28);border-color:var(--red);text-decoration:line-through}
+.tok.missed{background:rgba(91,176,230,.22);border-color:var(--blue);outline:1px dashed var(--blue)}
+.fe-help{font-size:12.5px;color:var(--ink-dim);margin:6px 0 2px;font-family:var(--mono)}
+.fe-score{font-family:var(--mono);font-size:13px;margin-top:10px}
+.errlist{margin-top:14px;border-top:1px solid var(--line);padding-top:14px;display:none}
+.errlist.show{display:block}
+.errlist h5{font-family:var(--disp);font-size:15px;margin-bottom:9px;color:var(--grn-soft)}
+.errlist .ei{font-size:13.5px;margin:8px 0;padding-left:20px;position:relative;color:#d2d9e2}
+.errlist .ei::before{content:'✕';position:absolute;left:0;color:var(--red);font-weight:700}
+.errlist .ei code{font-family:var(--mono);background:var(--bg);padding:1px 5px;border-radius:4px;color:var(--amber)}
+
+/* open-ended */
+.oe-card{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:24px;margin-bottom:16px}
+.oe-q{font-size:16px;font-weight:500;line-height:1.5;margin-bottom:6px}
+.oe-q code{font-family:var(--mono);font-size:.9em;background:var(--bg);padding:1px 6px;border-radius:5px;color:var(--grn-soft)}
+.oe-area{width:100%;min-height:120px;background:#0a0c10;border:1px solid var(--line);border-radius:11px;padding:14px;color:var(--ink);font-family:var(--body);font-size:14px;resize:vertical;line-height:1.6;margin:12px 0}
+.oe-area:focus{outline:0;border-color:var(--grn-deep)}
+.model{border-top:1px solid var(--line);padding-top:16px;margin-top:8px;display:none;animation:fade .3s}
+.model.show{display:block}
+.model h5{font-family:var(--disp);font-size:15px;color:var(--ok);margin-bottom:8px}
+.model p{font-size:14px;color:#d2d9e2;margin:7px 0}
+.model .rubric{margin-top:12px;background:var(--bg2);border-radius:10px;padding:13px 15px;font-size:13px}
+.model .rubric b{color:var(--grn-soft)}
+.model ul{margin:8px 0 0 4px;list-style:none}
+.model li{font-size:13.5px;margin:6px 0;padding-left:22px;position:relative;color:#cfd6e0}
+.model li::before{content:'✓';position:absolute;left:2px;color:var(--ok)}
+
+/* results */
+.result{text-align:center;padding:30px}
+.result .score{font-family:var(--disp);font-size:74px;font-weight:900;line-height:1}
+.result .pct{color:var(--ink-dim);font-family:var(--mono);margin-top:6px}
+.result .verdict-grade{font-family:var(--disp);font-size:24px;margin-top:18px}
+
+/* cheat sheet */
+.cheat-grid{columns:2;column-gap:16px}
+@media(max-width:760px){.cheat-grid{columns:1}}
+.cheat{border:1px solid var(--line);border-radius:13px;background:var(--panel);padding:16px 18px;margin-bottom:16px;break-inside:avoid}
+.cheat h4{font-family:var(--disp);font-size:16px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.cheat dl{font-size:13px}
+.cheat dt{font-family:var(--mono);color:var(--grn-soft);margin-top:9px;font-size:12.5px}
+.cheat dd{color:var(--ink-dim);margin:2px 0 0}
+.cheat dd code{color:var(--blue);font-family:var(--mono)}
+
+footer.foot{border-top:1px solid var(--line);margin-top:50px;padding:26px 0;text-align:center;color:var(--ink-dim);font-size:12.5px}
+
+@media(max-width:860px){
+  .struct,.grades{grid-template-columns:1fr}
+  .pg-grid{grid-template-columns:1fr}
+  .progress-mini{display:none}
+}
+</style>
+</head>
+<body>
+<!-- content injected below -->
+<div id="app"></div>
+
+<script>
+
+/* ===== inlined: data-topics.js ===== */
+/* ============================================================
+   DA218D EXAM LAB — DATA
+   Topic content + question banks (MCQ, find-error, open-ended)
+   ============================================================ */
+
+/* ---------- robust syntax highlighter (placeholder-based: inserted
+   markup is stashed so later passes can never re-match it) ---------- */
+function hl(code, lang){
+  const slots = [];
+  const mk = (cls, txt) => { slots.push('<span class="'+cls+'">'+txt+'</span>'); return '\uE000'+String.fromCharCode(0xE100 + slots.length - 1); };
+  let s = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  if(lang==='html'){
+    s = s.replace(/&lt;!--[\s\S]*?--&gt;/g, m => mk('cm', m));
+    s = s.replace(/&lt;!DOCTYPE[^&]*&gt;/gi, m => mk('kw', m));
+    s = s.replace(/(&lt;\/?)([a-zA-Z][\w-]*)((?:[^&]|&(?!gt;))*?)(\/?&gt;)/g,
+      (m, lt, name, attrs, gt) => {
+        const a = attrs.replace(/([a-zA-Z-]+)(=)("[^"]*"|'[^']*')/g,
+                    (mm, an, eq, val) => mk('atr', an) + eq + mk('str', val));
+        return lt + mk('tg', name) + a + gt;
+      });
+  } else if(lang==='css'){
+    s = s.replace(/(\/\*[\s\S]*?\*\/|"[^"]*"|'[^']*')/g, m => mk(m[0]==='/' ? 'cm' : 'str', m));
+    s = s.replace(/^(\s*)([.#]?[a-zA-Z*][\w\-\s,>+~:.#()'"=\[\]]*?)(\s*\{)/gm, (m, ws, sel, br) => ws + mk('fn', sel) + br);
+    s = s.replace(/(@[a-z-]+)/gi, m => mk('kw', m));
+    s = s.replace(/(^\s*|[{;]\s*)([a-z-]+)(\s*:)/gm, (m, pre, prop, c) => pre + mk('atr', prop) + c);
+  } else {
+    s = s.replace(/(\/\/[^\n]*|\/\*[\s\S]*?\*\/|`[^`]*`|'[^']*'|"[^"]*")/g, m => mk(m[0]==='/' ? 'cm' : 'str', m));
+    s = s.replace(/\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|class|extends|super|new|delete|void|yield|static|get|set|throw|async|await|import|export|from|default|of|in|typeof|instanceof)\b/g, m => mk('kw', m));
+    s = s.replace(/\b(this|null|undefined|true|false|NaN)\b/g, m => mk('kw', m));
+    s = s.replace(/\b(\d+(?:\.\d+)?)\b/g, m => mk('num', m));
+  }
+  return s.replace(/\uE000([\uE100-\uF8FF])/g, (m, c) => slots[c.charCodeAt(0) - 0xE100]);
+}
+
+/* =====================================================================
+   STUDY TOPICS  (organized by exam domain)
+   ===================================================================== */
+const TOPICS = {
+  html: [
+    {
+      id:'html-struct', ico:'🏗️', lec:'Lec 3', title:'Document structure & the head',
+      body:`
+        <p>Every HTML document needs a <b>doctype</b>, an <code class="inl">&lt;html&gt;</code> root with a <code class="inl">lang</code> attribute, a <code class="inl">&lt;head&gt;</code> (info <i>about</i> the page), and a <code class="inl">&lt;body&gt;</code> (the visible content).</p>
+        <pre class="code"><span class="code-label">html</span>${hl(`<!DOCTYPE html>            <!-- tells the browser this is HTML5 -->
+<html lang="en">           <!-- root element; lang aids screen readers & SEO -->
+<head>                     <!-- metadata: NOT shown on the page -->
+  <meta charset="UTF-8">                                   <!-- character encoding -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">  <!-- responsive -->
+  <title>Page Title</title>          <!-- shown in the browser tab -->
+  <link rel="stylesheet" href="style.css">   <!-- attach external CSS -->
+</head>
+<body>                     <!-- everything visible goes here -->
+  <h1>Hello World</h1>
+</body>
+</html>`,'html')}</pre>
+        <h4>The pieces examiners test</h4>
+        <ul>
+          <li><kbd>&lt;!DOCTYPE html&gt;</kbd> — must be exactly this. <code class="inl">&lt;!DOCTYPE&gt;</code> alone or <code class="inl">&lt;!DOCTYPE HTML5&gt;</code> is wrong.</li>
+          <li><kbd>lang="en"</kbd> — a two-letter code, <b>not</b> <code class="inl">language="english"</code>.</li>
+          <li><kbd>&lt;meta charset="UTF-8"&gt;</kbd> — declares encoding. It is a <b>void element</b> (no closing tag).</li>
+          <li><kbd>&lt;link rel="stylesheet" href="..."&gt;</kbd> — stylesheets load via <code class="inl">&lt;link&gt;</code>, never via a made-up <code class="inl">&lt;css&gt;</code> tag.</li>
+          <li><kbd>&lt;title&gt;</kbd> — the page title is set with <code class="inl">&lt;title&gt;</code>, not <code class="inl">&lt;name&gt;</code>.</li>
+        </ul>
+        <div class="callout warn"><b>Classic trap:</b> putting <code class="inl">&lt;meta&gt;</code> or <code class="inl">&lt;title&gt;</code> inside <code class="inl">&lt;header&gt;</code> instead of <code class="inl">&lt;head&gt;</code>. <code class="inl">&lt;header&gt;</code> is a visible body landmark; <code class="inl">&lt;head&gt;</code> is metadata.</div>`
+    },
+    {
+      id:'html-semantic', ico:'🧩', lec:'Lec 3–4', title:'Semantic tags: section vs article vs div',
+      body:`
+        <p>Semantic tags describe the <b>meaning</b> of content, which helps screen readers, SEO, and other developers. <code class="inl">&lt;div&gt;</code> and <code class="inl">&lt;span&gt;</code> carry no meaning — they're generic containers.</p>
+        <table class="ctable">
+          <tr><th>Element</th><th>Represents</th><th>Use when…</th></tr>
+          <tr><td><code>&lt;article&gt;</code></td><td>A self-contained, independently distributable piece</td><td>It would still make sense on its own (blog post, news item, product card, comment)</td></tr>
+          <tr><td><code>&lt;section&gt;</code></td><td>A thematic grouping of content, usually with a heading</td><td>You're grouping related content that's part of a larger whole (a chapter, a tab panel)</td></tr>
+          <tr><td><code>&lt;div&gt;</code></td><td>Nothing — pure styling/scripting hook</td><td>No semantic element fits and you just need a box to style</td></tr>
+        </table>
+        <h4>Block-level vs inline</h4>
+        <ul>
+          <li><b>Block-level</b> (<code class="inl">&lt;div&gt;</code>, <code class="inl">&lt;p&gt;</code>, <code class="inl">&lt;section&gt;</code>, headings): start on a new line, take full available width. You <b>can</b> set <code class="inl">width</code>/<code class="inl">height</code> and full top/bottom margins.</li>
+          <li><b>Inline</b> (<code class="inl">&lt;span&gt;</code>, <code class="inl">&lt;a&gt;</code>, <code class="inl">&lt;em&gt;</code>): flow within a line. <code class="inl">width</code>/<code class="inl">height</code> are ignored, and vertical margins don't push other content.</li>
+        </ul>
+        <div class="callout tip"><b>Exam phrasing:</b> "Which element groups <i>inline</i> elements?" → <code class="inl">&lt;span&gt;</code>. "Which defines the <i>primary navigation</i>?" → <code class="inl">&lt;nav&gt;</code>.</div>`
+    },
+    {
+      id:'html-headings', ico:'🔠', lec:'Lec 3–4', title:'Headings, lists & tables',
+      body:`
+        <h4>Headings (h1–h6)</h4>
+        <p>Headings create the document <b>outline</b>. Use exactly one <code class="inl">&lt;h1&gt;</code> per page, and don't skip levels for styling reasons (<code class="inl">&lt;h1&gt;</code> → <code class="inl">&lt;h3&gt;</code> breaks the hierarchy). Screen-reader users navigate by heading, so correct levels = accessibility.</p>
+        <div class="callout warn"><b>Find-the-error favourite:</b> mismatched tags like <code class="inl">&lt;h1&gt;Title&lt;/h2&gt;</code>. The closing tag must match the opening tag.</div>
+        <h4>Lists</h4>
+        <ul>
+          <li><kbd>&lt;ul&gt;</kbd> unordered (bullets), <kbd>&lt;ol&gt;</kbd> ordered (numbers), both contain <kbd>&lt;li&gt;</kbd>.</li>
+          <li><kbd>&lt;dl&gt;</kbd> description list with <code class="inl">&lt;dt&gt;</code>/<code class="inl">&lt;dd&gt;</code> pairs.</li>
+        </ul>
+        <p>A <code class="inl">&lt;ul&gt;</code> must be closed with <code class="inl">&lt;/ul&gt;</code> — closing it with <code class="inl">&lt;/ol&gt;</code> is an error. Every <code class="inl">&lt;li&gt;</code> should be explicitly closed.</p>
+        <h4>Tables</h4>
+        <pre class="code"><span class="code-label">html</span>${hl(`<table>
+  <thead>                       <!-- header row group -->
+    <tr>                        <!-- tr = table row -->
+      <th>Name</th>             <!-- th = header cell (bold/centered) -->
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>                       <!-- body row group -->
+    <tr>
+      <td>Ada</td>              <!-- td = normal data cell -->
+      <td>98</td>
+    </tr>
+  </tbody>
+</table>`,'html')}</pre>
+        <p><code class="inl">&lt;th&gt;</code> = header cell, <code class="inl">&lt;td&gt;</code> = data cell, <code class="inl">&lt;tr&gt;</code> = row. Tables are for tabular data, not layout.</p>`
+    },
+    {
+      id:'html-media', ico:'🖼️', lec:'Lec 3', title:'Images & multimedia (img, audio, video)',
+      body:`
+        <h4>Images</h4>
+        <pre class="code"><span class="code-label">html</span>${hl(`<img src="cat.jpg" alt="A sleeping cat" width="600">
+<!--    ▲ src = file path   ▲ alt = text if image fails / screen readers -->`,'html')}</pre>
+        <ul>
+          <li><kbd>src</kbd> — the image source. The most common trap is writing <code class="inl">href</code> on an <code class="inl">&lt;img&gt;</code>: <b><code class="inl">&lt;img&gt;</code> uses <code class="inl">src</code>, not <code class="inl">href</code></b>. (<code class="inl">href</code> belongs to <code class="inl">&lt;a&gt;</code> and <code class="inl">&lt;link&gt;</code>.)</li>
+          <li><kbd>alt</kbd> — alternative text: read by screen readers and shown if the image fails to load. Critical for accessibility.</li>
+          <li><code class="inl">&lt;img&gt;</code> is a void element — no closing tag.</li>
+        </ul>
+        <h4>Audio & video (HTML5)</h4>
+        <pre class="code"><span class="code-label">html</span>${hl(`<video controls width="640" muted loop>
+  <source src="clip.mp4" type="video/mp4">
+  Your browser does not support video.
+</video>`,'html')}</pre>
+        <table class="ctable">
+          <tr><th>Attribute</th><th>Effect</th></tr>
+          <tr><td><code>controls</code></td><td>Shows native play/pause/volume UI</td></tr>
+          <tr><td><code>autoplay</code></td><td>Starts on load (usually needs <code>muted</code> to work)</td></tr>
+          <tr><td><code>muted</code></td><td>Starts silent</td></tr>
+          <tr><td><code>loop</code></td><td>Restarts when finished</td></tr>
+        </table>
+        <div class="callout"><b>Fallback content</b> (text between the tags) shows in browsers that can't play the media. Multiple <code class="inl">&lt;source&gt;</code> elements let the browser pick a format it supports.</div>`
+    },
+    {
+      id:'html-forms', ico:'📝', lec:'Lec 4', title:'Forms & inputs',
+      body:`
+        <pre class="code"><span class="code-label">html</span>${hl(`<form action="/submit" method="POST">   <!-- where & how data is sent -->
+  <label for="email">Email</label>      <!-- for="email" links to the input's id -->
+  <input type="email" id="email" name="email" required>
+  <!--          ▲ validates format   ▲ name = key sent to the server -->
+
+  <label for="msg">Message</label>
+  <textarea id="msg" name="msg"></textarea>   <!-- needs a closing tag -->
+
+  <button type="submit">Send</button>
+</form>`,'html')}</pre>
+        <h4>Key points</h4>
+        <ul>
+          <li><kbd>&lt;label for="x"&gt;</kbd> must match an input's <kbd>id="x"</kbd> — this links them so clicking the label focuses the field (accessibility + usability).</li>
+          <li><kbd>name</kbd> is what gets submitted to the server; <kbd>id</kbd> is for labels/CSS/JS.</li>
+          <li><code class="inl">&lt;textarea&gt;</code> needs a separate closing tag <code class="inl">&lt;/textarea&gt;</code> — not <code class="inl">&lt;textarea&gt;...&lt;textarea&gt;</code>.</li>
+          <li>A real <code class="inl">&lt;label&gt;</code> must be closed: <code class="inl">&lt;label&gt;Name&lt;/label&gt;</code>, not <code class="inl">&lt;label&gt;Name/&gt;</code>.</li>
+        </ul>
+        <div class="callout warn"><b>Trap:</b> nesting a block element like <code class="inl">&lt;a&gt;</code> wrongly, or putting interactive controls inside each other (<code class="inl">&lt;button&gt;&lt;a&gt;...&lt;/a&gt;&lt;/button&gt;</code> is invalid — a button shouldn't wrap a link).</div>`
+    }
+  ],
+
+  css:[
+    {
+      id:'css-basics', ico:'🎨', lec:'Lec 5', title:'Selectors, properties & the cascade',
+      body:`
+        <p>A CSS rule = <b>selector</b> + <b>declaration block</b>. Each declaration is <code class="inl">property: value;</code>.</p>
+        <pre class="code"><span class="code-label">css</span>${hl(`h1 { color: #333; font-size: 2rem; }   /* type selector */
+.btn { padding: 10px; }                  /* class selector */
+#hero { background: #faf; }              /* id selector */`,'css')}</pre>
+        <h4>Specificity (who wins)</h4>
+        <ul>
+          <li>Inline style &gt; <code class="inl">#id</code> &gt; <code class="inl">.class</code> / <code class="inl">:pseudo</code> / <code class="inl">[attr]</code> &gt; element type.</li>
+          <li>If specificity ties, the <b>later</b> rule wins (the "cascade").</li>
+        </ul>
+        <div class="callout warn"><b>Find-the-error staples:</b> invented properties. <code class="inl">font-type</code> → should be <code class="inl">font-family</code>. <code class="inl">text-color</code> → <code class="inl">color</code>. <code class="inl">background-img</code> → <code class="inl">background-image</code> (or <code class="inl">background-color</code> for a colour). <code class="inl">underliner</code> → <code class="inl">text-decoration</code>.</div>
+        <div class="callout warn"><b>Punctuation errors:</b> a missing <code class="inl">;</code> after a declaration, a missing <code class="inl">{</code> after a selector, or <code class="inl">display; none</code> (semicolon instead of colon). Selectors don't start with <code class="inl">%</code> — that's <code class="inl">.class</code> or <code class="inl">#id</code>.</div>`
+    },
+    {
+      id:'css-box', ico:'📦', lec:'Lec 5', title:'The Box Model & box-sizing',
+      body:`
+        <p>Every element is a box with four layers, from inside out: <b>content → padding → border → margin</b>.</p>
+        <pre class="code"><span class="code-label">model</span>┌──────── margin ────────┐
+│  ┌───── border ─────┐  │
+│  │  ┌── padding ──┐ │  │
+│  │  │  content    │ │  │
+│  │  └─────────────┘ │  │
+│  └──────────────────┘  │
+└────────────────────────┘</pre>
+        <ul>
+          <li><b>content</b> — the actual text/image (width × height).</li>
+          <li><b>padding</b> — space between content and border (inside the box, takes the background colour).</li>
+          <li><b>border</b> — the line around the padding.</li>
+          <li><b>margin</b> — transparent space <i>outside</i> the border, separating it from neighbours.</li>
+        </ul>
+        <h4>box-sizing: the question that always appears</h4>
+        <table class="ctable">
+          <tr><th>Value</th><th>What <code>width</code> measures</th><th>Total rendered width</th></tr>
+          <tr><td><code>content-box</code> (default)</td><td>Only the content</td><td>width + padding + border</td></tr>
+          <tr><td><code>border-box</code></td><td>Content + padding + border</td><td>Exactly the width you set</td></tr>
+        </table>
+        <p>With <code class="inl">box-sizing: border-box;</code>, a <code class="inl">width: 200px</code> box <b>stays 200px</b> even after you add padding/border — which is why most resets apply it globally.</p>`
+    },
+    {
+      id:'css-position', ico:'📌', lec:'Lec 5–6', title:'Positioning & float',
+      body:`
+        <table class="ctable">
+          <tr><th>Value</th><th>Behaviour</th><th>Removed from flow?</th></tr>
+          <tr><td><code>static</code></td><td>Default. Normal document flow; <code>top/left</code> ignored.</td><td>No</td></tr>
+          <tr><td><code>relative</code></td><td>Offset from its <i>own</i> normal position; still occupies original space.</td><td>No</td></tr>
+          <tr><td><code>absolute</code></td><td>Positioned relative to nearest <i>positioned</i> ancestor (else the page). Taken out of flow.</td><td>Yes</td></tr>
+          <tr><td><code>fixed</code></td><td>Positioned relative to the <i>viewport</i>; stays put during scroll.</td><td>Yes</td></tr>
+          <tr><td><code>sticky</code></td><td>Acts relative until a scroll threshold, then sticks.</td><td>Hybrid</td></tr>
+        </table>
+        <div class="callout tip"><b>Common pairing:</b> a <code class="inl">position: relative</code> parent + <code class="inl">position: absolute</code> child = precise placement inside that parent.</div>
+        <h4>Float</h4>
+        <p><code class="inl">float</code> takes only <b><code class="inl">left</code>, <code class="inl">right</code>, or <code class="inl">none</code></b>. Values like <code class="inl">float: top</code>, <code class="inl">float: down</code> are invalid — a very common error-spotting item.</p>
+        <div class="callout warn"><b>Also invalid:</b> <code class="inl">position: float</code> / <code class="inl">position: wide</code> (not real values), <code class="inl">overflow: hide-x-axis</code> (it's <code class="inl">overflow-x: hidden</code>), and bare numbers like <code class="inl">margin: 25</code> (needs a unit: <code class="inl">25px</code>).</div>`
+    },
+    {
+      id:'css-flexgrid', ico:'🔲', lec:'Lec 6', title:'Flexbox & Grid',
+      body:`
+        <h4>Flexbox — one dimension (a row OR a column)</h4>
+        <pre class="code"><span class="code-label">css</span>${hl(`.container {
+  display: flex;
+  justify-content: space-between; /* main axis */
+  align-items: center;            /* cross axis */
+  gap: 20px;
+}
+.item { order: 2; }               /* reorder items */`,'css')}</pre>
+        <ul>
+          <li><kbd>justify-content</kbd> aligns along the main axis; <kbd>align-items</kbd> along the cross axis.</li>
+          <li><kbd>order</kbd> controls item sequence — not <code class="inl">flex-order</code> or <code class="inl">flex-placement</code>.</li>
+          <li>Spacing between items is <kbd>gap</kbd>, not <code class="inl">content-gap</code>.</li>
+        </ul>
+        <h4>Grid — two dimensions (rows AND columns)</h4>
+        <pre class="code"><span class="code-label">css</span>${hl(`.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;  /* 3 columns */
+  grid-template-rows: auto;
+  gap: 16px;
+}`,'css')}</pre>
+        <p>Column count comes from <kbd>grid-template-columns</kbd> — not <code class="inl">grid-column-count</code> or <code class="inl">grid-column-length</code>.</p>
+        <div class="callout tip"><b>When to use which:</b> Flexbox for content laid out in a single direction (nav bars, button rows, distributing space). Grid for true 2D layouts (page templates, card galleries that align in rows <i>and</i> columns). They compose well: Grid for the page, Flexbox inside cells.</div>`
+    },
+    {
+      id:'css-responsive', ico:'📱', lec:'Lec 6', title:'Responsive design & units',
+      body:`
+        <h4>Media queries</h4>
+        <pre class="code"><span class="code-label">css</span>${hl(`@media (min-width: 600px) {
+  body { padding: 40px; }
+}`,'css')}</pre>
+        <p>The at-rule is <kbd>@media</kbd> — not <code class="inl">@query</code>, <code class="inl">@responsive</code>, or <code class="inl">@viewport</code>. Inside, only real declarations work (<code class="inl">display: wide</code> is invalid).</p>
+        <h4>Hard-coded vs fluid units</h4>
+        <table class="ctable">
+          <tr><th>Unit</th><th>Type</th><th>Trade-off</th></tr>
+          <tr><td><code>px</code></td><td>Absolute</td><td>Precise & predictable, but doesn't scale with user settings or viewport</td></tr>
+          <tr><td><code>rem</code></td><td>Relative to root font-size</td><td>Scales with user's font preference → accessible & consistent</td></tr>
+          <tr><td><code>%</code> / <code>vw</code> / <code>vh</code></td><td>Relative to parent / viewport</td><td>Fluid across screen sizes, but can be unpredictable in nested contexts</td></tr>
+        </table>
+        <div class="callout tip"><b>Mobile-first</b> = write base styles for small screens, then <i>add</i> complexity at larger breakpoints with <code class="inl">min-width</code> queries. It solves the problem of overriding desktop styles down to mobile, keeps CSS leaner, and matches how most users actually browse. Non-technical strategies: flexible images, content prioritisation, generous tap targets.</div>`
+    },
+    {
+      id:'css-pseudo', ico:'✨', lec:'Lec 6', title:'Pseudo-classes, pseudo-elements, transitions & animations',
+      body:`
+        <h4>Pseudo-classes vs pseudo-elements</h4>
+        <table class="ctable">
+          <tr><th></th><th>Pseudo-class (<code>:</code>)</th><th>Pseudo-element (<code>::</code>)</th></tr>
+          <tr><td>Targets</td><td>A <b>state</b> of an existing element</td><td>A <b>part</b> of an element you can style/generate</td></tr>
+          <tr><td>Syntax</td><td>Single colon <code>:hover</code></td><td>Double colon <code>::before</code></td></tr>
+          <tr><td>Examples</td><td><code>:hover</code> <code>:focus</code> <code>:active</code> <code>:nth-child()</code></td><td><code>::before</code> <code>::after</code> <code>::first-line</code></td></tr>
+        </table>
+        <pre class="code"><span class="code-label">css</span>${hl(`a:hover { color: #0088cc; }
+.box::after { content: ''; }   /* generated content needs 'content' */`,'css')}</pre>
+        <h4>Transitions vs animations</h4>
+        <ul>
+          <li><b>Transition</b> = simple A→B change triggered by a state (e.g. on hover). <code class="inl">transition: all 0.4s ease;</code></li>
+          <li><b>Animation</b> = a timeline with <code class="inl">@keyframes</code>; can loop and define many steps.</li>
+        </ul>
+        <pre class="code"><span class="code-label">css</span>${hl(`@keyframes slide { from { left: 0; } to { left: 100px; } }
+.x { animation: slide 2s ease infinite; }`,'css')}</pre>
+        <div class="callout tip"><b>Performance:</b> animate <code class="inl">transform</code> and <code class="inl">opacity</code> — they're GPU-composited and avoid layout/paint. Avoid animating <code class="inl">width</code>/<code class="inl">top</code>/<code class="inl">margin</code>. Respect <code class="inl">@media (prefers-reduced-motion: reduce)</code> for accessibility.</div>`
+    }
+  ],
+
+  js:[
+    {
+      id:'js-oop', ico:'🧠', lec:'Lec 1–2', title:'OOP fundamentals: the four pillars',
+      body:`
+        <p>The course opens with <b>Object-Oriented Programming</b> as the conceptual foundation — it's the mental model behind JavaScript objects, prototypes, and ES6 classes later in the course. OOP organises code around <b>objects</b>: bundles of <b>data (properties/state)</b> and <b>behaviour (methods)</b> that model real-world things.</p>
+        <h4>The four pillars</h4>
+        <table class="ctable">
+          <tr><th>Pillar</th><th>Meaning</th><th>In JS</th></tr>
+          <tr><td><b>Encapsulation</b></td><td>Bundle data + the methods that act on it into one unit, and hide internal detail behind a public interface.</td><td>Objects/classes; private state via closures or <code>#fields</code></td></tr>
+          <tr><td><b>Abstraction</b></td><td>Expose only what's necessary; hide complexity behind a simple interface.</td><td>A method name like <code>user.save()</code> hides the how</td></tr>
+          <tr><td><b>Inheritance</b></td><td>A child type reuses and specialises a parent type's members.</td><td><code class="inl">class Dog extends Animal</code></td></tr>
+          <tr><td><b>Polymorphism</b></td><td>"Many forms" — the same call behaves differently depending on the object.</td><td>A subclass <b>overrides</b> a method (e.g. each shape's own <code>area()</code>)</td></tr>
+        </table>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`// Encapsulation + abstraction: state and behaviour together
+class BankAccount {
+  #balance = 0;                       // private field (hidden detail)
+  deposit(amount) { this.#balance += amount; }   // public interface
+  get balance() { return this.#balance; }
+}
+
+// Inheritance + polymorphism
+class Shape { area() { return 0; } }
+class Circle extends Shape {
+  constructor(r) { super(); this.r = r; }
+  area() { return Math.PI * this.r ** 2; }   // overrides → polymorphism
+}
+const shapes = [new Shape(), new Circle(2)];
+shapes.forEach(s => console.log(s.area())); // same call, different result`,'javascript')}</pre>
+        <h4>Class vs object (instance)</h4>
+        <p>A <b>class</b> is the blueprint; an <b>object/instance</b> is a concrete thing built from it with <code class="inl">new</code>. One class → many independent instances, each with its own state.</p>
+        <div class="callout tip"><b>Why OOP:</b> it makes code <b>reusable</b> (inheritance), <b>maintainable</b> (encapsulation localises change), and <b>easier to reason about</b> (abstraction hides noise). These exact benefits are strong open-ended answers — and they connect directly to the prototypes/classes topic below.</div>`
+    },
+    {
+      id:'js-vars', ico:'📦', lec:'Lec 7', title:'Variables, types & operators',
+      body:`
+        <table class="ctable">
+          <tr><th>Keyword</th><th>Reassign?</th><th>Scope</th><th>Hoisting</th></tr>
+          <tr><td><code>const</code></td><td>No</td><td>Block</td><td>Not usable before declaration (TDZ)</td></tr>
+          <tr><td><code>let</code></td><td>Yes</td><td>Block</td><td>TDZ</td></tr>
+          <tr><td><code>var</code></td><td>Yes</td><td>Function</td><td>Hoisted as <code>undefined</code></td></tr>
+        </table>
+        <p><b>Primitive types:</b> String, Number, Boolean, <code class="inl">null</code>, <code class="inl">undefined</code>, Symbol, BigInt. Plus the reference types Object, Array, Function.</p>
+        <div class="callout warn"><b>Reassigning a <code class="inl">const</code> throws a TypeError.</b> A frequent error-spotting item: declaring <code class="inl">const result = 1;</code> then doing <code class="inl">result *= i;</code> inside a loop, or <code class="inl">const colors = [...]</code> then <code class="inl">colors = 'red'</code>. (Note: you <i>can</i> mutate a const array with <code class="inl">.push()</code> — you just can't reassign the binding.)</div>
+        <h4>Key operators</h4>
+        <ul>
+          <li><kbd>===</kbd> strict equality (no type coercion) vs <kbd>==</kbd> loose (coerces types).</li>
+          <li><kbd>??</kbd> nullish coalescing — returns the right side only if the left is <code class="inl">null</code>/<code class="inl">undefined</code>.</li>
+          <li><kbd>&amp;&amp;</kbd> <kbd>||</kbd> <kbd>!</kbd> logical. Not <code class="inl">&amp;</code>/<code class="inl">|</code> (those are bitwise) and not <code class="inl">&gt;&gt;</code> for comparison (that's a bit-shift).</li>
+        </ul>`
+    },
+    {
+      id:'js-functions', ico:'🔧', lec:'Lec 9', title:'Functions, hoisting, scope & closures',
+      body:`
+        <pre class="code"><span class="code-label">javascript</span>${hl(`function add(a, b) { return a + b; }      // declaration (hoisted)
+const mul = (a, b) => a * b;              // arrow expression`,'javascript')}</pre>
+        <div class="callout warn"><b>Declaration syntax traps:</b> <code class="inl">func name() {}</code> (should be <code class="inl">function</code>), <code class="inl">function name[n] {}</code> (params use <code class="inl">()</code>, not <code class="inl">[]</code>), <code class="inl">function name { }</code> (missing parens entirely), and <code class="inl">function: name()</code> (no colon).</div>
+        <h4>Hoisting</h4>
+        <p>The interpreter makes two passes. The first registers <b>function declarations</b>, so you can call them before they appear. Functions assigned to <code class="inl">let</code>/<code class="inl">const</code> are <b>not</b> hoisted that way.</p>
+        <h4>Scope & closures</h4>
+        <p>A <b>closure</b> is a function that remembers variables from the scope where it was created, even after that outer function has returned. It's how JS makes "private" state.</p>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`function counter() {
+  let count = 0;                 // private
+  return () => ++count;          // inner fn keeps access to count
+}
+const next = counter();
+next(); // 1
+next(); // 2`,'javascript')}</pre>
+        <p>Real-world uses: private variables, function factories (a function that builds customised functions), event handlers that remember setup data, debouncing.</p>`
+    },
+    {
+      id:'js-control', ico:'🔁', lec:'Lec 8–9', title:'Control flow, loops & arrays',
+      body:`
+        <h4>Loops</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`for (let i = 0; i < arr.length; i++) { ... }   // note ; separators
+while (cond) { ... }
+do { ... } while (cond);   // runs AT LEAST ONCE`,'javascript')}</pre>
+        <ul>
+          <li><b><code class="inl">do…while</code> always runs at least once</b> — it checks the condition <i>after</i> the body. (Frequent MCQ.)</li>
+          <li>A <code class="inl">for</code> header uses <b>semicolons</b>: <code class="inl">for (let i=0; i&lt;n; i++)</code>. Using commas (<code class="inl">for (let i=0, i&lt;n; i++)</code>) is a syntax error.</li>
+          <li>You can't put <code class="inl">let i = 1</code> inside a <code class="inl">while(...)</code> condition.</li>
+        </ul>
+        <h4>Array methods you must recognise</h4>
+        <table class="ctable">
+          <tr><th>Method</th><th>Does</th></tr>
+          <tr><td><code>push()</code></td><td>Add to end</td></tr>
+          <tr><td><code>pop()</code></td><td>Remove from end</td></tr>
+          <tr><td><code>shift()</code></td><td>Remove from start</td></tr>
+          <tr><td><code>unshift()</code></td><td>Add to start</td></tr>
+        </table>
+        <div class="callout warn"><b>Common fakes:</b> <code class="inl">arr.add()</code>, <code class="inl">arr.remove()</code> don't exist. Length is a <b>property</b>: <code class="inl">arr.length</code>, not <code class="inl">arr.length()</code>. Index access uses brackets <code class="inl">arr[i]</code>, not <code class="inl">arr(i)</code>. Array literals use <code class="inl">[ ]</code>; passing <code class="inl">{1,2,3}</code> to a function is invalid object syntax.</div>`
+    },
+    {
+      id:'js-objects', ico:'🧱', lec:'Lec 11–12', title:'Objects, "this", prototypes & classes',
+      body:`
+        <pre class="code"><span class="code-label">javascript</span>${hl(`const user = { name: 'Ada', greet() { return this.name; } };
+user.role = 'admin';        // add a property (dot notation)
+user['age'] = 30;           // or bracket notation`,'javascript')}</pre>
+        <p>Add properties with <code class="inl">obj.key = value</code> or <code class="inl">obj['key'] = value</code> — not <code class="inl">obj.add()</code>, <code class="inl">obj.set()</code>, or <code class="inl">obj.addProperty()</code>.</p>
+        <h4>The <code class="inl">this</code> keyword</h4>
+        <p>Inside a method, <code class="inl">this</code> refers to <b>the object the method was called on</b>. Arrow functions don't bind their own <code class="inl">this</code> — they inherit it from the surrounding scope.</p>
+        <h4>Prototypal inheritance & ES6 classes</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`class Animal {
+  constructor(name) { this.name = name; }
+  speak() { return this.name + ' makes a sound'; }
+}
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name);            // call parent constructor
+    this.breed = breed;
+  }
+  speak() { return this.name + ' barks'; }
+}`,'javascript')}</pre>
+        <p>Every object links to a <b>prototype</b> it inherits from. ES6 <code class="inl">class</code> is <b>syntactic sugar</b> over this prototype mechanism — <code class="inl">extends</code> sets up the prototype chain and <code class="inl">super</code> calls the parent.</p>`
+    },
+    {
+      id:'js-dom', ico:'🌳', lec:'Lec 10', title:'DOM selection, manipulation & performance',
+      body:`
+        <h4>Selecting elements</h4>
+        <table class="ctable">
+          <tr><th>Method</th><th>Returns</th></tr>
+          <tr><td><code>getElementById('x')</code></td><td>One element by id</td></tr>
+          <tr><td><code>getElementsByClassName('x')</code></td><td>Live HTMLCollection</td></tr>
+          <tr><td><code>querySelector('.x')</code></td><td>First match for a CSS selector</td></tr>
+          <tr><td><code>querySelectorAll('.x')</code></td><td>Static NodeList of all matches</td></tr>
+        </table>
+        <p>It's <code class="inl">getElementById</code> (singular "Element") — not <code class="inl">getElementsById</code>, <code class="inl">getElementsFromId</code>, or the invented <code class="inl">getElementsByDiv</code>.</p>
+        <h4>Creating & modifying</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`const li = document.createElement('li');
+li.textContent = 'New item';
+list.appendChild(li);
+el.classList.toggle('active');`,'javascript')}</pre>
+        <div class="callout tip"><b>Performance:</b> every DOM change can trigger reflow/repaint. Batch updates — build nodes in a <code class="inl">DocumentFragment</code> or build an HTML string and assign once, instead of appending inside a loop. Cache element references rather than re-querying. This is the model answer to "minimise performance impact".</div>`
+    },
+    {
+      id:'js-window', ico:'🪟', lec:'Lec 10', title:'The Window object (BOM): screen, navigator, location, timers',
+      body:`
+        <p>The browser exposes everything through a top-level <code class="inl">window</code> object — the root of the <b>DOM/BOM tree</b>. <code class="inl">document</code> is just one of its children. Because <code class="inl">window</code> is the global namespace, you can drop the prefix: <code class="inl">window.alert()</code> → <code class="inl">alert()</code>, <code class="inl">window.onload</code> → <code class="inl">onload</code>.</p>
+        <pre class="code"><span class="code-label">text</span>window
+ ├─ document   → the page (the DOM you manipulate)
+ ├─ navigator  → info about the browser
+ ├─ screen     → the user's monitor
+ ├─ location   → the current URL
+ └─ history    → the session's page history</pre>
+        <h4>Child objects worth knowing</h4>
+        <table class="ctable">
+          <tr><th>Object / member</th><th>Gives you</th></tr>
+          <tr><td><code>window.screen.width / .height</code></td><td>Monitor resolution; <code>availWidth/availHeight</code> exclude the taskbar; <code>colorDepth</code> = colour capability.</td></tr>
+          <tr><td><code>window.navigator.userAgent</code></td><td>Browser/OS string. <code>navigator.platform</code> = the OS.</td></tr>
+          <tr><td><code>window.location.href</code></td><td>Current URL (assigning to it navigates). <code>location.reload()</code> reloads.</td></tr>
+          <tr><td><code>window.history.back() / .forward()</code></td><td>Move through travel history, like the browser buttons.</td></tr>
+        </table>
+        <h4>Dialogs & timers</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`alert('Hi');                         // simple message box
+const ok = confirm('Delete?');       // returns true/false
+const name = prompt('Your name?');   // returns the typed string or null
+
+const id = setTimeout(() => run(), 1000);   // once, after 1s
+clearTimeout(id);
+const t = setInterval(tick, 1000);          // repeatedly, every 1s
+clearInterval(t);`,'javascript')}</pre>
+        <div class="callout tip"><b>Feature detection over browser detection:</b> the textbook stresses checking <i>whether a feature exists</i> (e.g. <code class="inl">if ('addEventListener' in window)</code>) rather than sniffing <code class="inl">navigator</code> to guess the browser — sniffing is brittle and considered bad practice.</div>
+        <div class="callout warn"><b>Trap:</b> <code class="inl">setTimeout</code>/<code class="inl">setInterval</code> take the <b>function first, delay second</b>: <code class="inl">setTimeout(fn, 1000)</code>. Passing <code class="inl">setTimeout(1000, fn)</code> or calling the function immediately with <code class="inl">setTimeout(fn(), 1000)</code> are classic mistakes.</div>`
+    },
+    {
+      id:'js-events', ico:'⚡', lec:'Lec 10', title:'Events & event handling',
+      body:`
+        <p>An <b>event</b> is something that happens in the page (click, keydown, change, submit, load). You attach an <b>event handler</b> with <code class="inl">addEventListener</code>.</p>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`const btn = document.getElementById('save');
+btn.addEventListener('click', function (event) {
+  event.preventDefault();          // stop default (e.g. form submit)
+  console.log('clicked!');
+});`,'javascript')}</pre>
+        <ul>
+          <li>It's <kbd>addEventListener('click', fn)</kbd> — not <code class="inl">createEventListener</code>. The event name is a <b>string</b>.</li>
+          <li>Common events: <code class="inl">click</code>, <code class="inl">keydown</code>, <code class="inl">change</code>, <code class="inl">submit</code>, <code class="inl">load</code>. The page-ready event is <code class="inl">'DOMContentLoaded'</code>, not <code class="inl">'DocumentFinishedLoading'</code>.</li>
+          <li><kbd>event.preventDefault()</kbd> stops the browser default (e.g. submitting a form / following a link).</li>
+        </ul>
+        <h4>Full flow (model answer shape)</h4>
+        <p>① select the element → ② call <code class="inl">addEventListener</code> with an event name and a handler → ③ inside the handler, read <code class="inl">event</code> and run your logic (update the DOM, validate, fetch, etc.).</p>`
+    },
+    {
+      id:'js-errors', ico:'🛡️', lec:'Lec 8', title:'Errors & exception handling',
+      body:`
+        <h4>Three kinds of error</h4>
+        <ul>
+          <li><b>Syntax error</b> — breaks the language rules; caught <i>before</i> the code runs (e.g. a missing bracket).</li>
+          <li><b>Runtime error</b> (exception) — happens <i>during</i> execution (e.g. calling a method on <code class="inl">undefined</code>). Types include <code class="inl">ReferenceError</code>, <code class="inl">TypeError</code>, <code class="inl">RangeError</code>, <code class="inl">SyntaxError</code>.</li>
+          <li><b>Logical error</b> — code runs but produces the wrong result; no error thrown.</li>
+        </ul>
+        <h4>try / catch / finally</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`try {
+  if (day > 31) throw new RangeError('Day cannot exceed 31');
+} catch (err) {
+  console.log(err.name + ': ' + err.message);
+} finally {
+  console.log('Always runs');
+}`,'javascript')}</pre>
+        <p>The <code class="inl">try</code> block holds risky code; <code class="inl">catch</code> receives the error object (with <code class="inl">.name</code> and <code class="inl">.message</code>); <code class="inl">finally</code> runs regardless. You raise errors yourself with <code class="inl">throw</code>.</p>
+        <div class="callout tip"><b>Why it matters:</b> good error handling keeps one failure from crashing the whole app, lets you show useful feedback, and makes the app reliable (e.g. catching a failed network request).</div>`
+    },
+    {
+      id:'js-async', ico:'⏳', lec:'Lec 11', title:'Async JS: event loop, promises, async/await, fetch',
+      body:`
+        <h4>Why async?</h4>
+        <p>JS is <b>single-threaded</b>: one thing at a time on the call stack. Long tasks (network, timers) are handed to <b>browser APIs</b>; when they finish, their callback goes to the <b>task/callback queue</b>, and the <b>event loop</b> pushes it onto the stack once the stack is empty. This keeps the UI responsive instead of frozen.</p>
+        <pre class="code"><span class="code-label">flow</span>Call Stack  ──runs sync code──▶  empties
+     ▲                                │
+     │   event loop moves ready       ▼
+     └──── callback ◀──── Task Queue ◀── Browser API (timer/fetch)</pre>
+        <h4>Promises</h4>
+        <p>A <b>Promise</b> represents a future value. States: <b>pending → fulfilled (resolved)</b> or <b>rejected</b>. Handle with <code class="inl">.then()</code> (success) and <code class="inl">.catch()</code> (error).</p>
+        <h4>fetch</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`fetch('https://api.example.com/data')
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(err => console.log(err));`,'javascript')}</pre>
+        <p>The correct shape: <code class="inl">fetch(url).then(res =&gt; res.json()).then(...)</code>. There's no <code class="inl">fetchAPI()</code>, <code class="inl">.parseJSON()</code>, or bare <code class="inl">get()</code>.</p>
+        <h4>async / await</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`async function load() {
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    return data;
+  } catch (err) { console.log(err); }
+}`,'javascript')}</pre>
+        <p><code class="inl">async/await</code> lets you write asynchronous code that <i>reads</i> like synchronous code, flattening "callback hell" (deeply nested callbacks) into a clean top-to-bottom sequence.</p>
+        <div class="callout"><b><code class="inl">Promise.all([...])</code></b> runs several promises concurrently and resolves when <i>all</i> succeed (returning an array of results). Caveat: if <b>any one</b> rejects, the whole thing rejects immediately — use <code class="inl">Promise.allSettled</code> if you need every result regardless.</div>`
+    },
+    {
+      id:'js-modules', ico:'📚', lec:'Lec 13', title:'ES Modules',
+      body:`
+        <p>A <b>module</b> is a file with its own scope that explicitly declares what it shares (<code class="inl">export</code>) and what it needs (<code class="inl">import</code>). Entry point: <code class="inl">&lt;script type="module" src="main.js"&gt;</code>.</p>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`// math.js
+export const mul = (a, b) => a * b;     // named export
+export default function add(a,b){ return a+b; }  // default
+
+// main.js
+import add, { mul } from './math.js';`,'javascript')}</pre>
+        <table class="ctable">
+          <tr><th></th><th>Named export</th><th>Default export</th></tr>
+          <tr><td>How many</td><td>Many per file</td><td>One per file</td></tr>
+          <tr><td>Import syntax</td><td><code>import { x } from ...</code></td><td><code>import x from ...</code></td></tr>
+          <tr><td>Naming</td><td>Must match (or alias with <code>as</code>)</td><td>You choose any name</td></tr>
+        </table>
+        <ul>
+          <li><b>Live bindings:</b> imports are references, not copies — if the exporter updates the value, importers see the change.</li>
+          <li><b>Barrel</b> = an <code class="inl">index.js</code> that re-exports from several modules to give one clean public API surface (<code class="inl">export { x } from './x.js'</code>).</li>
+          <li>Named exports are <b>tree-shake friendly</b> (unused ones can be dropped by bundlers).</li>
+        </ul>
+        <div class="callout tip"><b>Benefits of modular code:</b> reusability, clear dependencies, easier testing/maintenance, and avoiding global-scope pollution.</div>`
+    }
+  ]
+};
+
+/* topic group meta */
+const TOPIC_GROUPS = [
+  {key:'html', label:'HTML', accent:'#e88'},
+  {key:'css',  label:'CSS',  accent:'#5bb0e6'},
+  {key:'js',   label:'JavaScript', accent:'#f4b740'}
+];
+
+/* ===== inlined: data-mcq.js ===== */
+/* ============================================================
+   MCQ BANK  — c:correct index, src:'past'|'new'|'mod'
+   tag: html | css | js
+   ============================================================ */
+const MCQ = [
+  /* ---------- HTML / CSS (from past papers) ---------- */
+  {tag:'html', src:'past', q:'Which HTML element defines the primary navigation block of a webpage?',
+   opts:['<code>&lt;header&gt;</code>','<code>&lt;nav&gt;</code>','<code>&lt;menu&gt;</code>','<code>&lt;section&gt;</code>'], c:1,
+   ex:'<code>&lt;nav&gt;</code> is the semantic landmark for the primary set of navigation links. <code>&lt;header&gt;</code> is an introductory region, <code>&lt;menu&gt;</code> is for command/toolbar lists, and <code>&lt;section&gt;</code> is a generic thematic grouping.'},
+  {tag:'css', src:'past', q:'Which CSS property sets the space between a box’s content and its border?',
+   opts:['<code>margin</code>','<code>padding</code>','<code>border-spacing</code>','<code>content-spacing</code>'], c:1,
+   ex:'<b>Padding</b> is the inner space between content and border. Margin is the outer space beyond the border. <code>border-spacing</code> applies only to table borders, and <code>content-spacing</code> isn’t a real property.'},
+  {tag:'css', src:'past', q:'Which property controls the order of items in a flex container?',
+   opts:['<code>flex-order</code>','<code>flex-placement</code>','<code>order</code>','<code>flex-align</code>'], c:2,
+   ex:'The flex item property is simply <code>order</code> (default 0; lower numbers come first). The other three are not real properties.'},
+  {tag:'css', src:'past', q:'What does <code>position: absolute;</code> do?',
+   opts:['Positions the element at the bottom of its container','Removes the element from normal document flow (positioned relative to nearest positioned ancestor)','Positions the element relative to the next sibling element','Stacks the element above all other content'], c:1,
+   ex:'<code>absolute</code> removes the element from the normal flow and positions it relative to its nearest <i>positioned</i> ancestor (or the initial containing block if none).'},
+  {tag:'css', src:'past', q:'Which CSS property defines the number of columns in a grid layout?',
+   opts:['<code>grid-template-rows</code>','<code>grid-template-columns</code>','<code>grid-column-count</code>','<code>grid-column-length</code>'], c:1,
+   ex:'<code>grid-template-columns</code> defines the column tracks (e.g. <code>1fr 1fr 1fr</code> = 3 columns). The other two names don’t exist.'},
+  {tag:'css', src:'past', q:'What does <code>position: fixed;</code> do?',
+   opts:['Positions relative to its nearest positioned ancestor','Positions relative to the viewport, keeping it in place during scroll','Fixes the element into the natural document flow','Positions based on a specific scroll height'], c:1,
+   ex:'<code>fixed</code> anchors the element to the <b>viewport</b>, so it stays in place as the page scrolls (think sticky headers/back-to-top buttons).'},
+  {tag:'css', src:'past', q:'Which CSS property applies rounded corners?',
+   opts:['<code>border-radius</code>','<code>corner-radius</code>','<code>border-style</code>','<code>border</code>'], c:0,
+   ex:'<code>border-radius</code> rounds the corners. <code>corner-radius</code> is not real; <code>border-style</code>/<code>border</code> set line style/shorthand.'},
+  {tag:'html', src:'past', q:'Which element groups together <i>inline</i> elements?',
+   opts:['<code>&lt;section&gt;</code>','<code>&lt;header&gt;</code>','<code>&lt;div&gt;</code>','<code>&lt;span&gt;</code>'], c:3,
+   ex:'<code>&lt;span&gt;</code> is the generic <b>inline</b> container. <code>&lt;div&gt;</code> is the generic <b>block</b> container — a popular distractor here.'},
+  {tag:'css', src:'past', q:'Which is used to create responsive design adapting to screen sizes?',
+   opts:['<code>@media</code>','<code>@viewport</code>','<code>@responsive</code>','<code>@font-face</code>'], c:0,
+   ex:'<code>@media</code> queries apply styles conditionally based on viewport features. <code>@font-face</code> loads custom fonts; the other two aren’t standard at-rules.'},
+  {tag:'html', src:'past', q:'Which tag defines an unordered list?',
+   opts:['<code>&lt;ul&gt;</code>','<code>&lt;ol&gt;</code>','<code>&lt;li&gt;</code>','<code>&lt;dl&gt;</code>'], c:0,
+   ex:'<code>&lt;ul&gt;</code> = unordered (bullets). <code>&lt;ol&gt;</code> = ordered (numbers), <code>&lt;li&gt;</code> = a list item, <code>&lt;dl&gt;</code> = description list.'},
+
+  /* ---------- JavaScript (from past papers) ---------- */
+  {tag:'js', src:'past', q:'Which is the correct way to declare a function?',
+   opts:['<code>function myFunction() { return 5; }</code>','<code>function: myFunction() { return 5; }</code>','<code>let myFunction() => { return 5; }</code>','<code>function myFunction[] { return 5; }</code>'], c:0,
+   ex:'A declaration is <code>function name(params) { ... }</code>. No colon after <code>function</code>, parameters go in <code>()</code> not <code>[]</code>, and arrow functions are written <code>const f = () =&gt; {}</code>.'},
+  {tag:'js', src:'past', q:'Which method removes the last item from an array?',
+   opts:['<code>shift()</code>','<code>pop()</code>','<code>unshift()</code>','<code>remove()</code>'], c:1,
+   ex:'<code>pop()</code> removes (and returns) the last element. <code>shift()</code> removes the first, <code>unshift()</code> adds to the front, and <code>remove()</code> isn’t an array method.'},
+  {tag:'js', src:'past', q:'Which method parses a JSON string into a JavaScript object?',
+   opts:['<code>JSON.toObject()</code>','<code>JSON.parse()</code>','<code>JSON.stringify()</code>','<code>JSON.getObject()</code>'], c:1,
+   ex:'<code>JSON.parse()</code> turns a JSON string into an object. <code>JSON.stringify()</code> does the reverse (object → string).'},
+  {tag:'js', src:'past', q:'Which declares a variable that cannot be reassigned?',
+   opts:['<code>let myVar = 10;</code>','<code>const myVar = 10;</code>','<code>var myVar = 10;</code>','<code>immutable myVar = 10;</code>'], c:1,
+   ex:'<code>const</code> prevents reassignment of the binding. (It doesn’t deep-freeze objects, but the variable itself can’t be pointed elsewhere.) <code>immutable</code> isn’t a keyword.'},
+  {tag:'js', src:'past', q:'Which selects an HTML element by its ID?',
+   opts:['<code>getElementsFromId()</code>','<code>getElementsByClassName()</code>','<code>getElementById()</code>','<code>getElementsByTagName()</code>'], c:2,
+   ex:'<code>getElementById()</code> — singular “Element”, returns one node. The others select by class, tag, or simply don’t exist.'},
+  {tag:'js', src:'past', q:'Which correctly adds a property to an object?',
+   opts:["<code>object.addProperty('key', 'value');</code>","<code>object.key = 'value';</code>","<code>object.set('key', 'value');</code>","<code>object.add('key', 'value');</code>"], c:1,
+   ex:'Properties are added with dot or bracket assignment: <code>object.key = value</code> or <code>object[\'key\'] = value</code>. The method-style options aren’t built in for plain objects.'},
+  {tag:'js', src:'past', q:'Which loop executes at least once regardless of the condition?',
+   opts:['<code>while</code>','<code>for</code>','<code>forEach</code>','<code>do...while</code>'], c:3,
+   ex:'<code>do…while</code> runs its body <b>first</b>, then checks the condition — so it always runs at least once.'},
+  {tag:'js', src:'past', q:'What does <code>this</code> refer to inside a (regular) method?',
+   opts:['The global object','The function itself','The object the method is invoked on','The parent object'], c:2,
+   ex:'For a normal method call <code>obj.method()</code>, <code>this</code> is the object before the dot — <code>obj</code>. (Arrow functions instead inherit <code>this</code> from their surrounding scope.)'},
+  {tag:'js', src:'past', q:'Which statement about JavaScript promises is correct?',
+   opts:['Promises let you handle async code in a synchronous style using async/await.','A rejected promise can only be handled with <code>.catch()</code> if the rejection is asynchronous.','A promise in the “resolved” state will execute <code>.catch()</code> to handle errors.','Promises can be in one of four states: pending, resolved, rejected, or fulfilled.'], c:0,
+   ex:'<code>async/await</code> is built on promises and lets you write asynchronous logic that reads synchronously. A resolved promise runs <code>.then()</code>, not <code>.catch()</code>; and there are three states (pending / fulfilled / rejected — “resolved” and “fulfilled” are the same thing).'},
+  {tag:'js', src:'past', q:'Which correctly fetches data from an API?',
+   opts:["<code>fetch(url).then(res =&gt; res.json()).then(data =&gt; console.log(data));</code>","<code>fetchAPI(url).parseJSON().then(...)</code>","<code>fetch(url).then(res =&gt; res.text()).then(...)</code> (for JSON data)","<code>get(url).then(data =&gt; console.log(data));</code>"], c:0,
+   ex:'The standard pattern is <code>fetch(url).then(res =&gt; res.json())</code>. Option C uses <code>.text()</code> which won’t parse JSON; <code>fetchAPI</code> and <code>get</code> aren’t real fetch APIs.'},
+
+  /* ---------- NEW / MODIFIED (likely variants) ---------- */
+  {tag:'js', src:'new', q:'What does the nullish coalescing operator <code>??</code> return in <code>let x = a ?? b;</code>?',
+   opts:['<code>b</code> only if <code>a</code> is falsy (0, "", false, null, undefined)','<code>b</code> only if <code>a</code> is <code>null</code> or <code>undefined</code>','Always <code>a</code>','<code>a &amp;&amp; b</code>'], c:1,
+   ex:'<code>??</code> falls back to <code>b</code> <b>only</b> for <code>null</code>/<code>undefined</code>. Unlike <code>||</code>, it does NOT treat <code>0</code>, <code>\'\'</code>, or <code>false</code> as missing — which is exactly why it exists.'},
+  {tag:'js', src:'new', q:'What is logged?<br><code>console.log(typeof null);</code>',
+   opts:['<code>"null"</code>','<code>"object"</code>','<code>"undefined"</code>','<code>"boolean"</code>'], c:1,
+   ex:'<code>typeof null</code> returns <code>"object"</code> — a long-standing quirk of JavaScript, frequently tested. <code>null</code> is technically a primitive, but typeof misreports it.'},
+  {tag:'js', src:'mod', q:'What is the result of <code>0 == false</code> and <code>0 === false</code>?',
+   opts:['<code>true, true</code>','<code>true, false</code>','<code>false, true</code>','<code>false, false</code>'], c:1,
+   ex:'<code>==</code> coerces types so <code>0 == false</code> is <code>true</code>. <code>===</code> checks type too — number vs boolean differ — so <code>0 === false</code> is <code>false</code>.'},
+  {tag:'js', src:'new', q:'What does <code>Promise.all([p1, p2, p3])</code> do if <code>p2</code> rejects?',
+   opts:['Returns an array with the two successful results, skipping p2','Rejects immediately with p2’s reason','Waits for all then returns successes and failures','Throws a SyntaxError'], c:1,
+   ex:'<code>Promise.all</code> rejects as soon as <b>any</b> input rejects (fail-fast), discarding the other results. Use <code>Promise.allSettled</code> if you need every outcome regardless of failures.'},
+  {tag:'js', src:'new', q:'What is a closure?',
+   opts:['A function inside another function that retains access to the outer function’s scope','A function that runs immediately when defined','A function that cannot access any outer variables','A built-in method that closes the browser tab'], c:0,
+   ex:'A closure is an inner function that “closes over” and remembers variables from its outer (lexical) scope, even after that outer function has returned.'},
+  {tag:'js', src:'mod', q:'What does this output?<br><code>let i;<br>for (i = 1; i &lt; 4; i++) {}<br>console.log(i);</code>',
+   opts:['<code>3</code>','<code>4</code>','<code>1 2 3</code>','undefined'], c:1,
+   ex:'After the loop, <code>i</code> was incremented to <b>4</b> (which failed <code>i &lt; 4</code> and exited). Since <code>i</code> is declared outside, it’s still 4.'},
+  {tag:'css', src:'new', q:'With <code>box-sizing: border-box</code>, an element set to <code>width: 200px; padding: 20px; border: 5px</code> renders how wide?',
+   opts:['250px','200px','230px','220px'], c:1,
+   ex:'With <code>border-box</code>, the declared <code>width</code> includes padding + border, so the box stays exactly <b>200px</b>. With the default <code>content-box</code> it would be 200 + 40 + 10 = 250px.'},
+  {tag:'css', src:'new', q:'Which is the best choice for a layout needing both rows AND columns aligned?',
+   opts:['Flexbox','CSS Grid','Float','Inline-block'], c:1,
+   ex:'Grid is two-dimensional — it controls rows and columns simultaneously. Flexbox is one-dimensional (a single row or column at a time).'},
+  {tag:'html', src:'new', q:'Which attribute pair correctly links a label to its input?',
+   opts:['<code>&lt;label name="x"&gt;</code> + <code>&lt;input name="x"&gt;</code>','<code>&lt;label for="x"&gt;</code> + <code>&lt;input id="x"&gt;</code>','<code>&lt;label id="x"&gt;</code> + <code>&lt;input for="x"&gt;</code>','<code>&lt;label link="x"&gt;</code> + <code>&lt;input ref="x"&gt;</code>'], c:1,
+   ex:'A label’s <code>for</code> must equal the input’s <code>id</code>. This associates them so clicking the label focuses the field — an accessibility requirement.'},
+  {tag:'js', src:'new', q:'Which event name fires when the DOM is ready (before images load)?',
+   opts:['<code>"load"</code>','<code>"DOMContentLoaded"</code>','<code>"ready"</code>','<code>"DocumentFinishedLoading"</code>'], c:1,
+   ex:'<code>DOMContentLoaded</code> fires once the HTML is parsed and the DOM is built (images may still be loading). <code>load</code> waits for everything including images. The other two aren’t real events.'},
+  {tag:'js', src:'mod', q:'What does this output?<br><code>const a = [1,2,3];<br>a.push(4);<br>console.log(a.length);</code>',
+   opts:['<code>3</code>','<code>4</code>','TypeError (a is const)','undefined'], c:1,
+   ex:'You CAN mutate a <code>const</code> array — <code>push</code> changes its contents, giving length <b>4</b>. <code>const</code> only blocks <i>reassigning</i> the variable (<code>a = ...</code>), not mutating the object it points to.'},
+  {tag:'js', src:'new', q:'In ES modules, how many <b>default</b> exports may a single file have?',
+   opts:['Exactly one','As many as you want','Zero — only named exports allowed','One per exported function'], c:0,
+   ex:'A module can have many named exports but at most <b>one default export</b>. You import it without braces: <code>import anyName from \'./mod.js\'</code>.'},
+  {tag:'css', src:'new', q:'Which value is NOT valid for the <code>float</code> property?',
+   opts:['<code>left</code>','<code>right</code>','<code>none</code>','<code>top</code>'], c:3,
+   ex:'<code>float</code> accepts only <code>left</code>, <code>right</code>, <code>none</code> (and <code>inherit</code>). <code>top</code>/<code>down</code> are invalid — a classic error-spotting trap.'},
+  {tag:'js', src:'new', q:'Which correctly creates and inserts a new list item?',
+   opts:["<code>const li = document.createElement('li'); list.appendChild(li);</code>","<code>const li = document.newElement('li'); list.add(li);</code>","<code>const li = document.makeElement('li'); list.insert(li);</code>","<code>list.createChild('li');</code>"], c:0,
+   ex:'<code>document.createElement(tag)</code> builds the node and <code>parent.appendChild(node)</code> inserts it. The other method names are invented.'},
+  {tag:'html', src:'mod', q:'Which is the correct, complete doctype for an HTML5 document?',
+   opts:['<code>&lt;!DOCTYPE html&gt;</code>','<code>&lt;!DOCTYPE HTML5&gt;</code>','<code>&lt;!DOCTYPE&gt;</code>','<code>&lt;doctype html&gt;</code>'], c:0,
+   ex:'It’s exactly <code>&lt;!DOCTYPE html&gt;</code>. Omitting <code>html</code> or writing <code>HTML5</code> is invalid and can trigger quirks mode in browsers.'}
+];
+
+/* ===== inlined: data-mcq-extra.js ===== */
+/* ============================================================
+   MCQ BANK — EXPANSION
+   Appended to the MCQ array defined in data-mcq.js.
+   Each explanation covers why the answer is right AND why the
+   tempting wrong options are wrong.
+   ============================================================ */
+MCQ.push(
+  /* ---------------- OOP fundamentals (Lec 1–2) ---------------- */
+  {tag:'js', src:'new', q:'Which OOP principle bundles data together with the methods that operate on it, and hides the internal state behind a public interface?',
+   opts:['Polymorphism','Encapsulation','Inheritance','Abstraction'], c:1,
+   ex:'<b>Encapsulation</b> = bundling state + behaviour into one unit and exposing only a controlled interface. <b>Abstraction</b> is related but is about hiding complexity behind a simple interface (the “what”, not the bundling). <b>Inheritance</b> shares behaviour between types. <b>Polymorphism</b> means one call takes many forms.'},
+  {tag:'js', src:'new', q:'What is the relationship between a class and an object in OOP?',
+   opts:['They are two words for the same thing','A class is an instance created from an object','An object (instance) is created from a class, which acts as a blueprint','A class can only ever create one object'], c:2,
+   ex:'A <b>class</b> is the blueprint; an <b>object/instance</b> is a concrete thing built from it with <code>new</code>, with its own state. The first option conflates the two; the second reverses the relationship; the last describes a singleton (a special case, not the rule).'},
+  {tag:'js', src:'new', q:'A subclass defines its own version of a method that already exists on its parent, so the same call behaves differently per object. This is:',
+   opts:['Encapsulation','Inheritance','Polymorphism','Abstraction'], c:2,
+   ex:'Overriding a method so <code>shape.area()</code> differs per subclass is <b>polymorphism</b> (“many forms”). Inheritance is what lets the subclass exist and reuse the parent, but the <i>differing behaviour</i> at the same call site is polymorphism.'},
+  {tag:'js', src:'new', q:'In JavaScript, ES6 <code>class</code> syntax is best described as:',
+   opts:['A brand-new inheritance model that replaces prototypes','Syntactic sugar over JavaScript’s existing prototype-based inheritance','A way to define private modules','Only valid when you avoid the <code>new</code> keyword'], c:1,
+   ex:'Classes are <b>syntactic sugar</b>: methods still live on the prototype, <code>extends</code> wires the prototype chain, and <code>super</code> calls the parent. JS did not gain a new inheritance model. Modules are unrelated, and you still instantiate classes with <code>new</code>.'},
+
+  /* ---------------- Window / BOM (Lec 10) ---------------- */
+  {tag:'js', src:'new', q:'What is the correct argument order for <code>setTimeout</code>?',
+   opts:['<code>setTimeout(delay, callback)</code>','<code>setTimeout(callback, delay)</code>','<code>setTimeout(callback())</code>','<code>setTimeout(delay)</code>'], c:1,
+   ex:'The function comes first, the delay in milliseconds second: <code>setTimeout(fn, 1000)</code>. Delay-first is reversed; <code>callback()</code> would call the function <i>immediately</i> and pass its return value; a lone delay has nothing to run.'},
+  {tag:'js', src:'new', q:'Which object holds information about the browser, such as <code>userAgent</code> and <code>platform</code>?',
+   opts:['<code>window.screen</code>','<code>window.navigator</code>','<code>window.location</code>','<code>window.history</code>'], c:1,
+   ex:'<code>navigator</code> describes the browser/OS. <code>screen</code> gives monitor dimensions, <code>location</code> is the current URL, and <code>history</code> is the session’s page stack.'},
+  {tag:'js', src:'new', q:'What does <code>window.confirm("Delete?")</code> return?',
+   opts:['The string <code>"Delete?"</code>','A boolean — <code>true</code> for OK, <code>false</code> for Cancel','<code>undefined</code>','The button element that was clicked'], c:1,
+   ex:'<code>confirm()</code> returns a <b>boolean</b>. By contrast <code>prompt()</code> returns the typed string (or <code>null</code>), and <code>alert()</code> returns <code>undefined</code>.'},
+  {tag:'js', src:'new', q:'How do you redirect the browser to a new URL in JavaScript?',
+   opts:['<code>window.redirect("/x")</code>','<code>document.url = "/x"</code>','<code>window.location.href = "/x"</code>','<code>window.navigate("/x")</code>'], c:2,
+   ex:'Assigning to <code>location.href</code> navigates the page. The other three are not real APIs.'},
+
+  /* ---------------- HTML (Lec 3–4) ---------------- */
+  {tag:'html', src:'new', q:'Which of these is a <b>void</b> element (no closing tag)?',
+   opts:['<code>&lt;div&gt;</code>','<code>&lt;p&gt;</code>','<code>&lt;img&gt;</code>','<code>&lt;span&gt;</code>'], c:2,
+   ex:'<code>&lt;img&gt;</code> is void (like <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;meta&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;link&gt;</code>). <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, and <code>&lt;span&gt;</code> all require closing tags.'},
+  {tag:'html', src:'new', q:'What is the primary purpose of the <code>alt</code> attribute on an <code>&lt;img&gt;</code>?',
+   opts:['Set the tooltip shown on hover','Provide alternative text for screen readers and when the image fails to load','List alternate image files','Increase image resolution'], c:1,
+   ex:'<code>alt</code> is accessible text + a fallback if the image can’t load. The hover tooltip is <code>title</code>; alternate files use <code>srcset</code>/<code>&lt;picture&gt;</code>; resolution isn’t affected by <code>alt</code>.'},
+  {tag:'html', src:'new', q:'Which attribute connects a <code>&lt;label&gt;</code> to its form control?',
+   opts:['<code>name</code>','<code>id</code>','<code>for</code> (matching the input’s <code>id</code>)','<code>target</code>'], c:2,
+   ex:'<code>&lt;label for="x"&gt;</code> pairs with <code>&lt;input id="x"&gt;</code>. <code>name</code> is the key submitted to the server; <code>id</code> is what the label’s <code>for</code> points <i>at</i>; <code>target</code> is unrelated (links/forms).'},
+  {tag:'html', src:'new', q:'Which element produces an <b>ordered (numbered)</b> list?',
+   opts:['<code>&lt;ul&gt;</code>','<code>&lt;ol&gt;</code>','<code>&lt;dl&gt;</code>','<code>&lt;li&gt;</code>'], c:1,
+   ex:'<code>&lt;ol&gt;</code> = ordered/numbered. <code>&lt;ul&gt;</code> = unordered/bullets, <code>&lt;dl&gt;</code> = description list, and <code>&lt;li&gt;</code> is a single item that lives inside <code>&lt;ul&gt;</code>/<code>&lt;ol&gt;</code>.'},
+  {tag:'html', src:'new', q:'Where must <code>&lt;meta&gt;</code> and <code>&lt;title&gt;</code> elements be placed?',
+   opts:['Inside <code>&lt;body&gt;</code>','Inside the <code>&lt;header&gt;</code> landmark','Inside <code>&lt;head&gt;</code>','Anywhere in the document'], c:2,
+   ex:'Metadata lives in <code>&lt;head&gt;</code>. <code>&lt;header&gt;</code> is a <i>visible</i> body landmark (banner/intro) — a classic trap is confusing <code>&lt;head&gt;</code> with <code>&lt;header&gt;</code>.'},
+
+  /* ---------------- CSS (Lec 5–6) ---------------- */
+  {tag:'css', src:'new', q:'With <code>box-sizing: border-box;</code>, how wide is an element set to <code>width: 200px</code> with <code>20px</code> padding on each side?',
+   opts:['240px','220px','200px','180px'], c:2,
+   ex:'<code>border-box</code> folds padding and border <i>into</i> the declared width, so it stays <b>200px</b>. With the default <code>content-box</code> it would be 200 + 20 + 20 = 240px.'},
+  {tag:'css', src:'new', q:'Which selector has the <b>highest</b> specificity?',
+   opts:['<code>.btn</code>','<code>#submit</code>','<code>div</code>','<code>a:hover</code>'], c:1,
+   ex:'An id (<code>#submit</code>, weight 100) beats classes/pseudo-classes (<code>.btn</code>, <code>a:hover</code>, weight 10) and element selectors (<code>div</code>, weight 1).'},
+  {tag:'css', src:'new', q:'Which layout system is <b>one-dimensional</b> (laying items along a single row or column)?',
+   opts:['Grid','Flexbox','Float','Table'], c:1,
+   ex:'<b>Flexbox</b> is 1D — one main axis at a time. <b>Grid</b> is 2D (rows <i>and</i> columns together). Float and tables are older mechanisms not designed as general layout systems.'},
+  {tag:'css', src:'new', q:'Which unit scales with the root font-size, making it good for accessibility?',
+   opts:['<code>px</code>','<code>rem</code>','<code>vw</code>','<code>pt</code>'], c:1,
+   ex:'<code>rem</code> is relative to the root font-size, so it respects the user’s font-size preference. <code>px</code> is absolute, <code>vw</code> is viewport-relative, and <code>pt</code> is a print-oriented absolute unit.'},
+  {tag:'css', src:'new', q:'What is the key difference between <code>:hover</code> and <code>::before</code>?',
+   opts:['There is no difference','<code>:hover</code> targets a <i>state</i> of an element; <code>::before</code> styles/generates a <i>part</i> of an element','<code>::before</code> is just old syntax for <code>:hover</code>','<code>:hover</code> only works on links'], c:1,
+   ex:'A single colon marks a <b>pseudo-class</b> (a state, e.g. hovered/focused); a double colon marks a <b>pseudo-element</b> (a generated part, needing <code>content</code> for <code>::before</code>/<code>::after</code>). <code>:hover</code> works on any element, not only links.'},
+  {tag:'css', src:'new', q:'Which property smoothly animates a change between two states when triggered (e.g. on hover)?',
+   opts:['<code>animation</code>','<code>transition</code>','<code>transform</code>','<code>@keyframes</code>'], c:1,
+   ex:'<code>transition</code> animates a property change between two states and needs a trigger (like <code>:hover</code>). <code>animation</code> + <code>@keyframes</code> run on their own and support many steps. <code>transform</code> is often the property <i>being</i> transitioned, not the mechanism.'},
+  {tag:'css', src:'new', q:'<code>z-index</code> only takes effect on elements that are:',
+   opts:['<code>display: block</code>','floated','positioned (non-<code>static</code>)','inside a grid'], c:2,
+   ex:'<code>z-index</code> applies to <b>positioned</b> elements (<code>relative</code>/<code>absolute</code>/<code>fixed</code>/<code>sticky</code>). On a default <code>static</code> element it has no effect.'},
+  {tag:'css', src:'new', q:'Which is the correct shorthand to centre flex items on both axes?',
+   opts:['<code>justify-content: center; align-items: center;</code>','<code>text-align: center; vertical-align: middle;</code>','<code>align: center center;</code>','<code>flex-center: both;</code>'], c:0,
+   ex:'In a flex container, <code>justify-content</code> centres along the main axis and <code>align-items</code> along the cross axis. <code>text-align</code>/<code>vertical-align</code> are for inline/text flow, and the other two aren’t real.'},
+
+  /* ---------------- JavaScript core (Lec 7–13) ---------------- */
+  {tag:'js', src:'new', q:'What does <code>typeof null</code> return?',
+   opts:['<code>"null"</code>','<code>"object"</code>','<code>"undefined"</code>','<code>"number"</code>'], c:1,
+   ex:'<code>typeof null === "object"</code> — a long-standing JavaScript quirk kept for backward compatibility. It does <b>not</b> return <code>"null"</code>.'},
+  {tag:'js', src:'new', q:'What does <code>0 == ""</code> evaluate to, and why?',
+   opts:['<code>true</code> — <code>==</code> coerces <code>""</code> to <code>0</code>','<code>false</code> — they are different types','It throws a TypeError','<code>true</code> — strings are always truthy'], c:0,
+   ex:'Loose <code>==</code> coerces: <code>""</code> becomes <code>0</code>, so <code>0 == 0</code> is <b>true</b>. With strict <code>===</code> it would be <code>false</code> (number vs string) — which is exactly why <code>===</code> is recommended.'},
+  {tag:'js', src:'new', q:'The nullish coalescing operator <code>??</code> returns its right-hand operand only when the left is:',
+   opts:['any falsy value (<code>0</code>, <code>""</code>, <code>null</code>…)','<code>null</code> or <code>undefined</code>','any object','<code>NaN</code>'], c:1,
+   ex:'<code>??</code> checks <b>only</b> <code>null</code>/<code>undefined</code>. Contrast <code>||</code>, which triggers on every falsy value — so <code>0 ?? "x"</code> is <code>0</code>, but <code>0 || "x"</code> is <code>"x"</code>.'},
+  {tag:'js', src:'new', q:'Which list contains <b>only</b> falsy values?',
+   opts:['<code>0, "", null, undefined, NaN</code>','<code>0, "0", [], {}</code>','<code>"false", 0, null</code>','<code>-1, 0, ""</code>'], c:0,
+   ex:'The falsy values are <code>false, 0, "", null, undefined, NaN</code>. Note <code>"0"</code>, <code>[]</code>, <code>{}</code>, and <code>-1</code> are all <b>truthy</b>, which rules out the other options.'},
+  {tag:'js', src:'new', q:'How does a <code>do…while</code> loop differ from a <code>while</code> loop?',
+   opts:['It never repeats','It checks the condition before running the body','It runs the body at least once, checking the condition afterwards','It cannot contain a <code>break</code>'], c:2,
+   ex:'<code>do…while</code> evaluates the condition <i>after</i> the body, so the body always executes at least once. A <code>while</code> may run zero times if the condition is initially false.'},
+  {tag:'js', src:'new', q:'Which can be called <b>before</b> the line where it is defined?',
+   opts:['<code>const f = () =&gt; {}</code>','<code>let f = function(){}</code>','a <code>function</code> declaration','a <code>class</code>'], c:2,
+   ex:'Function <b>declarations</b> are hoisted with their body, so they’re callable earlier. <code>let</code>/<code>const</code> (including arrow expressions) sit in the Temporal Dead Zone, and classes are not usably hoisted either.'},
+  {tag:'js', src:'new', q:'Inside a regular object method, what does <code>this</code> refer to?',
+   opts:['The global object, always','The object the method was called on','The function itself','<code>undefined</code> in every case'], c:1,
+   ex:'For <code>obj.method()</code>, <code>this</code> is <code>obj</code>. A plain function call gives the global object (or <code>undefined</code> in strict mode), and an arrow function inherits <code>this</code> from its surrounding scope.'},
+  {tag:'js', src:'new', q:'What is true of an arrow function’s <code>this</code>?',
+   opts:['It gets its own fresh <code>this</code>','It inherits <code>this</code> from the surrounding (lexical) scope','It is always <code>window</code>','It must be set with <code>new</code>'], c:1,
+   ex:'Arrow functions don’t bind their own <code>this</code> — they capture it from where they’re defined, which is why they’re convenient as callbacks. They also can’t be used as constructors with <code>new</code>.'},
+  {tag:'js', src:'new', q:'Which array method adds an element to the <b>end</b> of an array?',
+   opts:['<code>add()</code>','<code>append()</code>','<code>push()</code>','<code>insert()</code>'], c:2,
+   ex:'<code>push()</code> appends to the end (<code>pop()</code> removes from the end; <code>shift()</code>/<code>unshift()</code> work at the start). <code>add</code>, <code>append</code>, and <code>insert</code> are not Array methods.'},
+  {tag:'js', src:'new', q:'How do you read the number of items in an array?',
+   opts:['<code>arr.length()</code>','<code>arr.length</code>','<code>arr.size()</code>','<code>arr.count</code>'], c:1,
+   ex:'<code>length</code> is a <b>property</b>, so no parentheses: <code>arr.length</code>. <code>arr.length()</code> throws because length isn’t a function; <code>size()</code>/<code>count</code> don’t exist on arrays.'},
+  {tag:'js', src:'new', q:'What does <code>fetch(url)</code> return?',
+   opts:['The parsed JSON data directly','A Promise that resolves to a <code>Response</code> object','The raw HTML string','<code>undefined</code> until <code>.get()</code> is called'], c:1,
+   ex:'<code>fetch</code> returns a <b>Promise&lt;Response&gt;</b>; you then call <code>res.json()</code> (itself a Promise) to read the body. It doesn’t hand back data synchronously, and there’s no <code>.get()</code> step.'},
+  {tag:'js', src:'new', q:'When does <code>Promise.all([p1, p2, p3])</code> reject?',
+   opts:['Only when all three reject','As soon as any one of them rejects (fail-fast)','It never rejects','Only on a network timeout'], c:1,
+   ex:'<code>Promise.all</code> rejects immediately if <b>any</b> input rejects, discarding the others’ results. Use <code>Promise.allSettled</code> when you need every outcome regardless of failures.'},
+  {tag:'js', src:'new', q:'How does <code>async/await</code> primarily improve asynchronous code?',
+   opts:['It makes the code run faster','It lets you write async code in a synchronous-looking, top-to-bottom style, flattening nested callbacks','It removes the need for promises entirely','It runs the code on multiple threads'], c:1,
+   ex:'<code>await</code> pauses on a promise so the code reads sequentially, flattening “callback hell”. It’s still single-threaded and still built on promises — it doesn’t change performance or add threads.'},
+  {tag:'js', src:'new', q:'What is the difference between a named export and a default export?',
+   opts:['Named: many per file, imported by matching name; default: one per file, imported with any name','They behave identically','Default exports must be imported with braces','Named exports cannot be renamed'], c:0,
+   ex:'Named exports can be many per module and are imported with matching names in braces (<code>import { x }</code>, optionally aliased with <code>as</code>). A module has at most one default export, imported with any name and <i>no</i> braces.'},
+  {tag:'js', src:'new', q:'ES module imports are “live bindings”. This means:',
+   opts:['They copy the value at import time','They are read-only references that reflect later changes made by the exporting module','The importer can reassign them','They only work with default exports'], c:1,
+   ex:'Imports are live, read-only views of the exported value — if the exporter updates it, importers observe the new value. Importers cannot reassign an import, and live bindings apply to both named and default exports.'},
+  {tag:'js', src:'new', q:'Which error type is thrown when you call a method on <code>undefined</code>?',
+   opts:['<code>SyntaxError</code>','<code>ReferenceError</code>','<code>TypeError</code>','<code>RangeError</code>'], c:2,
+   ex:'<b>TypeError</b> — the value isn’t the expected type / has no such method. <code>ReferenceError</code> is for using an undeclared variable, <code>SyntaxError</code> is caught before the code runs, and <code>RangeError</code> is for out-of-range values.'},
+  {tag:'js', src:'new', q:'When does the <code>finally</code> block run in <code>try/catch/finally</code>?',
+   opts:['Only if no error occurred','Only if an error occurred','Always — whether or not an error was thrown','Only if you omit <code>catch</code>'], c:2,
+   ex:'<code>finally</code> always executes after <code>try</code>/<code>catch</code>, success or failure, which makes it the place for cleanup (closing resources, hiding a spinner).'},
+  {tag:'js', src:'new', q:'What does this code print?<br><code>let x = 1;<br>function f(){ x = 2; let x; }<br>f();</code>',
+   opts:['1','2','<code>undefined</code>','A <code>ReferenceError</code> (TDZ)'], c:3,
+   ex:'Inside <code>f</code>, the local <code>let x</code> is hoisted to the top of the function but stays in the Temporal Dead Zone, so the assignment <code>x = 2</code> on the line above it throws a <b>ReferenceError</b> — it refers to the local <code>x</code>, not the outer one.'},
+  {tag:'js', src:'mod', q:'What does this output?<br><code>const a = [1, 2, 3];<br>a.push(4);<br>console.log(a.length);</code>',
+   opts:['3','4','<code>undefined</code>','TypeError — <code>a</code> is <code>const</code>'], c:1,
+   ex:'<code>push</code> appends <code>4</code>, so <code>length</code> is <b>4</b>. Crucially, <code>const</code> forbids <i>reassigning</i> the binding (<code>a = …</code>), but you <b>can</b> mutate the array’s contents — so no error.'}
+);
+
+/* ===== inlined: data-fe.js ===== */
+/* ============================================================
+   FIND-THE-ERROR BANK
+   Each snippet: lang, src, lines[] where a line is either a
+   plain string OR an array of segments; an error segment is
+   {t:'text', err:true, why:'explanation'}.
+   Correct tokens are plain strings (clicking them = penalty).
+   ============================================================ */
+const FE = [
+  /* ---------------- HTML ---------------- */
+  {
+    lang:'html', src:'past', title:'HTML — landing page',
+    lines:[
+      '<!DOCTYPE html>',
+      [{t:'<html lang="english">',err:true,why:'lang takes a 2-letter code: lang="en", not "english".'}],
+      '<head>',
+      '  <meta charset="UTF-8">',
+      [{t:'  <css rel="stylesheet" href="style.css">',err:true,why:'Stylesheets load via <link>, not an invented <css> tag.'}],
+      '</head>',
+      '<body>',
+      '  <h1>Welcome to My Website</h1>',
+      [{t:'  <p>This is text with <a href="page.html">link</p>',err:true,why:'The <a> is closed by </p> — the </a> is missing before </p>. The link is left open.'}],
+      [{t:'  <img href="image.jpg" alt="My Image">',err:true,why:'<img> uses src, not href, to set the source.'}],
+      '</body>',
+      '</html>'
+    ]
+  },
+  {
+    lang:'html', src:'past', title:'HTML — sample page',
+    lines:[
+      '<!DOCTYPE html>',
+      '<html lang="en">',
+      '<head>',
+      '  <title>Sample Page</title>',
+      '</head>',
+      '<body>',
+      [{t:'  <h1>Welcome</h2>',err:true,why:'Mismatched tags: opened <h1> but closed </h2>.'}],
+      '  <ul>',
+      [{t:'    <li>Item 1',err:true,why:'This <li> is never closed with </li>.'}],
+      '    <li>Item 2</li>',
+      '    <li>Item 3</li>',
+      [{t:'  </ol>',err:true,why:'List opened with <ul> must close with </ul>, not </ol>.'}],
+      [{t:'  <button><a href="/click">BUY</a></button>',err:true,why:'A <button> must not wrap an <a> — interactive elements can’t be nested like this.'}],
+      '</body>',
+      '</html>'
+    ]
+  },
+  {
+    lang:'html', src:'mod', title:'HTML — contact form',
+    lines:[
+      '<!DOCTYPE html>',
+      '<html lang="en">',
+      '<body>',
+      [{t:'<header>',err:true,why:'<meta>/<title> are metadata and belong in <head>, not the visible <header> landmark.'}],
+      '    <meta charset="UTF-8">',
+      '    <title>Contact Us</title>',
+      '   <section id="contact-form">',
+      '       <h1>Contact Us</h1>',
+      '       <form>',
+      [{t:'          <label for="text">Name</label>',err:true,why:'for="text" doesn’t match any input id — the matching input below has id="name".'}],
+      '          <input type="text" id="name" required>',
+      '          <label for="email">Email</label>',
+      '          <input type="email" id="email" required>',
+      '          <label for="message">Message</label>',
+      [{t:'          <textarea id="message" required><textarea>',err:true,why:'A <textarea> must be closed with </textarea> (a closing slash), not a second opening <textarea>.'}],
+      '          <button type="submit">Send</button>',
+      '       </form>',
+      '    </section>',
+      '</body>'
+    ]
+  },
+
+  /* ---------------- CSS ---------------- */
+  {
+    lang:'css', src:'past', title:'CSS — base styles',
+    lines:[
+      'body {',
+      [{t:'    font-type: Arial, sans-serif;',err:true,why:'No such property. The font family is set with font-family.'}],
+      '    background: #f0f0f0;',
+      '}',
+      '#main-content h2 {',
+      '    color: #333;',
+      [{t:'    margin-top: 0px',err:true,why:'Missing semicolon at the end of the declaration.'}],
+      '    padding: 20px 0;',
+      '}',
+      'a:hover {',
+      '    color: #0088cc;',
+      [{t:'    underliner: underline;',err:true,why:'Not a real property — underlines use text-decoration: underline;.'}],
+      '}'
+    ]
+  },
+  {
+    lang:'css', src:'past', title:'CSS — container & feedback',
+    lines:[
+      '.container {',
+      '    width: 80%;',
+      '    margin: 0 auto;',
+      [{t:'    padding: 20px 0 20px 0 20px 0;',err:true,why:'padding takes at most 4 values (top right bottom left). Six values are invalid.'}],
+      '}',
+      'h1 {',
+      [{t:'    font-size: 24;',err:true,why:'A length needs a unit: 24px (or rem, etc.). A bare number is invalid for font-size.'}],
+      '    color: #000;',
+      [{t:'    margin-bottom: 20px',err:true,why:'Missing semicolon — and the rule’s closing } is also missing below.'}],
+      [{t:'.invalid-feedback {',err:true,why:'Because the h1 block was never closed with }, this selector is nested/broken.'}],
+      '    color: red;',
+      [{t:'    display; none;',err:true,why:'A declaration uses a colon: display: none; (a semicolon after the property is wrong).'}],
+      '}'
+    ]
+  },
+  {
+    lang:'css', src:'mod', title:'CSS — navbar',
+    lines:[
+      '.navbar {',
+      [{t:'    background-img: #333;',err:true,why:'No such property. Use background-color for a colour (or background-image for an image).'}],
+      [{t:'    overflow: hide-x-axis;',err:true,why:'Invalid. To clip horizontal overflow use overflow-x: hidden;.'}],
+      '}',
+      '.navbar a {',
+      [{t:'    float: top;',err:true,why:'float only accepts left, right, or none — never top/down.'}],
+      '    color: white;',
+      '    text-align: center;',
+      '    padding: 14px 16px;',
+      '    text-decoration: none;',
+      '}',
+      '.active {',
+      '    background-color: #4CAF50;',
+      '}'
+    ]
+  },
+
+  /* ---------------- JavaScript ---------------- */
+  {
+    lang:'js', src:'past', title:'JavaScript — area calculator',
+    lines:[
+      'function calculateArea(width, height) {',
+      [{t:'    const area = width * height;',err:true,why:'area is declared const but reassigned on the next line — that throws a TypeError. Use let.'}],
+      '    area *= 2;',
+      '    return area;',
+      [{t:'})',err:true,why:'The function body closes with } only — the extra ) is a stray bracket (and a ; is conventional).'}],
+      [{t:"document.getElementsByDiv('area')",err:true,why:'No such method. Use getElementById / querySelector to select an element.'}],
+      [{t:'    .textContent = calculateArea[5, 10];',err:true,why:'Functions are called with parentheses calculateArea(5, 10), not square brackets.'}]
+    ]
+  },
+  {
+    lang:'js', src:'past', title:'JavaScript — colour loop',
+    lines:[
+      "const colors = ['Red', 'Green', 'Blue']",
+      [{t:'for(let i = 0, i < colors.length; i++) {',err:true,why:'A for header uses semicolons between its three parts. The comma after i = 0 should be a semicolon.'}],
+      [{t:"    colors.add('Orange');",err:true,why:'Arrays have no add() method — use push() to append.'}],
+      [{t:'    console.log(colors(i));',err:true,why:'Index access uses brackets colors[i], not parentheses colors(i).'}],
+      '}',
+      [{t:'if (colors.length >> 3) {',err:true,why:'>> is a bitwise right-shift, not a comparison. Use > (greater-than).'}],
+      [{t:'    colors = "red";',err:true,why:'colors is const — reassigning the binding throws a TypeError.'}],
+      '}'
+    ]
+  },
+  {
+    lang:'js', src:'mod', title:'JavaScript — toggle handler',
+    lines:[
+      [{t:'func toggleClass() {',err:true,why:'The keyword is function, not func.'}],
+      "    const el = document.getElementById('target');",
+      "    el.classList.toggle('active');",
+      [{t:"    el.textContent = el.classList.contains('active') & 'On' : 'Off';",err:true,why:'A ternary needs ? not &: condition ? a : b.'}],
+      '}',
+      [{t:"document.getElementById('btn').createEventListener('click', toggleClass);",err:true,why:'The method is addEventListener, not createEventListener.'}]
+    ]
+  }
+];
+
+/* ===== inlined: data-fe-extra.js ===== */
+/* ============================================================
+   FIND-THE-ERROR BANK — EXPANSION
+   Appended to the FE array defined in data-fe.js.
+   Plain-string lines = correct context; [{t,err,why}] = an error.
+   ============================================================ */
+FE.push(
+  /* ---------------- HTML ---------------- */
+  {
+    lang:'html', src:'new', title:'HTML — blog article',
+    lines:[
+      '<!DOCTYPE html>',
+      '<html lang="en">',
+      '<head>',
+      '  <meta charset="UTF-8">',
+      '  <title>My Blog</title>',
+      '</head>',
+      '<body>',
+      '  <nav>',
+      '    <a href="/">Home</a>',
+      '    <a href="/about">About</a>',
+      '  </nav>',
+      '  <article>',
+      [{t:'    <h1>Post Title</h2>',err:true,why:'Mismatched heading tags: opened <h1> but closed </h2>. They must match.'}],
+      [{t:'    <image src="hero.jpg" alt="Hero">',err:true,why:'The element is <img>, not <image>. <image> is not a real HTML tag.'}],
+      '    <p>Some great content here.</p>',
+      '  </article>',
+      '  <footer>',
+      [{t:'    <p>&copy; 2025',err:true,why:'This <p> is never closed with </p> before </footer>.'}],
+      '  </footer>',
+      '</body>',
+      '</html>'
+    ]
+  },
+  {
+    lang:'html', src:'new', title:'HTML — product card',
+    lines:[
+      '<section class="card">',
+      [{t:'  <h2>Wireless Headphones<h2>',err:true,why:'The closing tag is missing its slash — it should be </h2>, not a second <h2>.'}],
+      '  <img src="phones.png" alt="Headphones">',
+      '  <ul>',
+      '    <li>Bluetooth 5.0</li>',
+      '    <li>30h battery</li>',
+      [{t:'  <ul>',err:true,why:'The list is closed with another opening <ul> — it should be </ul>.'}],
+      '  <a href="/buy">Buy now</a>',
+      [{t:'  <p>In stock</strong>',err:true,why:'Tags must nest/match: a <p> is opened but closed with </strong>.'}],
+      '</section>'
+    ]
+  },
+
+  /* ---------------- CSS ---------------- */
+  {
+    lang:'css', src:'new', title:'CSS — card layout',
+    lines:[
+      '.card {',
+      '    display: flex;',
+      [{t:'    flex-direction: colum;',err:true,why:'Misspelled value — it should be column (or row).'}],
+      '    padding: 16px;',
+      [{t:'    border-radius: 8;',err:true,why:'A length needs a unit: 8px (a bare number is invalid here).'}],
+      '}',
+      '.card h2 {',
+      [{t:'    color: #222',err:true,why:'Missing semicolon at the end of this declaration.'}],
+      '    font-weight: bold;',
+      '}',
+      '.card:hover {',
+      '    box-shadow: 0 2px 8px gray;',
+      '    cursor: pointer;',
+      '}'
+    ]
+  },
+  {
+    lang:'css', src:'new', title:'CSS — grid gallery',
+    lines:[
+      '.gallery {',
+      '    display: grid;',
+      '    grid-template-columns: repeat(3, 1fr);',
+      '    gap: 20px;',
+      [{t:'    justify-items: centre;',err:true,why:'CSS uses the American spelling: center, not centre.'}],
+      '}',
+      '.gallery img {',
+      '    width: 100%;',
+      [{t:'    height: auto',err:true,why:'Missing semicolon at the end of the declaration.'}],
+      '    object-fit: cover;',
+      '}',
+      '.gallery .featured {',
+      '    grid-column: span 2;',
+      [{t:'    background-color: redish;',err:true,why:'Not a valid colour keyword — use red (or crimson, #e33, etc.).'}],
+      '}'
+    ]
+  },
+
+  /* ---------------- JavaScript ---------------- */
+  {
+    lang:'js', src:'new', title:'JavaScript — form validation',
+    lines:[
+      "const form = document.querySelector('#signup');",
+      "form.addEventListener('submit', function (event) {",
+      '    event.preventDefault();',
+      "    const email = document.getElementById('email').value;",
+      [{t:'    if (email = "") {',err:true,why:'= is assignment; a comparison needs === (this also overwrites email).'}],
+      "        alert('Email is required');",
+      '        return;',
+      '    }',
+      '    const data = { email: email };',
+      [{t:"    data.add('verified', true);",err:true,why:'Objects have no .add() method — set a property: data.verified = true.'}],
+      '    console.log(data);',
+      [{t:'}',err:true,why:'The addEventListener call is never closed — this needs }); to close the callback and the call.'}]
+    ]
+  },
+  {
+    lang:'js', src:'new', title:'JavaScript — fetch users',
+    lines:[
+      'async function loadUsers() {',
+      '    try {',
+      "        const response = await fetch('/api/users');",
+      [{t:'        const users = response.json();',err:true,why:'response.json() returns a Promise — it needs await: const users = await response.json();'}],
+      [{t:'        users.foreach(user => {',err:true,why:'The method is forEach (capital E); JavaScript is case-sensitive.'}],
+      '            console.log(user.name);',
+      '        });',
+      '    } catch (err) {',
+      '        console.log(err);',
+      '    }',
+      '}',
+      [{t:'loadUsers;',err:true,why:'The function is referenced but never called — it needs parentheses: loadUsers();'}]
+    ]
+  }
+);
+
+/* ===== inlined: data-oe.js ===== */
+/* ============================================================
+   OPEN-ENDED BANK  (2 points each in the real exam)
+   model = paragraphs[]; rubric = bullet points worth marks
+   ============================================================ */
+const OE = [
+  /* ---- HTML ---- */
+  {tag:'html', src:'past', q:'Explain the roles of <code>&lt;section&gt;</code>, <code>&lt;article&gt;</code>, and <code>&lt;div&gt;</code>, and when each is appropriate.',
+   model:[
+     '<b>&lt;article&gt;</b> represents a self-contained, independently distributable piece of content — something that would still make sense on its own (a blog post, news story, product card, or user comment). If you could syndicate it or show it in isolation, it’s an article.',
+     '<b>&lt;section&gt;</b> is a thematic grouping of related content, normally introduced by a heading. Use it to divide a larger document into logical parts (chapters, tabbed panels, a “Features” block).',
+     '<b>&lt;div&gt;</b> carries no semantic meaning at all — it’s a generic block container used purely as a styling or scripting hook when no semantic element fits.'
+   ],
+   rubric:['Article = self-contained / independently meaningful','Section = thematic group, usually with a heading','Div = non-semantic generic container','At least one correct use-case example each']},
+
+  {tag:'html', src:'past', q:'Explain the importance of using correct heading tags (<code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code>) and how this affects accessibility and UX.',
+   model:[
+     'Headings define the document’s <b>outline / hierarchy</b>. Use a single <code>&lt;h1&gt;</code> for the main title and descend in order (<code>h2</code>, then <code>h3</code> under it) without skipping levels for visual reasons.',
+     'For <b>accessibility</b>, screen-reader users navigate by jumping between headings, so a correct hierarchy lets them understand and move through the page structure. For <b>UX/SEO</b>, clear headings make content scannable and help search engines index the page.',
+     'Choose heading level by <i>meaning</i>, not by how big the text looks — use CSS for size.'
+   ],
+   rubric:['Headings build the page outline/hierarchy','One h1, don’t skip levels','Screen readers navigate by heading (accessibility)','Improves scannability / SEO / UX']},
+
+  {tag:'html', src:'past', q:'Discuss how HTML5 embeds multimedia with <code>&lt;audio&gt;</code> and <code>&lt;video&gt;</code>. Explain key attributes and the importance of fallback content.',
+   model:[
+     'HTML5 added native <code>&lt;audio&gt;</code> and <code>&lt;video&gt;</code> so media plays without plugins. Multiple <code>&lt;source&gt;</code> children let the browser pick a format it supports.',
+     'Key attributes: <code>controls</code> shows the native player UI; <code>autoplay</code> starts on load (usually needs <code>muted</code> to be allowed); <code>muted</code> starts silent; <code>loop</code> repeats. They tune the experience — e.g. a muted, looping, autoplaying background video.',
+     'Fallback content (text or alternative markup between the tags) is shown to browsers that can’t play the media, so users still get something useful — important for compatibility and accessibility.'
+   ],
+   rubric:['Native playback, no plugins, uses <source>','Explains controls / autoplay / muted / loop','Fallback content for unsupported browsers','Connects attributes to user experience']},
+
+  {tag:'html', src:'mod', q:'Build the structure of a webpage using only HTML with a header, navigation, main content, and footer. Provide the markup.',
+   model:[
+     'Use semantic landmark elements so the structure is meaningful to browsers and assistive tech:',
+     '<pre class="code">' + hl(`<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Page title</h1>
+    <p>Main content…</p>
+  </main>
+  <footer><p>&copy; 2025</p></footer>
+</body>`,'html') + '</pre>',
+     '<code>&lt;header&gt;</code> (intro + nav), <code>&lt;nav&gt;</code> (primary links), <code>&lt;main&gt;</code> (the unique page content — one per page), and <code>&lt;footer&gt;</code> (closing info).'
+   ],
+   rubric:['Uses header / nav / main / footer correctly','nav contains a list of links','One main per page','Valid, well-formed markup']},
+
+  /* ---- CSS ---- */
+  {tag:'css', src:'past', q:'Describe the CSS Box Model and explain how each component affects layout. Also explain <code>box-sizing: content-box</code> vs <code>border-box</code>.',
+   model:[
+     'Every element is a rectangular box with four layers from the inside out: <b>content</b> (the text/image), <b>padding</b> (space inside the box around the content, takes the background), <b>border</b> (the line around the padding), and <b>margin</b> (transparent space outside the border separating it from neighbours).',
+     'Padding grows the box inward-visible area; border adds a visible edge; margin pushes other elements away (and vertical margins can collapse between block elements).',
+     'With <b>content-box</b> (default), <code>width</code>/<code>height</code> size only the content, so the rendered box = width + padding + border. With <b>border-box</b>, the declared width <i>includes</i> padding and border, so the box stays exactly the width you set — much easier to reason about, which is why resets often set it globally.'
+   ],
+   rubric:['Names all four layers in order','Explains each layer’s effect','content-box: width = content only','border-box: width includes padding+border']},
+
+  {tag:'css', src:'past', q:'Explain CSS pseudo-classes vs pseudo-elements, with examples and the syntax difference.',
+   model:[
+     'A <b>pseudo-class</b> targets a <i>state</i> or condition of an existing element and uses a single colon: <code>:hover</code>, <code>:focus</code>, <code>:active</code>, <code>:nth-child(2)</code>. Example: <code>a:hover { color: blue; }</code> styles links while hovered.',
+     'A <b>pseudo-element</b> targets a <i>part</i> of an element or generates new content, and uses a double colon: <code>::before</code>, <code>::after</code>, <code>::first-line</code>. Example: <code>.box::after { content: \'\'; }</code> inserts generated content (the <code>content</code> property is required).',
+     'Syntax distinction: one colon for pseudo-classes, two for pseudo-elements. Common uses: pseudo-classes for interactive feedback and structural targeting; pseudo-elements for decorative generated content and styling text fragments.'
+   ],
+   rubric:['Pseudo-class = state, single colon','Pseudo-element = part/generated, double colon','Correct example of each','Mentions content property for ::before/::after']},
+
+  {tag:'css', src:'past', q:'Discuss responsive web design principles and describe at least two CSS techniques used to create a responsive layout.',
+   model:[
+     'Responsive design means the layout adapts to any screen size/device rather than having fixed dimensions. Core principles: fluid grids, flexible media, and breakpoints that reflow content.',
+     '<b>Media queries</b> apply different styles at viewport thresholds: <code>@media (min-width: 600px) { … }</code> — letting you change layout on larger screens (mobile-first).',
+     '<b>Flexible units & layout</b>: relative units (<code>%</code>, <code>rem</code>, <code>vw</code>) instead of fixed <code>px</code>, plus Flexbox/Grid which wrap and redistribute space automatically. (Other valid techniques: responsive images with <code>max-width: 100%</code>, the viewport meta tag.)'
+   ],
+   rubric:['Defines responsive = adapts to screen size','Technique 1 with explanation (e.g. media queries)','Technique 2 with explanation (e.g. flexible units / Flexbox / Grid)','Both clearly explained']},
+
+  {tag:'css', src:'mod', q:'Compare <code>position: absolute</code>, <code>relative</code>, and <code>fixed</code>: how do they affect document flow, and when is each appropriate?',
+   model:[
+     '<b>relative</b> keeps the element in normal flow but lets you offset it from its own position with <code>top/left</code>; it still reserves its original space. Often used as a positioning context for absolute children.',
+     '<b>absolute</b> removes the element from flow and positions it relative to the nearest <i>positioned</i> ancestor (or the page if none). Good for overlays, badges, tooltips placed precisely inside a relative parent.',
+     '<b>fixed</b> also leaves flow but anchors to the <b>viewport</b>, staying put during scroll — ideal for sticky headers, back-to-top buttons, and persistent navigation.'
+   ],
+   rubric:['relative: stays in flow, offset from self','absolute: out of flow, vs nearest positioned ancestor','fixed: out of flow, vs viewport, fixed on scroll','A suitable scenario for each']},
+
+  {tag:'css', src:'mod', q:'How do Flexbox and Grid differ for complex responsive layouts? When is each more advantageous?',
+   model:[
+     '<b>Flexbox is one-dimensional</b> — it lays out items along a single axis (a row or a column) and excels at distributing space and aligning items in that direction: nav bars, toolbars, button rows.',
+     '<b>Grid is two-dimensional</b> — it controls rows and columns at once, so it’s better for overall page templates and card galleries that must align in both directions, including overlapping and explicit placement.',
+     'They compose well: use Grid for the macro page layout and Flexbox inside individual cells. For nested/dynamic content, Grid handles the structure while Flexbox handles flexible content within a region. Neither has meaningful performance concerns for typical pages — choose by the shape of the layout.'
+   ],
+   rubric:['Flexbox = 1D (row or column)','Grid = 2D (rows and columns)','Appropriate scenario for each','Notes they can be combined']},
+
+  /* ---- JavaScript ---- */
+  {tag:'js', src:'past', q:'Explain event handling in JavaScript. Give an example interaction and describe the full flow from capturing the event to running a function.',
+   model:[
+     'Event handling lets code respond to things that happen in the page (clicks, key presses, form submits). You register a <b>handler</b> function on an element for a named event.',
+     'Example — a “Save” button. ① Select the element: <code>const btn = document.getElementById(\'save\')</code>. ② Attach a listener: <code>btn.addEventListener(\'click\', handleSave)</code>. ③ When the user clicks, the browser fires a <code>click</code> event and calls <code>handleSave(event)</code>, where you run your logic (e.g. validate input, update the DOM, call <code>event.preventDefault()</code> to stop a default action).',
+     '<pre class="code">' + hl(`btn.addEventListener('click', (event) => {
+  event.preventDefault();
+  message.textContent = 'Saved!';
+});`,'javascript') + '</pre>'
+   ],
+   rubric:['Defines events + handlers','Uses addEventListener with event name + function','Walks capture → handler → response','Concrete, correct example']},
+
+  {tag:'js', src:'past', q:'Discuss asynchronous JavaScript with <code>async/await</code> and how it simplifies things compared to nested callbacks (callback hell).',
+   model:[
+     'JavaScript is single-threaded, so async lets long tasks (network, timers) run without freezing the UI; results are handled later via the event loop. This keeps apps responsive.',
+     'Traditional callbacks nest functions inside functions for each step, creating deeply indented, hard-to-read “callback hell” where error handling is scattered.',
+     '<code>async/await</code> (built on promises) lets you <code>await</code> a promise and write the result on the next line, so asynchronous code reads top-to-bottom like synchronous code. A single <code>try/catch</code> handles errors for the whole sequence.',
+     '<pre class="code">' + hl(`async function load() {
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    render(data);
+  } catch (err) { showError(err); }
+}`,'javascript') + '</pre>'
+   ],
+   rubric:['Async keeps UI responsive (event loop)','Describes callback hell problem','await flattens the chain / reads synchronously','try/catch centralises error handling']},
+
+  {tag:'js', src:'past', q:'Describe how JavaScript manipulates the DOM (creating/modifying elements), the performance considerations, and a technique to minimise impact.',
+   model:[
+     'JS reads and changes the live DOM: select with <code>getElementById</code>/<code>querySelector</code>, create with <code>document.createElement</code>, insert with <code>appendChild</code>, and modify with <code>textContent</code>, <code>classList</code>, <code>setAttribute</code>.',
+     'Each change can trigger <b>reflow (layout) and repaint</b>, which is expensive. Doing this repeatedly inside a loop — appending one node at a time — forces many layout passes and is slow on large/dynamic pages.',
+     'Technique: <b>batch</b> the updates. Build nodes in a <code>DocumentFragment</code> (or assemble an HTML string) and insert <i>once</i>, and cache element references instead of re-querying.',
+     '<pre class="code">' + hl(`const frag = document.createDocumentFragment();
+items.forEach(t => {
+  const li = document.createElement('li');
+  li.textContent = t;
+  frag.appendChild(li);
+});
+list.appendChild(frag); // one DOM write`,'javascript') + '</pre>'
+   ],
+   rubric:['Names selection + creation + modification methods','Identifies reflow/repaint cost','Names a batching technique (fragment / single write)','Correct supporting example']},
+
+  {tag:'js', src:'past', q:'Explain the null coalescing operator <code>??</code>: its functionality, purpose, and when to use it.',
+   model:[
+     'The nullish coalescing operator <code>a ?? b</code> evaluates to <code>a</code> unless <code>a</code> is <b><code>null</code> or <code>undefined</code></b>, in which case it returns <code>b</code>. It provides a default only for truly “missing” values.',
+     'Its purpose is to fix the over-eager behaviour of <code>||</code>, which treats <i>any</i> falsy value (<code>0</code>, <code>\'\'</code>, <code>false</code>) as missing. With <code>??</code>, a legitimate <code>0</code> or empty string is preserved.',
+     'Use it when supplying defaults for values where <code>0</code>/<code>\'\'</code>/<code>false</code> are valid — e.g. <code>const volume = settings.volume ?? 100;</code> keeps a deliberate volume of <code>0</code> instead of replacing it with 100.'
+   ],
+   rubric:['Returns right side only for null/undefined','Contrasts with || (falsy values)','Correct use-case where 0/""/false should be kept','Clear example']},
+
+  {tag:'js', src:'mod', q:'What is type coercion in JavaScript? How does it affect equality comparisons (e.g. <code>null</code> vs <code>undefined</code>, <code>0</code> vs <code>false</code>), and how do you prevent surprises?',
+   model:[
+     'Type coercion is JavaScript automatically converting a value from one type to another, e.g. in <code>==</code> comparisons or string concatenation.',
+     'With loose <code>==</code>, values are coerced before comparing: <code>0 == false</code> is <code>true</code>, <code>\'\' == false</code> is <code>true</code>, and <code>null == undefined</code> is <code>true</code> (but <code>null == 0</code> is <code>false</code>). This produces surprising results.',
+     'Prevent it by using <b>strict equality <code>===</code></b> (and <code>!==</code>), which compares value <i>and</i> type with no coercion. <code>0 === false</code> is <code>false</code> because number ≠ boolean. Also convert types explicitly (<code>Number(x)</code>, <code>String(x)</code>) when you do need conversion.'
+   ],
+   rubric:['Defines coercion = automatic type conversion','Correct example(s) of == coercion quirks','Recommends === / !== to avoid it','Mentions explicit conversion']},
+
+  {tag:'js', src:'mod', q:'What are closures, and how do they enable private variables and function factories? Give a real-world example.',
+   model:[
+     'A closure is an inner function that retains access to variables from its outer (lexical) scope even after the outer function has returned — the variables stay alive, captured by the inner function.',
+     'This enables <b>private state</b>: variables in the outer scope can only be read/changed through the returned function, mimicking private members. It also enables <b>function factories</b>: a function that returns customised functions which remember their setup arguments.',
+     '<pre class="code">' + hl(`function makeCounter() {
+  let count = 0;            // private
+  return {
+    inc() { return ++count; },
+    get() { return count; }
+  };
+}
+const c = makeCounter();
+c.inc(); // 1  — count is inaccessible from outside`,'javascript') + '</pre>',
+     'Real-world: a counter/ID generator, a debounced event handler that remembers its timer, or a configured logger created by a factory.'
+   ],
+   rubric:['Inner fn remembers outer scope after return','Explains private variables','Explains function factory','Working example']},
+
+  {tag:'js', src:'mod', q:'What is the purpose of <code>Promise.all()</code>? How does it handle concurrent operations, and what issues should you consider?',
+   model:[
+     '<code>Promise.all([p1, p2, …])</code> runs multiple promises <b>concurrently</b> and returns a single promise that fulfils when <i>all</i> of them fulfil, resolving to an array of their results in order. It’s used to wait for several independent async tasks together (e.g. multiple fetches).',
+     'Concurrency: the operations are already running; <code>Promise.all</code> just aggregates their completion, so total time ≈ the slowest one, not the sum.',
+     'Issues: it is <b>fail-fast</b> — if any single promise rejects, the whole <code>Promise.all</code> rejects immediately and the other results are lost. If you need every outcome regardless of failures, use <code>Promise.allSettled</code>. Also beware firing too many requests at once.'
+   ],
+   rubric:['Waits for all to resolve, returns results array','Runs them concurrently (time = slowest)','Fail-fast: one rejection rejects all','Mentions Promise.allSettled as alternative']},
+
+  {tag:'js', src:'mod', q:'Explain the difference between syntax errors, runtime errors, and logical errors. How does proper error handling improve reliability?',
+   model:[
+     '<b>Syntax errors</b> break the language’s grammar (a missing bracket/quote) and are caught by the interpreter <i>before</i> the code runs — nothing executes.',
+     '<b>Runtime errors</b> (exceptions) occur <i>during</i> execution when something invalid happens, e.g. calling a method on <code>undefined</code> (<code>TypeError</code>) or using an undeclared variable (<code>ReferenceError</code>).',
+     '<b>Logical errors</b> run without throwing but produce the wrong result — the hardest to find because there’s no error message.',
+     'Proper handling with <code>try/catch/finally</code> (and checking for failure cases) stops one error from crashing the whole app, lets you show useful feedback, and keeps the application reliable — e.g. catching a failed <code>fetch</code> and displaying a retry message.'
+   ],
+   rubric:['Syntax = grammar, caught before running','Runtime = during execution (exception)','Logical = runs but wrong result','Error handling → reliability / graceful failure']},
+
+  {tag:'js', src:'mod', q:'Explain the difference between default and named exports in ES modules, the benefits of modular code, and what a “barrel” is.',
+   model:[
+     '<b>Named exports</b>: a module can have many, and importers must use the matching name (or alias with <code>as</code>): <code>export const mul = …</code> → <code>import { mul } from \'./math.js\'</code>. They’re tree-shake friendly.',
+     '<b>Default export</b>: at most one per module, imported without braces under any name: <code>export default function add(){}</code> → <code>import add from \'./math.js\'</code>.',
+     'Benefits of modular code: each file has its own scope (no global pollution), explicit dependencies, reusability, and easier testing/maintenance for large projects.',
+     'A <b>barrel</b> is an <code>index.js</code> that re-exports from several modules to present one clean public API: <code>export { hexToRgb } from \'./hex.js\';</code> so consumers import from a single path.'
+   ],
+   rubric:['Named: many, matching name, braces','Default: one, any name, no braces','Benefits: scope/reuse/maintainability','Correctly defines a barrel (re-export index)']}
+];
+
+/* ===== inlined: data-oe-extra.js ===== */
+/* ============================================================
+   OPEN-ENDED BANK — EXPANSION
+   Appended to the OE array defined in data-oe.js.
+   Uses hl(); must load after data-topics.js (it does).
+   ============================================================ */
+OE.push(
+  /* ---- OOP (Lec 1–2) ---- */
+  {tag:'js', src:'new', q:'Explain the four pillars of Object-Oriented Programming, with a short example of each.',
+   model:[
+     '<b>Encapsulation</b> — bundling an object’s data (state) together with the methods that operate on it, and restricting direct access to the internals behind a controlled public interface. Example: a <code class="inl">BankAccount</code> that keeps <code class="inl">#balance</code> private and only exposes <code class="inl">deposit()</code> and a <code class="inl">balance</code> getter.',
+     '<b>Abstraction</b> — exposing only what a caller needs and hiding the underlying complexity. Example: calling <code class="inl">user.save()</code> without knowing how the data is persisted.',
+     '<b>Inheritance</b> — a child type reuses and extends a parent type’s members. Example: <code class="inl">class Dog extends Animal</code> inherits <code class="inl">Animal</code>’s behaviour and adds its own.',
+     '<b>Polymorphism</b> — “many forms”: the same call behaves differently depending on the object, typically via method overriding. Example: every shape implements its own <code class="inl">area()</code>, so <code class="inl">shapes.forEach(s =&gt; s.area())</code> runs the right one for each.'
+   ],
+   rubric:['Names all four pillars','Correct one-line definition of each','A valid example for each','Bonus: links them to JS classes/prototypes']},
+  {tag:'js', src:'new', q:'Explain encapsulation and why it is valuable in software design.',
+   model:[
+     'Encapsulation means combining data and the behaviour that acts on it into a single unit (an object/class) and controlling access to the internal state through a public interface rather than exposing fields directly.',
+     'It is valuable because it <b>protects invariants</b> (a setter can validate input before changing state), <b>reduces coupling</b> (callers depend on the stable interface, not on internal details that may change), and <b>localises change</b> — you can rewrite the internals without breaking callers, which improves maintainability and reduces bugs.',
+     'In JavaScript this is done with private fields (<code class="inl">#balance</code>) or closures for truly private variables, exposing only methods/getters.'
+   ],
+   rubric:['Definition: bundle data + behaviour, hide internals','Mentions a controlled public interface','At least two concrete benefits','An example of how privacy is achieved in JS']},
+
+  /* ---- Window / BOM (Lec 10) ---- */
+  {tag:'js', src:'new', q:'Describe the difference between the <code>window</code> and <code>document</code> objects, and give two useful members of each.',
+   model:[
+     '<b>window</b> is the top-level global object — the root of the browser object model representing the browser window/tab. Everything global hangs off it, so <code class="inl">window.alert()</code> can be called as just <code class="inl">alert()</code>.',
+     '<b>document</b> is the page itself (the DOM) and is a <i>child</i> of <code class="inl">window</code> (<code class="inl">window.document</code>). It’s what you traverse and manipulate to change the page.',
+     'Useful <code class="inl">window</code> members: <code class="inl">setTimeout()</code>, <code class="inl">location</code>, <code class="inl">navigator</code>, <code class="inl">innerWidth</code>. Useful <code class="inl">document</code> members: <code class="inl">getElementById()</code>, <code class="inl">querySelector()</code>, <code class="inl">createElement()</code>, <code class="inl">body</code>.'
+   ],
+   rubric:['window = global/browser-window root','document = the page DOM, a child of window','Two valid window members','Two valid document members']},
+
+  /* ---- HTML (Lec 3–4) ---- */
+  {tag:'html', src:'new', q:'Explain the purpose of the <code>&lt;label&gt;</code> element and its <code>for</code> attribute, and why they matter for accessibility and usability.',
+   model:[
+     'A <code class="inl">&lt;label&gt;</code> provides a text caption tied to a specific form control. The <code class="inl">for</code> attribute links it by matching the control’s <code class="inl">id</code> (<code class="inl">&lt;label for="email"&gt;</code> ↔ <code class="inl">&lt;input id="email"&gt;</code>).',
+     '<b>Usability:</b> clicking the label focuses or toggles the control, giving a larger, easier hit target (especially helpful for checkboxes/radios on touch screens).',
+     '<b>Accessibility:</b> screen readers announce the label when the field receives focus, so users know what to enter. Without an associated label the field is effectively unlabelled. (Alternatively, wrapping the input inside the label implicitly associates them.)'
+   ],
+   rubric:['Label = caption for a control','for matches the input’s id (or implicit wrapping)','Usability point (click target / focus)','Accessibility point (screen-reader announcement)']},
+  {tag:'html', src:'new', q:'Explain the key attributes of the <code>&lt;video&gt;</code> element and the importance of fallback content.',
+   model:[
+     'Common attributes: <code class="inl">controls</code> shows the native play/pause/volume UI; <code class="inl">autoplay</code> starts on load (browsers usually require <code class="inl">muted</code> for it to work); <code class="inl">loop</code> restarts when finished; <code class="inl">poster</code> sets a preview image.',
+     'Multiple <code class="inl">&lt;source&gt;</code> children let the browser pick the first format it supports (e.g. MP4 then WebM), improving cross-browser compatibility.',
+     '<b>Fallback content</b> placed between the tags is shown only when the browser can’t play the video — a message or a download link. This is graceful degradation and aids accessibility for unsupported environments.'
+   ],
+   rubric:['Explains at least two attributes (controls/autoplay/muted/loop)','Multiple <source> for format support','Fallback content shown when unsupported','Mentions graceful degradation / accessibility']},
+
+  /* ---- CSS (Lec 5–6) ---- */
+  {tag:'css', src:'new', q:'Compare Flexbox and Grid. When would you choose each?',
+   model:[
+     '<b>Flexbox is one-dimensional</b>: it distributes items along a single axis (a row or a column). It’s content-driven and ideal for navigation bars, button groups, toolbars, and spacing a set of items along one line.',
+     '<b>Grid is two-dimensional</b>: it controls rows and columns simultaneously. It’s layout-driven and ideal for overall page templates and card galleries that must align in both directions.',
+     'They compose well: use Grid for the page skeleton and Flexbox to arrange the contents inside individual cells. Rule of thumb — reach for Flexbox when laying things out in one direction, Grid when you need genuine 2D control.'
+   ],
+   rubric:['Flexbox = one-dimensional','Grid = two-dimensional','A suitable use-case for each','Bonus: they can be combined']},
+  {tag:'css', src:'new', q:'Explain CSS positioning: compare <code>static</code>, <code>relative</code>, <code>absolute</code>, and <code>fixed</code>.',
+   model:[
+     '<b>static</b> is the default — the element sits in the normal document flow and <code class="inl">top/left</code> offsets are ignored.',
+     '<b>relative</b> keeps the element in the flow (its original space is preserved) but lets you nudge it from its own normal position with offsets.',
+     '<b>absolute</b> removes the element from the flow and positions it relative to its nearest <i>positioned</i> ancestor (or the initial containing block if none exists).',
+     '<b>fixed</b> also removes it from the flow but positions it relative to the <i>viewport</i>, so it stays in place while the page scrolls. A common pattern is a <code class="inl">position: relative</code> parent containing a <code class="inl">position: absolute</code> child for precise placement.'
+   ],
+   rubric:['static = default, in normal flow','relative = offset from self, keeps its space','absolute = out of flow, nearest positioned ancestor','fixed = relative to viewport, fixed during scroll']},
+  {tag:'css', src:'new', q:'Explain CSS specificity and how the cascade resolves conflicting rules.',
+   model:[
+     'When multiple rules target the same element and set the same property, the browser picks the winner by <b>specificity</b> — a weighting of the selector: inline styles (highest) &gt; id selectors &gt; class / attribute / pseudo-class selectors &gt; element / pseudo-element selectors.',
+     'If two rules have equal specificity, the <b>later</b> one in source order wins (this is the “cascade”). <code class="inl">!important</code> overrides normal specificity and should be used sparingly.',
+     'Example: <code class="inl">#box { color: blue }</code> beats <code class="inl">.box { color: red }</code> because an id outweighs a class, regardless of order.'
+   ],
+   rubric:['Specificity ordering (inline > id > class > element)','Equal specificity → later rule wins','Mentions !important as an override','A correct worked example']},
+
+  /* ---- JavaScript (Lec 7–13) ---- */
+  {tag:'js', src:'new', q:'Explain closures in JavaScript. Give a practical example and one real use case.',
+   model:[
+     'A <b>closure</b> is a function that retains access to variables from the scope in which it was created, even after that outer function has returned. The inner function “closes over” those variables.',
+     'Example:',
+     '<pre class="code"><span class="code-label">javascript</span>'+hl(`function makeCounter() {
+  let count = 0;            // private to the closure
+  return () => ++count;     // remembers count
+}
+const next = makeCounter();
+next(); // 1
+next(); // 2`,'javascript')+'</pre>',
+     '<b>Use cases:</b> private state / data hiding (as above), function factories (functions that build customised functions), and callbacks/event handlers that remember setup data. Debounce and throttle helpers also rely on closures.'
+   ],
+   rubric:['Definition: remembers outer scope after it returns','A correct code example','At least one real use case','Mentions private/encapsulated state']},
+  {tag:'js', src:'new', q:'Explain hoisting, and how it differs for <code>var</code>, <code>let</code>/<code>const</code>, and function declarations.',
+   model:[
+     'Hoisting means declarations are processed before any code runs, as if moved to the top of their scope.',
+     '<b>Function declarations</b> are hoisted with their body, so they can be called before the line where they appear.',
+     '<b><code class="inl">var</code></b> is hoisted and initialised to <code class="inl">undefined</code>, so using it before assignment gives <code class="inl">undefined</code> (not an error).',
+     '<b><code class="inl">let</code>/<code class="inl">const</code></b> are hoisted but remain in the <b>Temporal Dead Zone</b> until their declaration is reached — accessing them earlier throws a <code class="inl">ReferenceError</code>.'
+   ],
+   rubric:['Hoisting definition','Function declarations callable before definition','var → undefined before assignment','let/const → TDZ / ReferenceError']},
+  {tag:'js', src:'new', q:'Explain how prototypal inheritance works in JavaScript, and how ES6 classes relate to it.',
+   model:[
+     'Every object has an internal link to another object called its <b>prototype</b>. When you access a property or method, JavaScript first looks on the object itself, then walks up the <b>prototype chain</b> until it finds it or reaches <code class="inl">null</code>. Objects therefore <i>share</i> behaviour through the prototype rather than each holding a copy.',
+     'ES6 <code class="inl">class</code> syntax is <b>syntactic sugar</b> over this mechanism: methods defined in a class live on the prototype, <code class="inl">extends</code> sets up the prototype chain to a parent, and <code class="inl">super</code> calls the parent’s constructor or methods.',
+     'Before ES6 the same thing was done with constructor functions plus <code class="inl">Object.create()</code> and <code class="inl">Parent.call(this)</code> — classes just make it cleaner and more familiar.'
+   ],
+   rubric:['Property lookup walks the prototype chain','Behaviour shared via prototype, not copied','class = syntactic sugar over prototypes','extends/super map to the chain / parent call']},
+  {tag:'js', src:'new', q:'Explain the JavaScript event loop and how it enables non-blocking behaviour despite a single thread.',
+   model:[
+     'JavaScript executes on a single <b>call stack</b> (one thing at a time). Long-running or asynchronous work — timers, network requests, DOM events — is handed off to the browser’s <b>Web APIs</b> rather than blocking the stack.',
+     'When that work completes, its callback is placed on a queue: the <b>microtask queue</b> for promise reactions, or the <b>macrotask/callback queue</b> for timers and events.',
+     'The <b>event loop</b> continuously checks: when the call stack is empty, it takes the next callback from the queue and runs it. Microtasks are drained before the next macrotask. Because the main thread is never blocked waiting, the UI stays responsive — that’s what “non-blocking” means.'
+   ],
+   rubric:['Single-threaded / one call stack','Async work offloaded to Web APIs','Completed callbacks are queued','Event loop runs them when the stack is empty (bonus: microtask vs macrotask)']}
+);
+
+/* ===== inlined: app-core.js ===== */
+/* ============================================================
+   DA218D EXAM LAB — APP LOGIC
+   ============================================================ */
+const app = document.getElementById('app');
+
+/* ---------- shell ---------- */
+app.innerHTML = `
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <div class="logo">D</div>
+      <div><h1>DA218D · Exam Lab</h1><span>Frontend Development Techniques — theory written exam</span></div>
+    </div>
+    <div class="progress-mini">
+      <span id="progLabel">0% studied</span>
+      <div class="pbar"><i id="progFill"></i></div>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-v="home"><span class="em">🎯</span>Overview</button>
+    <button class="tab" data-v="study"><span class="em">📖</span>Study Guide</button>
+    <button class="tab" data-v="play"><span class="em">⚙️</span>Code Playground</button>
+    <button class="tab" data-v="mcq"><span class="em">🔘</span>MCQ Drill</button>
+    <button class="tab" data-v="error"><span class="em">🔍</span>Find the Error</button>
+    <button class="tab" data-v="open"><span class="em">✍️</span>Open-Ended</button>
+    <button class="tab" data-v="cheat"><span class="em">📋</span>Cheat Sheet</button>
+  </nav>
+</header>
+<main class="wrap">
+  <div id="v-home" class="view show"></div>
+  <div id="v-study" class="view"></div>
+  <div id="v-play" class="view"></div>
+  <div id="v-mcq" class="view"></div>
+  <div id="v-error" class="view"></div>
+  <div id="v-open" class="view"></div>
+  <div id="v-cheat" class="view"></div>
+</main>
+<footer class="foot">
+  Built from your DA218D course materials · lectures 1–14, past exam &amp; re-exam, study guide &amp; reading list.<br>
+  Practice questions blend real past-paper items with new &amp; modified variants. Verify any borderline answer against your lecture notes.
+</footer>`;
+
+/* ---------- navigation ---------- */
+const studied = new Set();
+document.getElementById('tabs').addEventListener('click', e=>{
+  const b = e.target.closest('.tab'); if(!b) return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  b.classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));
+  document.getElementById('v-'+b.dataset.v).classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+function go(v){ document.querySelector(`.tab[data-v="${v}"]`).click(); }
+
+/* ============================================================
+   HOME / OVERVIEW
+   ============================================================ */
+document.getElementById('v-home').innerHTML = `
+<div class="hero">
+  <div class="kicker">Theory · Written · Examination Hall</div>
+  <h2>Everything you need to <em>nail</em> the DA218D theory exam.</h2>
+  <p class="lead">A complete, interactive walkthrough of every topic from lectures 1–14 — plus a live code playground that catches syntax errors, and a full practice bank modelled on your past exam and re-exam (with fresh variants the examiner is likely to add).</p>
+  <div class="exam-meta">
+    <div class="chip">⏱️ <span>Total <b>70 pts</b></span></div>
+    <div class="chip">✅ <span>Pass = <b>42 pts (60%)</b></span></div>
+    <div class="chip">📐 <span>Covers <b>Lec 1–14</b></span></div>
+    <div class="chip">📕 <span>Book: <b>HTML, CSS &amp; JS in Easy Steps</b></span></div>
+  </div>
+</div>
+
+<section class="block">
+  <div class="sec-head"><h2>The three sections</h2></div>
+  <div class="struct">
+    <div class="scard" style="--accent:#5bb0e6">
+      <div class="sec-no">Section 1</div>
+      <h3>Multiple Choice</h3>
+      <div class="pts">20 questions · 20 pts</div>
+      <p>One correct answer each. HTML/CSS and JavaScript split. Mark answers on the answer sheet.</p>
+      <div class="scoring">Correct <b>+1</b> · Wrong <b>−0.5</b> · Blank <b>0</b><br>→ Skip if you truly have no idea.</div>
+    </div>
+    <div class="scard" style="--accent:#f4b740">
+      <div class="sec-no">Section 2</div>
+      <h3>Find the Errors</h3>
+      <div class="pts">9 snippets · 30 errors · 30 pts</div>
+      <p>3 snippets each in HTML, CSS, JavaScript. Circle only the specific wrong token — not whole elements.</p>
+      <div class="scoring">Each error <b>+1</b> · Wrong circle <b>−0.25</b><br>→ Precision beats guessing.</div>
+    </div>
+    <div class="scard" style="--accent:#7ec64a">
+      <div class="sec-no">Section 3</div>
+      <h3>Open-Ended</h3>
+      <div class="pts">10 questions · 2 pts each · 20 pts</div>
+      <p>Written answers graded on completeness &amp; accuracy. Answer <i>only</i> what's asked.</p>
+      <div class="scoring">Gate: need <b>≥5 pts</b> here to pass<br>→ <b>7</b> for grade 4, <b>9</b> for grade 5.</div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="sec-head"><h2>Grade thresholds</h2></div>
+  <div class="grades">
+    <div class="gcard g3"><div class="g">3</div><div class="req"><b>42</b> pts (60%)<br>+ min <b>5</b> open-ended</div></div>
+    <div class="gcard g4"><div class="g">4</div><div class="req"><b>53</b> pts (75%)<br>+ min <b>7</b> open-ended</div></div>
+    <div class="gcard g5"><div class="g">5</div><div class="req"><b>63</b> pts (90%)<br>+ min <b>9</b> open-ended</div></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="sec-head"><h2>How to use this lab</h2></div>
+  <div class="struct" style="grid-template-columns:repeat(2,1fr)">
+    <div class="scard" style="--accent:#7ec64a"><h3 style="font-size:18px">📖 → ⚙️</h3><p>Read a <b>Study Guide</b> topic, then jump to the <b>Playground</b> to type the syntax yourself and watch the error checker react. Muscle memory is what wins Section 2.</p></div>
+    <div class="scard" style="--accent:#f4b740"><h3 style="font-size:18px">🔍 → ✍️</h3><p>Drill <b>Find the Error</b> until you instantly spot fake properties and bad brackets, then practise <b>Open-Ended</b> answers against the model rubrics.</p></div>
+  </div>
+  <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+    <button class="bigbtn" onclick="go('study')">Start studying →</button>
+    <button class="bigbtn ghost" onclick="go('error')">Jump to error drills</button>
+  </div>
+  <div class="callout warn" style="margin-top:22px"><b>Academic integrity reminder from your course:</b> AI tools are strictly prohibited <i>during</i> the actual exam and assessments. Use this lab to learn beforehand — then rely on your own knowledge in the hall.</div>
+</section>`;
+
+/* ============================================================
+   STUDY GUIDE
+   ============================================================ */
+(function buildStudy(){
+  const v = document.getElementById('v-study');
+  let html = `<div class="hero" style="padding:34px 0 10px">
+    <div class="kicker">Lectures 1–14 · condensed</div>
+    <h2 style="font-size:clamp(28px,4vw,42px)">Study Guide</h2>
+    <p class="lede">Every topic the exam draws from, grouped by language. Each card opens to the essentials plus the exact traps that show up in the error-spotting section. Tap to expand.</p>
+  </div>`;
+  TOPIC_GROUPS.forEach(g=>{
+    html += `<section class="block"><div class="sec-head">
+      <h2 style="color:${g.accent}">${g.label}</h2>
+      <span class="tag">${TOPICS[g.key].length} topics</span></div>`;
+    TOPICS[g.key].forEach(t=>{
+      html += `<div class="topic" data-id="${t.id}">
+        <div class="t-head">
+          <div class="t-ico">${t.ico}</div>
+          <h3>${t.title}</h3>
+          <span class="lec">${t.lec}</span>
+          <span class="caret">▶</span>
+        </div>
+        <div class="t-body"><div class="t-inner">${t.body}</div></div>
+      </div>`;
+    });
+    html += `</section>`;
+  });
+  v.innerHTML = html;
+
+  v.querySelectorAll('.topic').forEach(t=>{
+    const head = t.querySelector('.t-head');
+    const body = t.querySelector('.t-body');
+    head.addEventListener('click',()=>{
+      const open = t.classList.toggle('open');
+      body.style.maxHeight = open ? body.scrollHeight+'px' : '0';
+      if(open){ studied.add(t.dataset.id); updateProgress(); }
+    });
+  });
+})();
+
+function updateProgress(){
+  const total = [].concat(...Object.values(TOPICS)).length;
+  const pct = Math.round(studied.size/total*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progLabel').textContent = pct+'% studied';
+}
+
+/* ============================================================
+   CODE PLAYGROUND  + lightweight syntax checker
+   ============================================================ */
+(function buildPlayground(){
+  const v = document.getElementById('v-play');
+  v.innerHTML = `
+  <div class="hero" style="padding:34px 0 10px">
+    <div class="kicker">Live preview · error checker</div>
+    <h2 style="font-size:clamp(28px,4vw,42px)">Code Playground</h2>
+    <p class="lede">Type HTML, CSS, or JavaScript on the left and see it render live on the right. The checker below flags common syntax mistakes — the same kinds you must catch in Section 2. Load a buggy sample to test your eye.</p>
+  </div>
+  <div class="snip-pick" id="snips"></div>
+  <div class="pg-grid">
+    <div class="pg-pane">
+      <div class="pg-bar">
+        <span class="dot" style="background:#ef5f5f"></span><span class="dot" style="background:#f4b740"></span><span class="dot" style="background:#7ec64a"></span>
+        <span class="ttl" id="pgTitle">editor.html</span>
+        <div class="right lang-pick">
+          <button class="minibtn" data-lang="html">HTML</button>
+          <button class="minibtn" data-lang="css">CSS</button>
+          <button class="minibtn" data-lang="js">JS</button>
+        </div>
+      </div>
+      <textarea class="pg-editor" id="editor" spellcheck="false"></textarea>
+      <div class="lint" id="lint"></div>
+    </div>
+    <div class="pg-pane">
+      <div class="pg-bar">
+        <span class="ttl">▶ live preview</span>
+        <div class="right"><button class="minibtn primary" id="runBtn">Run ▶</button></div>
+      </div>
+      <div class="pg-out"><iframe id="preview" sandbox="allow-scripts"></iframe></div>
+    </div>
+  </div>`;
+
+  const editor = v.querySelector('#editor');
+  const preview = v.querySelector('#preview');
+  const lint = v.querySelector('#lint');
+  const title = v.querySelector('#pgTitle');
+  let mode = 'html';
+
+  const samples = {
+    html:`<!-- A clean starting point -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Page</title>
+</head>
+<body>
+  <header><nav><a href="#">Home</a></nav></header>
+  <main>
+    <h1>Hello, DA218D!</h1>
+    <p>Edit me and hit Run.</p>
+  </main>
+</body>
+</html>`,
+    css:`/* paste into a <style> mentally — preview wraps it for you */
+body { font-family: sans-serif; background:#101418; color:#eee; padding:30px; }
+.card { background:#1b212b; border:1px solid #2c3542; border-radius:12px; padding:20px; }
+.card h2 { color:#7ec64a; }`,
+    js:`// console output appears in the preview
+const items = ['HTML','CSS','JavaScript'];
+items.forEach((x, i) => console.log((i+1) + '. ' + x));
+
+function add(a, b) { return a + b; }
+console.log('2 + 3 =', add(2, 3));`
+  };
+
+  const buggy = {
+    html:`<!DOCTYPE html>
+<html lang="english">
+<head>
+  <css rel="stylesheet" href="s.css">
+  <title>Buggy</title>
+</head>
+<body>
+  <h1>Welcome</h2>
+  <img href="x.jpg" alt="pic">
+  <ul>
+    <li>One
+    <li>Two</li>
+  </ol>
+</body>
+</html>`,
+    css:`.box {
+  font-type: Arial;
+  margin-top: 0px
+  float: top;
+  display; none;
+  padding: 10 20px;
+}`,
+    js:`func greet(name) {
+  console.log('Hi ' + name)
+}
+const list = ['a','b','c']
+for (let i = 0, i < list.length; i++) {
+  list.add('d');
+  console.log(list(i));
+}
+list = 'x';`
+  };
+
+  // language switch
+  v.querySelectorAll('[data-lang]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      mode = b.dataset.lang;
+      title.textContent = 'editor.'+(mode==='js'?'js':mode);
+      editor.value = samples[mode];
+      buildSnips();
+      run();
+    });
+  });
+
+  function buildSnips(){
+    const s = v.querySelector('#snips');
+    s.innerHTML = `<button class="snip" data-load="clean">↺ Clean ${mode.toUpperCase()} starter</button>
+                   <button class="snip" data-load="buggy">🐞 Load buggy ${mode.toUpperCase()} (find the errors!)</button>`;
+    s.querySelectorAll('[data-load]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        editor.value = btn.dataset.load==='buggy' ? buggy[mode] : samples[mode];
+        run();
+      });
+    });
+  }
+
+  function run(){
+    let doc='';
+    if(mode==='html') doc = editor.value;
+    else if(mode==='css') doc = `<!DOCTYPE html><html><head><style>${editor.value}</style></head><body><div class="card"><h2>Preview</h2><p>Styled by your CSS.</p></div></body></html>`;
+    else doc = `<!DOCTYPE html><html><head><style>body{font-family:ui-monospace,monospace;background:#0a0c10;color:#a9e07f;padding:16px;font-size:13px;line-height:1.7}.e{color:#ff8a8a}</style></head><body><div id="o"></div><script>
+      const o=document.getElementById('o');
+      const w=(m,c)=>{const d=document.createElement('div');if(c)d.className=c;d.textContent=m;o.appendChild(d);};
+      console.log=(...a)=>w(a.map(x=>typeof x==='object'?JSON.stringify(x):String(x)).join(' '));
+      console.error=(...a)=>w(a.join(' '),'e');
+      window.onerror=(m)=>{w('⚠ '+m,'e');return true;};
+      try{ ${editor.value.replace(/<\/script>/g,'<\\/script>')} }catch(e){ w('⚠ '+e,'e'); }
+    <\/script></body></html>`;
+    preview.srcdoc = doc;
+    runLint();
+  }
+
+  /* ---- the syntax checker ---- */
+  function runLint(){
+    const code = editor.value;
+    const lines = code.split('\n');
+    let issues = [];
+    const add=(ln,msg,type='err')=>issues.push({ln,msg,type});
+
+    if(mode==='html'){
+      lines.forEach((l,i)=>{
+        const n=i+1;
+        if(/lang\s*=\s*"(?!.{2}")[a-z]{3,}"/i.test(l)) add(n,'lang should be a 2-letter code (e.g. "en"), not a full word.');
+        if(/<css[\s>]/i.test(l)) add(n,'<css> is not a tag — load stylesheets with <link rel="stylesheet">.');
+        if(/<img[^>]*\shref=/i.test(l)) add(n,'<img> uses src, not href.');
+        const open=l.match(/<h([1-6])>/i), close=l.match(/<\/h([1-6])>/i);
+        if(open&&close&&open[1]!==close[1]) add(n,`Mismatched heading: <h${open[1]}> closed by </h${close[1]}>.`);
+        if(/<\/ol>/.test(l) && code.indexOf('<ol')===-1 && code.indexOf('<ul')!==-1) add(n,'</ol> closes a list that was opened with <ul> — use </ul>.');
+        if(/<\/ul>/.test(l) && code.indexOf('<ul')===-1 && code.indexOf('<ol')!==-1) add(n,'</ul> closes a list that was opened with <ol> — use </ol>.');
+        if(/<textarea[^>]*>\s*<textarea>/i.test(l)) add(n,'<textarea> must close with </textarea>.');
+      });
+      // unclosed common tags (very rough)
+      ['div','section','article','main','ul','form'].forEach(tag=>{
+        const o=(code.match(new RegExp('<'+tag+'[\\s>]','gi'))||[]).length;
+        const c=(code.match(new RegExp('</'+tag+'>','gi'))||[]).length;
+        if(o>c) add(0,`${o-c} unclosed <${tag}> ${o-c>1?'tags':'tag'} — every <${tag}> needs a </${tag}>.`);
+      });
+    }
+    else if(mode==='css'){
+      const fake={'font-type':'font-family','text-color':'color','background-img':'background-image / background-color','underliner':'text-decoration'};
+      lines.forEach((l,i)=>{
+        const n=i+1;
+        Object.keys(fake).forEach(f=>{ if(new RegExp('\\b'+f+'\\s*:').test(l)) add(n,`"${f}" is not a property — use ${fake[f]}.`); });
+        if(/;\s*\w/.test(l) && /^\s*[\w-]+\s*;/.test(l)) add(n,'Looks like a colon was replaced by a semicolon (e.g. display; none → display: none).');
+        if(/float\s*:\s*(top|down|up|bottom)/i.test(l)) add(n,'float only takes left | right | none.');
+        if(/position\s*:\s*(float|wide)/i.test(l)) add(n,'invalid position value (use static|relative|absolute|fixed|sticky).');
+        if(/:\s*\d+\s*;/.test(l) && !/(z-index|opacity|line-height|flex|order|column|grid|font-weight)/.test(l) && /(width|height|margin|padding|font-size|top|left|right|bottom)\s*:/.test(l)) add(n,'numeric length is missing a unit (e.g. 24 → 24px).',( 'warn'));
+        // missing semicolon: a declaration line not ending in ; { } or comment
+        const tr=l.trim();
+        if(/^[\w-]+\s*:\s*[^;{}]+$/.test(tr) && !tr.endsWith(';') && !tr.endsWith('{')) add(n,'Missing semicolon at end of declaration.','warn');
+      });
+      const ob=(code.match(/{/g)||[]).length, cb=(code.match(/}/g)||[]).length;
+      if(ob!==cb) add(0,`Unbalanced braces: ${ob} "{" vs ${cb} "}".`);
+    }
+    else { // js
+      lines.forEach((l,i)=>{
+        const n=i+1;
+        if(/\bfunc\s+\w/.test(l)) add(n,'Keyword is "function", not "func".');
+        if(/function\s+\w+\s*\[/.test(l)) add(n,'Function parameters use ( ), not [ ].');
+        if(/for\s*\([^;]*,[^;]*;/.test(l)) add(n,'for header parts are separated by ; not , (e.g. for(let i=0; i<n; i++)).');
+        if(/\.add\s*\(/.test(l) && /\b(colors|list|arr|items|nums)\b/.test(l)) add(n,'Arrays have no .add() — use .push().','warn');
+        if(/console\.(logger|logs)\s*\(/.test(l)) add(n,'It’s console.log(), not console.logger().');
+        if(/createEventListener/.test(l)) add(n,'Method is addEventListener, not createEventListener.');
+        if(/\.length\s*\(\s*\)/.test(l)) add(n,'length is a property: arr.length (no parentheses).');
+        if(/getElementsByDiv/.test(l)) add(n,'No getElementsByDiv — use getElementById / querySelector.');
+        if(/\b(colors|list|nums|arr|items)\s*\(\s*[a-z]\s*\)/.test(l) && !/function|=>|\.forEach|\.map|\.filter|=\s*\(/.test(l)) add(n,'Array index uses brackets arr[i], not arr(i).','warn');
+        if(/&\s*['"][^'"]*['"]\s*:/.test(l)) add(n,'Ternary needs ? … : … , not & … : … .');
+        if(/DocumentFinishedLoading/.test(l)) add(n,'Use "DOMContentLoaded" — that event name isn’t real.');
+      });
+      // const reassignment (rough): const X = ...  then later  X =
+      const consts=[...code.matchAll(/\bconst\s+([A-Za-z_$][\w$]*)/g)].map(m=>m[1]);
+      consts.forEach(name=>{
+        const re=new RegExp('(^|[^.\\w])'+name+'\\s*=\\s*[^=]','g');
+        const assigns=(code.match(re)||[]).length;
+        if(assigns>1) add(0,`"${name}" is const but reassigned — that throws a TypeError (use let, or mutate instead).`);
+      });
+      const op=(code.match(/\(/g)||[]).length, cp=(code.match(/\)/g)||[]).length;
+      if(op!==cp) add(0,`Unbalanced parentheses: ${op} "(" vs ${cp} ")".`);
+      const ob=(code.match(/{/g)||[]).length, cb=(code.match(/}/g)||[]).length;
+      if(ob!==cb) add(0,`Unbalanced braces: ${ob} "{" vs ${cb} "}".`);
+    }
+
+    if(issues.length===0){
+      lint.innerHTML = `<div class="row ok"><span class="ln">✓</span>No obvious syntax issues detected. (The checker covers common exam traps, not everything — keep verifying by eye.)</div>`;
+    } else {
+      lint.innerHTML = issues.map(x=>`<div class="row ${x.type}"><span class="ln">${x.ln?'L'+x.ln:'•'}</span><span>${x.msg}</span></div>`).join('');
+    }
+  }
+
+  // init
+  editor.value = samples.html;
+  v.querySelector('#runBtn').addEventListener('click',run);
+  let deb; editor.addEventListener('input',()=>{ clearTimeout(deb); deb=setTimeout(run,500); });
+  // tab key inserts spaces
+  editor.addEventListener('keydown',e=>{
+    if(e.key==='Tab'){ e.preventDefault(); const s=editor.selectionStart; editor.value=editor.value.slice(0,s)+'  '+editor.value.slice(editor.selectionEnd); editor.selectionStart=editor.selectionEnd=s+2; }
+  });
+  buildSnips();
+  run();
+})();
+
+/* ===== inlined: app-quiz.js ===== */
+/* ============================================================
+   QUIZ ENGINES
+   ============================================================ */
+const SRC_LABEL = {past:'Past paper', mod:'Modified', new:'New'};
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ------------------------------------------------------------
+   1) MCQ DRILL
+   ------------------------------------------------------------ */
+(function buildMCQ(){
+  const v = document.getElementById('v-mcq');
+  let pool=[], idx=0, score=0, answered=false, chosenLog=[];
+
+  function setup(){
+    v.innerHTML = `
+    <div class="hero" style="padding:34px 0 10px">
+      <div class="kicker">Section 1 simulator</div>
+      <h2 style="font-size:clamp(28px,4vw,42px)">MCQ Drill</h2>
+      <p class="lede">${MCQ.length} questions blending your past paper, re-exam, and likely new variants. Real scoring rules apply: <b>+1</b> correct, <b>−0.5</b> wrong, <b>0</b> blank. Pick a set.</p>
+    </div>
+    <div class="quiz-setup">
+      <button class="qmode" data-f="all"><div class="em">🎲</div><h3>Full mix</h3><p>All ${MCQ.length} questions, shuffled.</p></button>
+      <button class="qmode" data-f="html"><div class="em">🏗️</div><h3>HTML only</h3><p>Markup &amp; structure questions.</p></button>
+      <button class="qmode" data-f="css"><div class="em">🎨</div><h3>CSS only</h3><p>Styling &amp; layout questions.</p></button>
+      <button class="qmode" data-f="js"><div class="em">⚙️</div><h3>JavaScript only</h3><p>Logic, DOM, async questions.</p></button>
+    </div>`;
+    v.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>start(b.dataset.f)));
+  }
+
+  function start(f){
+    pool = shuffle(f==='all'?MCQ:MCQ.filter(q=>q.tag===f));
+    idx=0;score=0;answered=false;chosenLog=[];
+    render();
+  }
+
+  function render(){
+    if(idx>=pool.length) return results();
+    const q=pool[idx]; answered=false;
+    v.innerHTML = `
+    <div class="hero" style="padding:26px 0 6px">
+      <h2 style="font-size:24px;font-family:var(--disp)">MCQ Drill</h2>
+    </div>
+    <div class="q-card">
+      <div class="q-top">
+        <span class="q-counter">Question ${idx+1} / ${pool.length}</span>
+        <span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span>
+        <span class="q-badge ${q.src==='new'?'new':''}">${SRC_LABEL[q.src]}</span>
+        <span class="q-counter" style="margin-left:auto">Score: ${score.toFixed(2)}</span>
+      </div>
+      <div class="q-stem">${q.q}</div>
+      <div class="q-opts" id="opts">
+        ${q.opts.map((o,i)=>`<div class="opt" data-i="${i}"><span class="ltr">${'ABCD'[i]}</span><span>${o}</span></div>`).join('')}
+      </div>
+      <div class="explain" id="exp"></div>
+      <div class="q-nav">
+        <button class="bigbtn ghost" id="skip">Skip (0 pts)</button>
+        <div class="spacer"></div>
+        <button class="bigbtn" id="next" disabled>Next →</button>
+      </div>
+    </div>`;
+
+    const opts=v.querySelectorAll('.opt');
+    opts.forEach(o=>o.addEventListener('click',()=>{
+      if(answered)return; answered=true;
+      const pick=+o.dataset.i, correct=q.c;
+      chosenLog.push(pick===correct);
+      opts.forEach((el,i)=>{
+        el.classList.add('dim');
+        if(i===correct){el.classList.remove('dim');el.classList.add('correct');}
+        if(i===pick&&pick!==correct){el.classList.remove('dim');el.classList.add('wrong');}
+      });
+      if(pick===correct) score+=1; else score-=0.5;
+      const exp=v.querySelector('#exp');
+      exp.className='explain show';
+      exp.innerHTML=`<div class="verdict ${pick===correct?'right':'miss'}">${pick===correct?'✓ Correct':'✗ Not quite'} <span style="color:var(--ink-dim);font-size:13px;font-weight:400">— answer: ${'ABCD'[correct]}</span></div><p>${q.ex}</p>`;
+      v.querySelector('#next').disabled=false;
+      v.querySelector('#skip').disabled=true;
+    }));
+
+    v.querySelector('#skip').addEventListener('click',()=>{ if(!answered){chosenLog.push(null);} idx++; render(); });
+    v.querySelector('#next').addEventListener('click',()=>{ idx++; render(); });
+  }
+
+  function results(){
+    const correct=chosenLog.filter(x=>x===true).length;
+    const wrong=chosenLog.filter(x=>x===false).length;
+    const blank=chosenLog.filter(x=>x===null).length;
+    const max=pool.length;
+    const pct=Math.max(0,Math.round(score/max*100));
+    let verdict = pct>=90?'Grade 5 territory 🏆':pct>=75?'Grade 4 range 💪':pct>=60?'Passing — keep pushing ✅':'Below pass — review &amp; retry 📚';
+    v.innerHTML=`
+    <div class="hero" style="padding:30px 0 6px"><h2 style="font-size:24px;font-family:var(--disp)">Results</h2></div>
+    <div class="q-card result">
+      <div class="score" style="color:${pct>=60?'var(--grn)':'var(--red)'}">${score.toFixed(2)}<span style="font-size:28px;color:var(--ink-dim)">/${max}</span></div>
+      <div class="pct">${pct}% · ${correct} correct · ${wrong} wrong · ${blank} blank</div>
+      <div class="verdict-grade" style="color:${pct>=60?'var(--grn-soft)':'var(--amber)'}">${verdict}</div>
+      <div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="bigbtn" id="again">Try again</button>
+        <button class="bigbtn ghost" onclick="go('study')">Back to study</button>
+      </div>
+    </div>`;
+    v.querySelector('#again').addEventListener('click',setup);
+  }
+
+  setup();
+})();
+
+/* ------------------------------------------------------------
+   2) FIND THE ERROR
+   ------------------------------------------------------------ */
+(function buildFE(){
+  const v = document.getElementById('v-error');
+  let pool=[], idx=0, picks=new Set(), checked=false, totalFound=0, totalErrs=0, totalWrong=0;
+
+  function setup(){
+    v.innerHTML=`
+    <div class="hero" style="padding:34px 0 10px">
+      <div class="kicker">Section 2 simulator</div>
+      <h2 style="font-size:clamp(28px,4vw,42px)">Find the Error</h2>
+      <p class="lede">The highest-yield section — 30 of 70 points. Click the <b>specific token</b> that's wrong (not whole lines). Scoring mirrors the exam: <b>+1</b> per real error, <b>−0.25</b> for circling correct code.</p>
+    </div>
+    <div class="quiz-setup">
+      <button class="qmode" data-f="all"><div class="em">🔬</div><h3>Full set</h3><p>All ${FE.length} snippets (HTML, CSS, JS).</p></button>
+      <button class="qmode" data-f="html"><div class="em">🏗️</div><h3>HTML</h3><p>${FE.filter(s=>s.lang==='html').length} markup snippets.</p></button>
+      <button class="qmode" data-f="css"><div class="em">🎨</div><h3>CSS</h3><p>${FE.filter(s=>s.lang==='css').length} style snippets.</p></button>
+      <button class="qmode" data-f="js"><div class="em">⚙️</div><h3>JavaScript</h3><p>${FE.filter(s=>s.lang==='js').length} logic snippets.</p></button>
+    </div>
+    <div class="callout tip" style="max-width:760px"><b>Strategy:</b> scan for fake property/method names, mismatched or missing tags/brackets, wrong punctuation (<code class="inl">,</code> vs <code class="inl">;</code>, <code class="inl">;</code> vs <code class="inl">:</code>), and <code class="inl">const</code> reassignment. Don't over-circle — wrong clicks cost you.</div>`;
+    v.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>start(b.dataset.f)));
+  }
+
+  function start(f){
+    pool = f==='all'? FE.slice() : FE.filter(s=>s.lang===f);
+    idx=0; totalFound=0; totalErrs=0; totalWrong=0;
+    render();
+  }
+
+  function render(){
+    if(idx>=pool.length) return results();
+    const snip=pool[idx]; picks=new Set(); checked=false;
+
+    // build tokens
+    let tokId=0; const errTokens=new Set(); const reasons={};
+    const linesHtml = snip.lines.map(line=>{
+      if(typeof line==='string'){
+        return `<div>${esc(line)}</div>`;
+      }
+      // array of segments
+      return '<div>'+line.map(seg=>{
+        const id='t'+(tokId++);
+        if(seg.err){ errTokens.add(id); reasons[id]=seg.why; return `<span class="tok" data-id="${id}" data-err="1">${esc(seg.t)}</span>`; }
+        return `<span class="tok" data-id="${id}">${esc(seg.t)}</span>`;
+      }).join('')+'</div>';
+    }).join('');
+    const errCount = errTokens.size;
+
+    v.innerHTML=`
+    <div class="hero" style="padding:26px 0 6px"><h2 style="font-size:24px;font-family:var(--disp)">Find the Error</h2></div>
+    <div class="q-card">
+      <div class="q-top">
+        <span class="q-counter">Snippet ${idx+1} / ${pool.length}</span>
+        <span class="q-badge ${snip.lang}">${snip.lang.toUpperCase()}</span>
+        <span class="q-badge ${snip.src==='mod'?'':'new'}">${SRC_LABEL[snip.src]}</span>
+        <span class="q-counter" style="margin-left:auto">Errors to find: <b>${errCount}</b></span>
+      </div>
+      <div class="q-stem" style="font-size:15px;color:var(--ink-dim)">${esc(snip.title)} — click each incorrect token.</div>
+      <div class="fe-help">Selected: <span id="selCount">0</span> · click again to deselect</div>
+      <div class="fe-code" id="code">${linesHtml}</div>
+      <div class="errlist" id="errlist"></div>
+      <div class="fe-score" id="feScore"></div>
+      <div class="q-nav">
+        <button class="bigbtn ghost" id="reveal">Check ✓</button>
+        <div class="spacer"></div>
+        <button class="bigbtn" id="next" ${'disabled'}>Next →</button>
+      </div>
+    </div>`;
+
+    const codeEl=v.querySelector('#code');
+    codeEl.querySelectorAll('.tok').forEach(t=>{
+      t.addEventListener('click',()=>{
+        if(checked)return;
+        const id=t.dataset.id;
+        if(picks.has(id)){picks.delete(id);t.classList.remove('picked');}
+        else{picks.add(id);t.classList.add('picked');}
+        v.querySelector('#selCount').textContent=picks.size;
+      });
+    });
+
+    v.querySelector('#reveal').addEventListener('click',()=>{
+      if(checked)return; checked=true;
+      let found=0, wrong=0;
+      codeEl.querySelectorAll('.tok').forEach(t=>{
+        const id=t.dataset.id, isErr=t.dataset.err==='1', picked=picks.has(id);
+        t.style.cursor='default';
+        if(isErr&&picked){t.classList.remove('picked');t.classList.add('hit');found++;}
+        else if(isErr&&!picked){t.classList.add('missed');}
+        else if(!isErr&&picked){t.classList.remove('picked');t.classList.add('miss-pick');wrong++;}
+      });
+      const pts=Math.max(0,found - wrong*0.25);
+      totalFound+=found; totalErrs+=errCount; totalWrong+=wrong;
+      v.querySelector('#feScore').innerHTML=`Found <b style="color:var(--ok)">${found}/${errCount}</b> · wrong circles <b style="color:var(--red)">${wrong}</b> · snippet score <b>${pts.toFixed(2)}</b>`;
+      // explanation list
+      const el=v.querySelector('#errlist'); el.classList.add('show');
+      let items='<h5>The errors in this snippet</h5>';
+      Object.keys(reasons).forEach(id=>{ items+=`<div class="ei">${reasons[id]}</div>`; });
+      el.innerHTML=items;
+      v.querySelector('#reveal').disabled=true;
+      v.querySelector('#next').disabled=false;
+    });
+
+    v.querySelector('#next').addEventListener('click',()=>{idx++;render();});
+  }
+
+  function results(){
+    const pts=Math.max(0,totalFound-totalWrong*0.25);
+    const pct=totalErrs?Math.round(totalFound/totalErrs*100):0;
+    v.innerHTML=`
+    <div class="hero" style="padding:30px 0 6px"><h2 style="font-size:24px;font-family:var(--disp)">Results</h2></div>
+    <div class="q-card result">
+      <div class="score" style="color:${pct>=60?'var(--grn)':'var(--red)'}">${totalFound}<span style="font-size:28px;color:var(--ink-dim)">/${totalErrs}</span></div>
+      <div class="pct">${pct}% of errors found · ${totalWrong} wrong circles · net ${pts.toFixed(2)} pts</div>
+      <div class="verdict-grade" style="color:${pct>=60?'var(--grn-soft)':'var(--amber)'}">${pct>=90?'Eagle eyes 🦅':pct>=75?'Sharp — minor misses 💪':pct>=60?'Solid, tighten precision ✅':'Re-drill the traps 📚'}</div>
+      <div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="bigbtn" id="again">Try again</button>
+        <button class="bigbtn ghost" onclick="go('play')">Practise in playground</button>
+      </div>
+    </div>`;
+    v.querySelector('#again').addEventListener('click',setup);
+  }
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  setup();
+})();
+
+/* ------------------------------------------------------------
+   3) OPEN-ENDED
+   ------------------------------------------------------------ */
+(function buildOE(){
+  const v = document.getElementById('v-open');
+  let pool=[], idx=0;
+
+  function setup(){
+    v.innerHTML=`
+    <div class="hero" style="padding:34px 0 10px">
+      <div class="kicker">Section 3 simulator</div>
+      <h2 style="font-size:clamp(28px,4vw,42px)">Open-Ended Practice</h2>
+      <p class="lede">${OE.length} written questions from your papers plus likely variants. Write your answer, then reveal a model answer and the marking rubric. Remember the gate: you need <b>≥5 of these points</b> just to pass.</p>
+    </div>
+    <div class="quiz-setup">
+      <button class="qmode" data-f="all"><div class="em">📝</div><h3>All questions</h3><p>${OE.length} prompts across all topics.</p></button>
+      <button class="qmode" data-f="html"><div class="em">🏗️</div><h3>HTML</h3><p>${OE.filter(q=>q.tag==='html').length} prompts.</p></button>
+      <button class="qmode" data-f="css"><div class="em">🎨</div><h3>CSS</h3><p>${OE.filter(q=>q.tag==='css').length} prompts.</p></button>
+      <button class="qmode" data-f="js"><div class="em">⚙️</div><h3>JavaScript</h3><p>${OE.filter(q=>q.tag==='js').length} prompts.</p></button>
+    </div>
+    <div class="callout warn" style="max-width:760px"><b>OBS — answer only what's asked.</b> The examiner explicitly penalises padding. Hit each part of the question, give a concrete example, and stop.</div>`;
+    v.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>start(b.dataset.f)));
+  }
+
+  function start(f){
+    pool = f==='all'?OE.slice():OE.filter(q=>q.tag===f);
+    idx=0; render();
+  }
+
+  function render(){
+    if(idx>=pool.length) return done();
+    const q=pool[idx];
+    v.innerHTML=`
+    <div class="hero" style="padding:26px 0 6px"><h2 style="font-size:24px;font-family:var(--disp)">Open-Ended</h2></div>
+    <div class="oe-card">
+      <div class="q-top">
+        <span class="q-counter">Question ${idx+1} / ${pool.length}</span>
+        <span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span>
+        <span class="q-badge ${q.src==='mod'?'':'new'}">${SRC_LABEL[q.src]}</span>
+        <span class="q-counter" style="margin-left:auto">Worth 2 pts</span>
+      </div>
+      <div class="oe-q">${q.q}</div>
+      <textarea class="oe-area" id="ans" placeholder="Write your answer here… (then reveal the model answer to self-mark)"></textarea>
+      <div class="q-nav">
+        <button class="bigbtn ghost" id="reveal">Reveal model answer</button>
+        <div class="spacer"></div>
+        <button class="bigbtn" id="next">${idx===pool.length-1?'Finish':'Next →'}</button>
+      </div>
+      <div class="model" id="model">
+        <h5>★ Model answer</h5>
+        ${q.model.map(p=>`<p>${p}</p>`).join('')}
+        <div class="rubric"><b>Marking rubric — credit for:</b>
+          <ul>${q.rubric.map(r=>`<li>${r}</li>`).join('')}</ul>
+        </div>
+      </div>
+    </div>`;
+    v.querySelector('#reveal').addEventListener('click',()=>{
+      v.querySelector('#model').classList.add('show');
+      v.querySelector('#reveal').disabled=true;
+    });
+    v.querySelector('#next').addEventListener('click',()=>{idx++;render();});
+  }
+
+  function done(){
+    v.innerHTML=`
+    <div class="hero" style="padding:30px 0 6px"><h2 style="font-size:24px;font-family:var(--disp)">Set complete</h2></div>
+    <div class="q-card result">
+      <div class="score" style="color:var(--grn)">✓</div>
+      <div class="pct">You worked through ${pool.length} open-ended prompts.</div>
+      <div class="verdict-grade" style="color:var(--grn-soft)">Self-mark against each rubric — aim for every bullet.</div>
+      <div style="margin-top:24px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="bigbtn" id="again">Practise more</button>
+        <button class="bigbtn ghost" onclick="go('cheat')">Cheat sheet</button>
+      </div>
+    </div>`;
+    v.querySelector('#again').addEventListener('click',setup);
+  }
+
+  setup();
+})();
+
+/* ===== inlined: cheat-sheet.js ===== */
+/* ============================================================
+   CHEAT SHEET VIEW  — condensed quick-reference for #v-cheat
+   ============================================================ */
+(function(){
+  const v = document.getElementById('v-cheat');
+  if(!v) return;
+
+  // small helper: a card with a title + list of {term, def} rows
+  const card = (emoji, title, rows) => `
+    <div class="cheat">
+      <h4><span class="em">${emoji}</span>${title}</h4>
+      <dl>${rows.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('')}</dl>
+    </div>`;
+
+  const html = `
+    <div class="view-head">
+      <h2>Cheat Sheet</h2>
+      <p class="lede">The night-before condensed reference — every high-yield fact, every classic trap. Skim it, then go drill the error-finding section (it’s 30 of the 70 points).</p>
+    </div>
+
+    <div class="cheat-grid">
+
+      ${card('🏗️','HTML — skeleton & docs',[
+        ['&lt;!DOCTYPE html&gt;','Exactly this. Not <code>HTML5</code>, not omitted — triggers quirks mode otherwise.'],
+        ['&lt;html lang="en"&gt;','Root element; <code>lang</code> uses a 2-letter code (<code>en</code>, <code>sv</code>) — not <code>"english"</code>.'],
+        ['&lt;head&gt;','Metadata only: <code>title</code>, <code>meta</code>, <code>link</code>, <code>style</code>, <code>script</code>. Not visible content.'],
+        ['&lt;meta charset="UTF-8"&gt;','Character encoding. <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> for responsive.'],
+        ['Linking CSS','<code>&lt;link rel="stylesheet" href="style.css"&gt;</code> — there is no <code>&lt;css&gt;</code> tag.']
+      ])}
+
+      ${card('🧱','HTML — semantic tags',[
+        ['Structure','<code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>aside</code>, <code>footer</code>.'],
+        ['Why semantic','Accessibility (screen readers), SEO, readable markup. <code>div</code>/<code>span</code> carry no meaning.'],
+        ['Headings','<code>h1</code>–<code>h6</code>, one logical outline. Don’t skip levels for styling — use CSS.'],
+        ['Inline vs block','<code>span</code>/<code>a</code>/<code>strong</code> inline; <code>div</code>/<code>p</code>/<code>section</code> block.']
+      ])}
+
+      ${card('📋','HTML — lists, tables, media',[
+        ['Lists','<code>ul</code>→<code>li</code> (unordered), <code>ol</code>→<code>li</code> (ordered), <code>dl</code>→<code>dt</code>/<code>dd</code> (description). Close with the SAME tag you opened.'],
+        ['Tables','<code>table</code> › <code>thead</code>/<code>tbody</code> › <code>tr</code> › <code>th</code>/<code>td</code>. Headers are <code>th</code>, data is <code>td</code>.'],
+        ['Images','<code>&lt;img src="x.png" alt="..."&gt;</code> — void element, uses <code>src</code> not <code>href</code>, no closing tag, <code>alt</code> is for accessibility.'],
+        ['Multimedia','<code>&lt;audio&gt;</code>/<code>&lt;video&gt;</code> with <code>&lt;source&gt;</code> children + <code>controls</code> attribute.']
+      ])}
+
+      ${card('📝','HTML — forms',[
+        ['&lt;form&gt;','<code>action</code> (URL) + <code>method</code> (<code>get</code>/<code>post</code>).'],
+        ['&lt;input&gt;','<code>type</code> = text/email/password/checkbox/radio/number/submit… Void element.'],
+        ['&lt;label&gt;','<code>&lt;label for="id"&gt;</code> tied to <code>&lt;input id="id"&gt;</code> — clickable + accessible.'],
+        ['Others','<code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>→<code>&lt;option&gt;</code>, <code>&lt;button&gt;</code>. Group with <code>&lt;fieldset&gt;</code>+<code>&lt;legend&gt;</code>.']
+      ])}
+
+      ${card('🎯','CSS — selectors & specificity',[
+        ['Basics','<code>tag</code>, <code>.class</code>, <code>#id</code>, <code>*</code> (universal).'],
+        ['Combinators','<code>A B</code> descendant · <code>A &gt; B</code> child · <code>A + B</code> next sibling · <code>A ~ B</code> all siblings.'],
+        ['Specificity','inline (1000) &gt; id (100) &gt; class/attr/pseudo-class (10) &gt; element/pseudo-element (1). Ties → later rule wins.'],
+        ['!important','Overrides specificity. Last resort — usually a code smell.']
+      ])}
+
+      ${card('📦','CSS — box model',[
+        ['Layers','content → <code>padding</code> → <code>border</code> → <code>margin</code> (inside-out).'],
+        ['box-sizing','<code>content-box</code> (default: w/h = content only) vs <code>border-box</code> (w/h include padding+border).'],
+        ['Margin collapse','Vertical margins between blocks collapse to the larger one.'],
+        ['Units','<code>px</code> absolute · <code>%</code> of parent · <code>em</code> of own/parent font · <code>rem</code> of root · <code>vw</code>/<code>vh</code> of viewport. <strong>Numbers need units</strong> (except <code>0</code>, <code>line-height</code>, unitless ratios).']
+      ])}
+
+      ${card('🧭','CSS — display & position',[
+        ['display','<code>block</code> · <code>inline</code> · <code>inline-block</code> · <code>none</code> (removed) · <code>flex</code> · <code>grid</code>.'],
+        ['position','<code>static</code> (default) · <code>relative</code> (offset from self) · <code>absolute</code> (nearest positioned ancestor) · <code>fixed</code> (viewport) · <code>sticky</code>.'],
+        ['float','<code>left</code>/<code>right</code>/<code>none</code> — legacy layout; <code>clear</code> to stop wrapping.'],
+        ['z-index','Stacking order; only works on positioned (non-<code>static</code>) elements.']
+      ])}
+
+      ${card('↔️','CSS — Flexbox',[
+        ['Turn on','<code>display:flex</code> on the container.'],
+        ['Main axis','<code>flex-direction</code> = row (default) / column. <code>justify-content</code> aligns along it.'],
+        ['Cross axis','<code>align-items</code> aligns across it; <code>align-content</code> for wrapped lines.'],
+        ['Items','<code>flex-grow</code> / <code>flex-shrink</code> / <code>flex-basis</code> (shorthand <code>flex</code>). <code>flex-wrap:wrap</code> to wrap. <code>gap</code> for spacing.']
+      ])}
+
+      ${card('🔲','CSS — Grid',[
+        ['Turn on','<code>display:grid</code> on the container.'],
+        ['Tracks','<code>grid-template-columns</code>/<code>-rows</code>, e.g. <code>repeat(3, 1fr)</code>. <code>fr</code> = fraction of free space.'],
+        ['Placement','<code>grid-column: 1 / 3</code> spans lines 1→3. <code>grid-template-areas</code> for named layout.'],
+        ['Gap','<code>gap</code> (or <code>row-gap</code>/<code>column-gap</code>). Flex = 1D, Grid = 2D.']
+      ])}
+
+      ${card('📱','CSS — responsive & visual',[
+        ['Media query','<code>@media (max-width: 768px){ … }</code> — applies under that width.'],
+        ['Pseudo-classes','State: <code>:hover</code>, <code>:focus</code>, <code>:active</code>, <code>:nth-child(n)</code>, <code>:first-child</code>.'],
+        ['Pseudo-elements','<code>::before</code>, <code>::after</code> (need <code>content</code>), <code>::first-line</code>. Two colons.'],
+        ['transition','<code>transition: property duration timing delay;</code> e.g. <code>transition: all .3s ease;</code>.'],
+        ['animation','<code>@keyframes name{ from{…} to{…} }</code> then <code>animation: name 2s infinite;</code>.']
+      ])}
+
+      ${card('🔤','JS — variables & types',[
+        ['Declare','<code>let</code> (block, reassignable) · <code>const</code> (block, no reassign) · <code>var</code> (function-scoped, hoisted, avoid).'],
+        ['Primitives','<code>string</code>, <code>number</code>, <code>boolean</code>, <code>null</code>, <code>undefined</code>, <code>symbol</code>, <code>bigint</code>.'],
+        ['typeof quirks','<code>typeof null === "object"</code> (bug), <code>typeof NaN === "number"</code>, <code>typeof []==="object"</code>.'],
+        ['Equality','<code>===</code> strict (no coercion) — use it. <code>==</code> coerces (<code>0 == "" </code> → true). <code>!==</code> likewise.']
+      ])}
+
+      ${card('🔀','JS — operators & control flow',[
+        ['Falsy','<code>false</code>, <code>0</code>, <code>""</code>, <code>null</code>, <code>undefined</code>, <code>NaN</code>. Everything else truthy ( <code>[]</code> & <code>{}</code> are truthy!).'],
+        ['Logical','<code>&&</code> (and) <code>||</code> (or) <code>!</code> (not). <code>??</code> nullish coalescing (only null/undefined).'],
+        ['Ternary','<code>cond ? a : b</code> — single <code>?</code> / <code>:</code>, not <code>&</code>.'],
+        ['Switch','Needs <code>break</code> per case or it falls through; <code>default</code> for no match.']
+      ])}
+
+      ${card('🔁','JS — loops & functions',[
+        ['Loops','<code>for(let i=0;i&lt;n;i++)</code> uses semicolons. <code>while</code>, <code>do…while</code>, <code>for…of</code> (values), <code>for…in</code> (keys).'],
+        ['Function decl','<code>function f(a, b){…}</code> — params comma-separated in <code>( )</code>; hoisted.'],
+        ['Arrow','<code>const f = (a,b) =&gt; a+b;</code> — no own <code>this</code>, not hoisted.'],
+        ['Scope/closure','Inner function remembers outer variables even after outer returns = closure. Block scope via <code>let</code>/<code>const</code>.']
+      ])}
+
+      ${card('🧩','JS — objects, arrays, this',[
+        ['Object','<code>{ key: value }</code>; access <code>obj.key</code> or <code>obj["key"]</code>.'],
+        ['Array methods','<code>push</code>/<code>pop</code>/<code>shift</code>/<code>unshift</code>; <code>map</code>/<code>filter</code>/<code>reduce</code>/<code>forEach</code>. Length is <code>arr.length</code> (property, no <code>()</code>).'],
+        ['this','Depends on call site: method → owner object; plain call → global/undefined; arrow → enclosing scope; <code>call/apply/bind</code> set it.'],
+        ['Destructuring','<code>const {a} = obj;</code> · <code>const [x] = arr;</code> · spread <code>...</code>.']
+      ])}
+
+      ${card('🌳','JS — DOM & events',[
+        ['Select','<code>getElementById</code>, <code>querySelector</code> (one), <code>querySelectorAll</code> (NodeList). No <code>getElementsByDiv</code>.'],
+        ['Modify','<code>el.textContent</code>, <code>el.innerHTML</code>, <code>el.classList.add/remove/toggle</code>, <code>el.setAttribute</code>.'],
+        ['Events','<code>el.addEventListener("click", fn)</code> — string event name + handler. Not <code>createEventListener</code>.'],
+        ['Event obj','<code>e.target</code>, <code>e.preventDefault()</code>, <code>e.stopPropagation()</code>. Bubbling: child → ancestors.']
+      ])}
+
+      ${card('⚠️','JS — errors & exceptions',[
+        ['try/catch','<code>try{ risky() } catch(err){ handle(err) } finally{ always() }</code>.'],
+        ['throw','<code>throw new Error("message")</code> — throw Error objects, not strings.'],
+        ['Error types','<code>SyntaxError</code>, <code>TypeError</code>, <code>ReferenceError</code>, <code>RangeError</code>.'],
+        ['finally','Runs whether or not an error was thrown — cleanup.']
+      ])}
+
+      ${card('🧬','JS — prototypes & classes',[
+        ['Prototype chain','Objects delegate to their <code>[[Prototype]]</code>; lookup walks up the chain to <code>Object.prototype</code> → <code>null</code>.'],
+        ['Class','<code>class A{ constructor(){} method(){} }</code> — syntactic sugar over prototypes.'],
+        ['Inherit','<code>class B extends A{ constructor(){ super(); } }</code> — <code>super()</code> calls parent ctor.'],
+        ['new','Creates object, links prototype, binds <code>this</code>, returns it.']
+      ])}
+
+      ${card('⏳','JS — async',[
+        ['Event loop','Single-threaded. Call stack → Web APIs → microtask queue (promises) → macrotask queue (timers). Microtasks drain first.'],
+        ['Promise','<code>new Promise((resolve,reject)=&gt;…)</code>; consume with <code>.then().catch().finally()</code>. States: pending→fulfilled/rejected.'],
+        ['async/await','<code>async</code> fn returns a promise; <code>await</code> pauses until it settles. Wrap in <code>try/catch</code>.'],
+        ['fetch','<code>const r = await fetch(url); const data = await r.json();</code> — returns a promise.']
+      ])}
+
+      ${card('📦','JS — ES modules',[
+        ['Named export','<code>export const a = 1;</code> → <code>import { a } from "./m.js";</code> — braces, matching name.'],
+        ['Default export','<code>export default x;</code> → <code>import anyName from "./m.js";</code> — no braces, rename freely. One per module.'],
+        ['Rename / all','<code>import { a as b }</code> · <code>import * as ns from "./m.js"</code>.'],
+        ['Live bindings','Imports are read-only live views of the export (not copies). <strong>Barrel</strong> = an <code>index.js</code> re-exporting from several modules.']
+      ])}
+
+      ${card('🏁','Exam strategy',[
+        ['Scoring','MCQ +1 / −0.5 (blank = 0, so skip pure guesses). Errors +1 each, −0.25 if you circle correct code. Open-ended 2 pts each.'],
+        ['Pass marks','Grade 3 = 42/70 + ≥5 open-ended · 4 = 53 + ≥7 · 5 = 63 + ≥9.'],
+        ['Time','30 errors = the biggest block — budget the most time there. Read each line; mismatched tags & fake property names are the usual traps.'],
+        ['Open-ended','Answer the actual verb: “explain” → why/how; “describe” → what. Hit each rubric point in a sentence.']
+      ])}
+
+    </div>`;
+
+  v.innerHTML = html;
+})();
+
+</script>
+</body>
+</html>
