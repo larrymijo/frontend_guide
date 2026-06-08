@@ -1950,6 +1950,7 @@ app.innerHTML = `
     <button class="tab" data-v="error"><span class="em">🔍</span>Find the Error</button>
     <button class="tab" data-v="open"><span class="em">✍️</span>Open-Ended</button>
     <button class="tab" data-v="cheat"><span class="em">📋</span>Cheat Sheet</button>
+    <button class="tab" data-v="mock"><span class="em">🏁</span>Mock Exam</button>
   </nav>
 </header>
 <main class="wrap">
@@ -1960,6 +1961,7 @@ app.innerHTML = `
   <div id="v-error" class="view"></div>
   <div id="v-open" class="view"></div>
   <div id="v-cheat" class="view"></div>
+  <div id="v-mock" class="view"></div>
 </main>
 <footer class="foot">
   Built from your DA218D course materials · lectures 1–14, past exam &amp; re-exam, study guide &amp; reading list.<br>
@@ -2039,6 +2041,7 @@ document.getElementById('v-home').innerHTML = `
   <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
     <button class="bigbtn" onclick="go('study')">Start studying →</button>
     <button class="bigbtn ghost" onclick="go('error')">Jump to error drills</button>
+    <button class="bigbtn ghost" onclick="go('mock')">🏁 Sit the full mock exam</button>
   </div>
   <div class="callout warn" style="margin-top:22px"><b>Academic integrity reminder from your course:</b> AI tools are strictly prohibited <i>during</i> the actual exam and assessments. Use this lab to learn beforehand — then rely on your own knowledge in the hall.</div>
 </section>`;
@@ -2645,6 +2648,316 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
   }
 
   setup();
+})();
+
+/* ===== inlined: app-mock.js ===== */
+/* ============================================================
+   FULL MOCK EXAM — timed 70-point simulation
+   S1 MCQ (20·1pt) + S2 Find-the-error (9 snippets, scaled to 30) + S3 Open-ended (10·2pt)
+   4-hour countdown · official grade bands (42/53/63) + open-ended gates (5/7/9)
+   Self-contained: reuses shuffle, SRC_LABEL, go and the existing card styles.
+   ============================================================ */
+(function buildMock(){
+  const v = document.getElementById('v-mock');
+  if(!v) return;
+  const DUR = 4*60*60;                         // 14400 seconds
+  let mcqSet=[], feSet=[], feMeta=[], oeSet=[];
+  let mcqPick=[], fePicks=[], oeText=[], oeScore=[];
+  let remaining=DUR, timerId=null, sec='s1', gradeData=null;
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  /* ---------- sampling ---------- */
+  function sample(){
+    mcqSet = shuffle(MCQ).slice(0,20);
+    const byLang = L => shuffle(FE.filter(s=>s.lang===L)).slice(0,3);
+    feSet  = [...byLang('html'), ...byLang('css'), ...byLang('js')];
+    feMeta = feSet.map((s,i)=>tokenize(s,i));
+    oeSet  = shuffle(OE).slice(0,10);
+    mcqPick = Array(mcqSet.length).fill(null);
+    fePicks = feSet.map(()=>new Set());
+    oeText  = Array(oeSet.length).fill('');
+    oeScore = Array(oeSet.length).fill(null);
+    remaining = DUR; sec='s1'; gradeData=null;
+  }
+
+  /* tokenize a snippet -> neutral clickable HTML + error ids + reasons (stable ids) */
+  function tokenize(snip, si){
+    let n=0; const errIds=new Set(); const reasons={};
+    const emitC=t=>{let o='';t.split(/(\s+)/).forEach(p=>{if(p==='')return;if(/^\s+$/.test(p)){o+=p;}else{o+=`<span class="tok" data-id="s${si}t${n}">${esc(p)}</span>`;n++;}});return o;};
+    const emitE=(t,w)=>{const id='s'+si+'t'+n;n++;errIds.add(id);reasons[id]=w;return `<span class="tok" data-id="${id}" data-err="1">${esc(t)}</span>`;};
+    const line=ln=>{
+      if(typeof ln==='string') return '<div>'+emitC(ln)+'</div>';
+      const code=ln.code, errs=ln.errs||[], spans=[]; let cur=0;
+      errs.forEach(({e,why})=>{const i=code.indexOf(e,cur);if(i===-1)return;spans.push({s:i,e:i+e.length,why});cur=i+e.length;});
+      spans.sort((a,b)=>a.s-b.s); let o='',pos=0;
+      spans.forEach(sp=>{if(sp.s>pos)o+=emitC(code.slice(pos,sp.s));o+=emitE(code.slice(sp.s,sp.e),sp.why);pos=sp.e;});
+      if(pos<code.length)o+=emitC(code.slice(pos)); return '<div>'+o+'</div>';
+    };
+    return {html:snip.lines.map(line).join(''), errIds, reasons, errCount:errIds.size};
+  }
+  /* re-tokenize a snippet for review, applying hit / missed / wrong-circle states (same id order) */
+  function reviewTokens(snip, si){
+    let n=0; const picks=fePicks[si];
+    const tok=(txt,isErr)=>{ const id='s'+si+'t'+n; n++; const picked=picks.has(id);
+      let cls='tok';
+      if(isErr&&picked)cls+=' hit'; else if(isErr&&!picked)cls+=' missed'; else if(!isErr&&picked)cls+=' miss-pick';
+      return `<span class="${cls}" style="cursor:default">${esc(txt)}</span>`; };
+    const emitC=t=>{let o='';t.split(/(\s+)/).forEach(p=>{if(p==='')return;if(/^\s+$/.test(p)){o+=p;}else{o+=tok(p,false);}});return o;};
+    const line=ln=>{
+      if(typeof ln==='string') return '<div>'+emitC(ln)+'</div>';
+      const code=ln.code, errs=ln.errs||[], spans=[]; let cur=0;
+      errs.forEach(({e})=>{const i=code.indexOf(e,cur);if(i===-1)return;spans.push({s:i,e:i+e.length});cur=i+e.length;});
+      spans.sort((a,b)=>a.s-b.s); let o='',pos=0;
+      spans.forEach(sp=>{if(sp.s>pos)o+=emitC(code.slice(pos,sp.s));o+=tok(code.slice(sp.s,sp.e),true);pos=sp.e;});
+      if(pos<code.length)o+=emitC(code.slice(pos)); return '<div>'+o+'</div>';
+    };
+    return snip.lines.map(line).join('');
+  }
+
+  /* ---------- timer ---------- */
+  function fmt(s){const h=s/3600|0,m=(s%3600)/60|0,x=s%60;return h+':'+String(m).padStart(2,'0')+':'+String(x).padStart(2,'0');}
+  function startTimer(){ stopTimer(); timerId=setInterval(tick,1000); }
+  function stopTimer(){ if(timerId){clearInterval(timerId);timerId=null;} }
+  function tick(){
+    remaining--;
+    const el=document.getElementById('mockTimer');
+    if(el){ el.textContent=fmt(Math.max(0,remaining)); el.className='mock-timer'+(remaining<=900?' danger':remaining<=1800?' warn':''); }
+    if(remaining<=0){ stopTimer(); grade(true); }
+  }
+
+  /* ---------- intro ---------- */
+  function intro(){
+    stopTimer();
+    v.innerHTML = `
+    <div class="hero" style="padding:34px 0 10px">
+      <div class="kicker">The dress rehearsal</div>
+      <h2 style="font-size:clamp(28px,4vw,42px)">Full Mock Exam</h2>
+      <p class="lede">One continuous, timed run of all three sections, scored exactly like the real paper — <b>70 points</b>, a <b>4-hour</b> clock, and the official grade gates. Sit it in one go: no notes, no playground.</p>
+    </div>
+    <div class="struct">
+      <div class="scard" style="--accent:#5bb0e6"><div class="sec-no">Section 1</div><h3>Multiple Choice</h3><div class="pts">20 questions · 20 pts</div><p><b>+1</b> correct · <b>−0.5</b> wrong · <b>0</b> blank. Leave it blank if you truly don't know.</p></div>
+      <div class="scard" style="--accent:#f4b740"><div class="sec-no">Section 2</div><h3>Find the Errors</h3><div class="pts">9 snippets · 30 pts</div><p>3 each in HTML/CSS/JS. Click only the wrong token; a wrong circle costs <b>−0.25</b>.</p></div>
+      <div class="scard" style="--accent:#7ec64a"><div class="sec-no">Section 3</div><h3>Open-Ended</h3><div class="pts">10 questions · 20 pts</div><p>Write your answers; you'll <b>self-mark</b> them against the model answers at the end.</p></div>
+    </div>
+    <div class="grades" style="margin-top:18px">
+      <div class="gcard g3"><div class="g">3</div><div class="req"><b>42</b> total<br>+ <b>5</b> open-ended</div></div>
+      <div class="gcard g4"><div class="g">4</div><div class="req"><b>53</b> total<br>+ <b>7</b> open-ended</div></div>
+      <div class="gcard g5"><div class="g">5</div><div class="req"><b>63</b> total<br>+ <b>9</b> open-ended</div></div>
+    </div>
+    <div class="callout warn" style="max-width:760px"><b>How it works:</b> the clock starts the moment you begin and runs continuously — switch sections freely with the tabs in the bar. Sections 1 &amp; 2 are graded automatically; Section 3 you grade yourself against the model answers. Finish early any time, or it auto-submits at 0:00.</div>
+    <div style="margin-top:18px"><button class="bigbtn" id="startBtn">Start the 4-hour exam →</button></div>`;
+    v.querySelector('#startBtn').addEventListener('click',()=>{ sample(); startTimer(); sec='s1'; renderSection(); window.scrollTo({top:0,behavior:'smooth'}); });
+  }
+
+  /* ---------- exam bar ---------- */
+  function bar(){
+    const answered=mcqPick.filter(x=>x!==null).length, marked=fePicks.reduce((n,s)=>n+s.size,0), written=oeText.filter(t=>t.trim()).length;
+    const hint = sec==='s1'?`${answered}/20 answered`:sec==='s2'?`${marked} tokens marked`:`${written}/10 written`;
+    return `<div class="mock-bar">
+      <span class="mock-timer ${remaining<=900?'danger':remaining<=1800?'warn':''}" id="mockTimer">${fmt(Math.max(0,remaining))}</span>
+      <div class="mock-secs">
+        <button data-s="s1" class="${sec==='s1'?'on':''}">S1 · MCQ</button>
+        <button data-s="s2" class="${sec==='s2'?'on':''}">S2 · Errors</button>
+        <button data-s="s3" class="${sec==='s3'?'on':''}">S3 · Open</button>
+      </div>
+      <span id="mockHint" style="font-size:12px;color:var(--ink-dim)">${hint}</span>
+      <button class="bigbtn" id="finishBtn" style="margin-left:auto;padding:8px 16px">Finish &amp; grade</button>
+    </div>`;
+  }
+  function updHint(){
+    const el=document.getElementById('mockHint'); if(!el)return;
+    const answered=mcqPick.filter(x=>x!==null).length, marked=fePicks.reduce((n,s)=>n+s.size,0), written=oeText.filter(t=>t.trim()).length;
+    el.textContent = sec==='s1'?`${answered}/20 answered`:sec==='s2'?`${marked} tokens marked`:`${written}/10 written`;
+  }
+  function wireBar(){
+    // stick the bar just beneath the (sticky) app header
+    const hdr=document.querySelector('header.top'), mb=v.querySelector('.mock-bar');
+    if(hdr&&mb) mb.style.top=hdr.offsetHeight+'px';
+    v.querySelectorAll('.mock-secs button').forEach(b=>b.addEventListener('click',()=>{ sec=b.dataset.s; renderSection(); window.scrollTo({top:0,behavior:'smooth'}); }));
+    const fb=v.querySelector('#finishBtn');
+    if(fb) fb.addEventListener('click',confirmFinish);
+  }
+  function confirmFinish(){ if(confirm('Finish the exam and see your results? Sections 1 and 2 are graded automatically; you will self-mark Section 3.')) grade(false); }
+
+  /* ---------- sections ---------- */
+  function secHead(no,title,sub){ return `<div class="hero" style="padding:16px 0 4px"><div class="kicker">Section ${no}</div><h2 style="font-size:26px;font-family:var(--disp)">${title}</h2><p class="lede" style="margin-top:4px">${sub}</p></div>`; }
+  function navBtns(){
+    return `<div class="q-nav" style="margin-top:10px">
+      ${sec!=='s1'?'<button class="bigbtn ghost" id="prevSec">← Previous section</button>':'<div></div>'}
+      <div class="spacer"></div>
+      ${sec!=='s3'?'<button class="bigbtn" id="nextSec">Next section →</button>':'<button class="bigbtn" id="finishBtn2">Finish &amp; grade</button>'}
+    </div>`;
+  }
+  function wireNav(){
+    const p=v.querySelector('#prevSec'), n=v.querySelector('#nextSec'), f=v.querySelector('#finishBtn2');
+    if(p)p.addEventListener('click',()=>{sec=(sec==='s3'?'s2':'s1');renderSection();window.scrollTo({top:0,behavior:'smooth'});});
+    if(n)n.addEventListener('click',()=>{sec=(sec==='s1'?'s2':'s3');renderSection();window.scrollTo({top:0,behavior:'smooth'});});
+    if(f)f.addEventListener('click',confirmFinish);
+  }
+
+  function renderSection(){
+    if(sec==='s1') renderS1();
+    else if(sec==='s2') renderS2();
+    else renderS3();
+    wireBar(); wireNav();
+  }
+
+  function renderS1(){
+    const cards = mcqSet.map((q,i)=>`
+      <div class="q-card" style="margin-bottom:16px">
+        <div class="q-top"><span class="q-counter">Q${i+1} / 20</span><span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span><span class="q-counter" style="margin-left:auto">1 pt</span></div>
+        <div class="q-stem">${q.q}</div>
+        <div class="q-opts" data-q="${i}">
+          ${q.opts.map((o,j)=>`<div class="opt ${mcqPick[i]===j?'sel':''}" data-i="${j}"><span class="ltr">${'ABCD'[j]}</span><span>${o}</span></div>`).join('')}
+        </div>
+      </div>`).join('');
+    v.innerHTML = bar() + secHead(1,'Multiple Choice','Select one answer per question. Click a selected option again to clear it (blank scores 0 — safer than a wrong guess at −0.5).') + cards + navBtns();
+    v.querySelectorAll('.q-opts').forEach(box=>{
+      const qi=+box.dataset.q;
+      box.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{
+        const j=+o.dataset.i;
+        if(mcqPick[qi]===j){ mcqPick[qi]=null; o.classList.remove('sel'); }
+        else { mcqPick[qi]=j; box.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); o.classList.add('sel'); }
+        updHint();
+      }));
+    });
+  }
+
+  function renderS2(){
+    const cards = feSet.map((s,i)=>`
+      <div class="q-card" style="margin-bottom:16px">
+        <div class="q-top"><span class="q-counter">Snippet ${i+1} / 9</span><span class="q-badge ${s.lang}">${s.lang.toUpperCase()}</span><span class="q-counter" style="margin-left:auto">${esc(s.title)}</span></div>
+        <div class="q-stem" style="font-size:14px;color:var(--ink-dim)">Click the specific wrong token(s). Most tokens are correct; circling correct code costs −0.25.</div>
+        <div class="fe-code" data-s="${i}">${feMeta[i].html}</div>
+      </div>`).join('');
+    v.innerHTML = bar() + secHead(2,'Find the Errors','Three snippets each in HTML, CSS and JavaScript. Mark only what is actually wrong.') + cards + navBtns();
+    v.querySelectorAll('.fe-code').forEach(box=>{
+      const si=+box.dataset.s;
+      box.querySelectorAll('.tok').forEach(t=>t.addEventListener('click',()=>{
+        const id=t.dataset.id;
+        if(fePicks[si].has(id)){fePicks[si].delete(id);t.classList.remove('picked');}
+        else{fePicks[si].add(id);t.classList.add('picked');}
+        updHint();
+      }));
+      // restore any prior picks (after a section switch)
+      fePicks[si].forEach(id=>{ const el=box.querySelector('.tok[data-id="'+id+'"]'); if(el)el.classList.add('picked'); });
+    });
+  }
+
+  function renderS3(){
+    const cards = oeSet.map((q,i)=>`
+      <div class="oe-card" style="margin-bottom:16px">
+        <div class="q-top"><span class="q-counter">Q${i+1} / 10</span><span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span><span class="q-counter" style="margin-left:auto">2 pts</span></div>
+        <div class="oe-q">${q.q}</div>
+        <textarea class="oe-area" data-q="${i}" placeholder="Write your answer…">${esc(oeText[i]||'')}</textarea>
+      </div>`).join('');
+    v.innerHTML = bar() + secHead(3,'Open-Ended','Answer only what each question asks. You will self-mark these against the model answers when you finish.') + cards + navBtns();
+    v.querySelectorAll('.oe-area').forEach(t=>t.addEventListener('input',()=>{ oeText[+t.dataset.q]=t.value; updHint(); }));
+  }
+
+  /* ---------- grading + review ---------- */
+  function grade(timeUp){
+    stopTimer();
+    let s1=0,c=0,w=0,bl=0;
+    mcqSet.forEach((q,i)=>{ const p=mcqPick[i]; if(p===null){bl++;} else if(p===q.c){s1+=1;c++;} else {s1-=0.5;w++;} });
+    s1=Math.max(0,s1);
+    let found=0,wrong=0,totErr=0;
+    feSet.forEach((s,i)=>{ const m=feMeta[i]; totErr+=m.errCount; fePicks[i].forEach(id=>{ if(m.errIds.has(id))found++; else wrong++; }); });
+    const s2 = totErr ? Math.max(0,found-0.25*wrong)/totErr*30 : 0;
+    gradeData={timeUp,s1,c,w,bl,found,wrong,totErr,s2};
+    renderReview();
+  }
+
+  function s3total(){ return oeScore.reduce((n,x)=>n+(x||0),0); }
+  function gradeOf(total,s3){
+    if(total>=63 && s3>=9) return 5;
+    if(total>=53 && s3>=7) return 4;
+    if(total>=42 && s3>=5) return 3;
+    return 0;
+  }
+  function scorecard(){
+    const s3=s3total(), total=gradeData.s1+gradeData.s2+s3, g=gradeOf(total,s3);
+    const gColor = g>=5?'var(--grn)':g>=4?'var(--grn-soft)':g>=3?'var(--amber)':'var(--red)';
+    const marked = oeScore.filter(x=>x!==null).length;
+    let gate;
+    if(g===0){
+      gate = total<42 ? `Total <b>${total.toFixed(1)}</b> is below the 42-point pass line.`
+                      : `Total <b>${total.toFixed(1)}</b> clears 42, but open-ended <b>${s3}/20</b> is below the 5-point gate — not a pass yet.`;
+    } else {
+      gate = `<b>Grade ${g}</b> secured.` + (g<5?` Next up — grade ${g+1}: ${g===3?53:63} total and ${g===3?7:9} open-ended.`:` Top marks. 🏆`);
+    }
+    if(marked<10) gate += ` <span style="color:var(--ink-dim)">(${marked}/10 open-ended marked — finish marking for your final grade.)</span>`;
+    return `<div class="mock-score">
+      <div class="mock-grade" style="color:${gColor}">${g===0?'U':g}</div>
+      <div class="pct" style="margin-top:4px;font-size:16px">${total.toFixed(1)} / 70${gradeData.timeUp?' · ⏰ time expired':''}</div>
+      <div class="mock-breakdown">
+        <div class="mb"><b>${gradeData.s1.toFixed(1)}</b><span>S1 · MCQ /20<br>${gradeData.c}✓ · ${gradeData.w}✗ · ${gradeData.bl} blank</span></div>
+        <div class="mb"><b>${gradeData.s2.toFixed(1)}</b><span>S2 · Errors /30<br>${gradeData.found}/${gradeData.totErr} found · ${gradeData.wrong} wrong</span></div>
+        <div class="mb"><b>${s3}</b><span>S3 · Open /20<br>${marked}/10 self-marked</span></div>
+      </div>
+      <div class="mock-gate" style="color:${g===0?'var(--amber)':'var(--grn-soft)'}">${gate}</div>
+    </div>`;
+  }
+
+  function renderReview(){
+    stopTimer();
+    const s3cards = oeSet.map((q,i)=>`
+      <div class="oe-card" style="margin-bottom:16px">
+        <div class="q-top"><span class="q-counter">Q${i+1}</span><span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span><span class="q-counter" style="margin-left:auto">self-mark /2</span></div>
+        <div class="oe-q">${q.q}</div>
+        <div class="your-ans">${oeText[i] && oeText[i].trim() ? esc(oeText[i]) : '(left blank)'}</div>
+        <div class="model show"><h5>★ Model answer</h5>${q.model.map(p=>`<p>${p}</p>`).join('')}<div class="rubric"><b>Credit for:</b><ul>${q.rubric.map(r=>`<li>${r}</li>`).join('')}</ul></div></div>
+        <div class="oe-mark" data-q="${i}"><span style="color:var(--ink-dim);font-size:12.5px;margin-right:4px">Your score:</span>
+          <button data-v="0" class="${oeScore[i]===0?'on':''}">0</button>
+          <button data-v="1" class="${oeScore[i]===1?'on':''}">1</button>
+          <button data-v="2" class="${oeScore[i]===2?'on':''}">2</button>
+        </div>
+      </div>`).join('');
+
+    const s1cards = mcqSet.map((q,i)=>{ const p=mcqPick[i], ok=p===q.c;
+      return `<div class="q-card" style="margin-bottom:14px">
+        <div class="q-top"><span class="q-counter">Q${i+1}</span><span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span>
+          <span class="q-counter" style="margin-left:auto;color:${p===null?'var(--ink-dim)':ok?'var(--ok)':'var(--red)'}">${p===null?'blank · 0':ok?'+1':'−0.5'}</span></div>
+        <div class="q-stem">${q.q}</div>
+        <div class="q-opts">${q.opts.map((o,j)=>{ let cls='opt dim'; if(j===q.c)cls='opt correct'; if(j===p&&!ok)cls='opt wrong';
+          return `<div class="${cls}"><span class="ltr">${'ABCD'[j]}</span><span>${o}</span></div>`;}).join('')}</div>
+        <div class="explain show"><p>${q.ex}</p></div>
+      </div>`; }).join('');
+
+    const s2cards = feSet.map((s,i)=>{ const m=feMeta[i];
+      const f=[...fePicks[i]].filter(id=>m.errIds.has(id)).length, wr=[...fePicks[i]].filter(id=>!m.errIds.has(id)).length;
+      return `<div class="q-card" style="margin-bottom:14px">
+        <div class="q-top"><span class="q-counter">Snippet ${i+1}</span><span class="q-badge ${s.lang}">${s.lang.toUpperCase()}</span>
+          <span class="q-counter" style="margin-left:auto">${f}/${m.errCount} found · ${wr} wrong</span></div>
+        <div class="fe-code">${reviewTokens(s,i)}</div>
+        <div class="errlist show"><h5>Errors in this snippet</h5>${Object.keys(m.reasons).map(id=>`<div class="ei">${m.reasons[id]}</div>`).join('')}</div>
+      </div>`; }).join('');
+
+    v.innerHTML = `
+      <div class="hero" style="padding:26px 0 4px"><div class="kicker">Mock exam · results</div><h2 style="font-size:28px;font-family:var(--disp)">Your result</h2></div>
+      <div id="mockScore">${scorecard()}</div>
+      <div class="mock-yan">Section 3 · self-mark your answers</div>
+      <p class="lede" style="font-size:14px;margin:6px 0 12px">Compare each answer to the model and award <b>0</b>, <b>1</b>, or <b>2</b>. Your total and grade update live above.</p>
+      ${s3cards}
+      <div class="mock-yan">Section 1 · MCQ review</div>${s1cards}
+      <div class="mock-yan">Section 2 · error review</div>${s2cards}
+      <div style="margin:26px 0;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="bigbtn" id="retake">↻ Retake mock (new questions)</button>
+        <button class="bigbtn ghost" onclick="go('study')">Back to study</button>
+        <button class="bigbtn ghost" onclick="go('home')">Overview</button>
+      </div>`;
+    v.querySelectorAll('.oe-mark').forEach(box=>{ const qi=+box.dataset.q;
+      box.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+        oeScore[qi]=+b.dataset.v;
+        box.querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+        document.getElementById('mockScore').innerHTML=scorecard();
+      }));
+    });
+    v.querySelector('#retake').addEventListener('click',()=>{ sample(); startTimer(); sec='s1'; renderSection(); window.scrollTo({top:0,behavior:'smooth'}); });
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  intro();
 })();
 
 /* ===== inlined: cheat-sheet.js ===== */
