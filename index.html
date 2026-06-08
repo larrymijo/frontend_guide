@@ -30,7 +30,7 @@ body{
 }
 a{color:var(--grn-soft)}
 .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
-
+ 
 /* ---------- top bar ---------- */
 header.top{
   position:sticky;top:0;z-index:50;
@@ -51,7 +51,7 @@ header.top{
 .progress-mini{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--ink-dim);font-family:var(--mono)}
 .pbar{width:128px;height:7px;border-radius:99px;background:var(--panel2);overflow:hidden}
 .pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--grn-deep),var(--grn));transition:width .5s ease;border-radius:99px}
-
+ 
 /* ---------- nav tabs ---------- */
 nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 22px;max-width:1180px;margin:0 auto;scrollbar-width:none}
 nav.tabs::-webkit-scrollbar{display:none}
@@ -62,13 +62,13 @@ nav.tabs::-webkit-scrollbar{display:none}
 .tab:hover{color:var(--ink);border-color:#3a4655}
 .tab.active{background:linear-gradient(135deg,var(--grn),var(--grn-deep));color:#0c1408;border-color:transparent;font-weight:700}
 .tab .em{font-size:14px;margin-right:5px}
-
+ 
 /* ---------- views ---------- */
 .view{display:none;animation:fade .4s ease}
 .view.show{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 section.block{padding:34px 0 8px}
-
+ 
 /* hero */
 .hero{padding:46px 0 22px}
 .hero .kicker{font-family:var(--mono);color:var(--grn);font-size:12.5px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px}
@@ -78,7 +78,7 @@ section.block{padding:34px 0 8px}
 .exam-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .chip{border:1px solid var(--line);background:var(--panel);border-radius:11px;padding:11px 15px;font-size:13px;display:flex;align-items:center;gap:9px}
 .chip b{font-family:var(--mono);color:var(--grn-soft)}
-
+ 
 /* section structure cards */
 .struct{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
 .scard{border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),var(--bg2));border-radius:16px;padding:22px;position:relative;overflow:hidden}
@@ -88,7 +88,7 @@ section.block{padding:34px 0 8px}
 .scard .pts{font-family:var(--mono);font-size:13px;color:var(--accent,var(--grn-soft));font-weight:700}
 .scard p{font-size:13.5px;color:var(--ink-dim);margin-top:9px}
 .scard .scoring{margin-top:13px;font-size:12px;font-family:var(--mono);color:var(--ink-dim);border-top:1px dashed var(--line);padding-top:11px}
-
+ 
 /* grade ladder */
 .grades{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
 .gcard{border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center;background:var(--panel)}
@@ -96,14 +96,14 @@ section.block{padding:34px 0 8px}
 .gcard.g3 .g{color:var(--blue)} .gcard.g4 .g{color:var(--amber)} .gcard.g5 .g{color:var(--grn)}
 .gcard .req{font-size:13px;margin-top:8px;color:var(--ink-dim)}
 .gcard .req b{color:var(--ink);font-family:var(--mono)}
-
+ 
 /* generic heading */
 .sec-head{display:flex;align-items:baseline;gap:14px;margin:4px 0 20px}
 .sec-head h2{font-family:var(--disp);font-size:30px;font-weight:900;letter-spacing:-.7px}
 .sec-head .tag{font-family:var(--mono);font-size:12px;color:var(--grn);border:1px solid var(--line);padding:4px 10px;border-radius:99px}
 .sec-head p{color:var(--ink-dim);font-size:14px}
 .lede{color:var(--ink-dim);font-size:15px;max-width:720px;margin-bottom:24px}
-
+ 
 /* topic accordions */
 .topic{border:1px solid var(--line);border-radius:14px;margin-bottom:13px;background:var(--panel);overflow:hidden;transition:.2s}
 .topic.open{border-color:#3c4a5b;box-shadow:var(--shadow)}
@@ -127,7 +127,7 @@ kbd,code.inl{font-family:var(--mono);font-size:.86em;background:var(--bg);border
 .callout.tip{border-color:var(--grn);background:rgba(126,198,74,.07)}
 .callout.warn{border-color:var(--red);background:rgba(239,95,95,.07)}
 .callout b{color:#fff}
-
+ 
 /* code blocks */
 pre.code{font-family:var(--mono);font-size:13px;background:#0a0c10;border:1px solid var(--line);border-radius:11px;padding:15px 16px;overflow-x:auto;margin:12px 0;line-height:1.6;position:relative}
 pre.code .cm{color:#5f6b7a;font-style:italic}
@@ -138,13 +138,13 @@ pre.code .at{color:#f4b740}
 pre.code .fn{color:#7ec64a}
 pre.code .num{color:#f4b740}
 .code-label{position:absolute;top:8px;right:12px;font-size:10px;color:var(--ink-dim);letter-spacing:1px;text-transform:uppercase}
-
+ 
 /* compare table */
 .ctable{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
 .ctable th,.ctable td{border:1px solid var(--line);padding:10px 13px;text-align:left;vertical-align:top}
 .ctable th{background:var(--bg2);font-family:var(--mono);font-size:12px;color:var(--grn-soft);font-weight:700}
 .ctable td code{color:var(--blue)}
-
+ 
 /* ===== PLAYGROUND ===== */
 .pg-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
 .pg-pane{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden;display:flex;flex-direction:column;min-height:440px}
@@ -167,7 +167,7 @@ pre.code .num{color:#f4b740}
 .snip-pick{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
 .snip{font-size:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink-dim);padding:7px 12px;border-radius:9px;cursor:pointer;transition:.15s}
 .snip:hover{color:var(--ink);border-color:#3a4655}
-
+ 
 /* ===== QUIZ ===== */
 .quiz-setup{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:6px 0 22px}
 .qmode{border:1px solid var(--line);border-radius:14px;padding:20px;cursor:pointer;transition:.18s;background:var(--panel);text-align:left}
@@ -204,7 +204,7 @@ pre.code .num{color:#f4b740}
 .bigbtn:hover{filter:brightness(1.08)}
 .bigbtn.ghost{background:var(--panel);border:1px solid var(--line);color:var(--ink)}
 .bigbtn:disabled{opacity:.4;cursor:not-allowed}
-
+ 
 /* find-error quiz */
 .fe-code{font-family:var(--mono);font-size:13.5px;background:#0a0c10;border:1px solid var(--line);border-radius:12px;padding:18px;line-height:1.85;margin:14px 0;white-space:pre;overflow-x:auto}
 .tok{cursor:pointer;border-radius:4px;padding:1px 2px;transition:.12s;border:1px solid transparent}
@@ -221,7 +221,7 @@ pre.code .num{color:#f4b740}
 .errlist .ei{font-size:13.5px;margin:8px 0;padding-left:20px;position:relative;color:#d2d9e2}
 .errlist .ei::before{content:'✕';position:absolute;left:0;color:var(--red);font-weight:700}
 .errlist .ei code{font-family:var(--mono);background:var(--bg);padding:1px 5px;border-radius:4px;color:var(--amber)}
-
+ 
 /* open-ended */
 .oe-card{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:24px;margin-bottom:16px}
 .oe-q{font-size:16px;font-weight:500;line-height:1.5;margin-bottom:6px}
@@ -237,13 +237,13 @@ pre.code .num{color:#f4b740}
 .model ul{margin:8px 0 0 4px;list-style:none}
 .model li{font-size:13.5px;margin:6px 0;padding-left:22px;position:relative;color:#cfd6e0}
 .model li::before{content:'✓';position:absolute;left:2px;color:var(--ok)}
-
+ 
 /* results */
 .result{text-align:center;padding:30px}
 .result .score{font-family:var(--disp);font-size:74px;font-weight:900;line-height:1}
 .result .pct{color:var(--ink-dim);font-family:var(--mono);margin-top:6px}
 .result .verdict-grade{font-family:var(--disp);font-size:24px;margin-top:18px}
-
+ 
 /* cheat sheet */
 .cheat-grid{columns:2;column-gap:16px}
 @media(max-width:760px){.cheat-grid{columns:1}}
@@ -253,9 +253,9 @@ pre.code .num{color:#f4b740}
 .cheat dt{font-family:var(--mono);color:var(--grn-soft);margin-top:9px;font-size:12.5px}
 .cheat dd{color:var(--ink-dim);margin:2px 0 0}
 .cheat dd code{color:var(--blue);font-family:var(--mono)}
-
+ 
 footer.foot{border-top:1px solid var(--line);margin-top:50px;padding:26px 0;text-align:center;color:var(--ink-dim);font-size:12.5px}
-
+ 
 @media(max-width:860px){
   .struct,.grades{grid-template-columns:1fr}
   .pg-grid{grid-template-columns:1fr}
@@ -266,22 +266,22 @@ footer.foot{border-top:1px solid var(--line);margin-top:50px;padding:26px 0;text
 <body>
 <!-- content injected below -->
 <div id="app"></div>
-
+ 
 <script>
-
+ 
 /* ===== inlined: data-topics.js ===== */
 /* ============================================================
    DA218D EXAM LAB — DATA
    Topic content + question banks (MCQ, find-error, open-ended)
    ============================================================ */
-
+ 
 /* ---------- robust syntax highlighter (placeholder-based: inserted
    markup is stashed so later passes can never re-match it) ---------- */
 function hl(code, lang){
   const slots = [];
   const mk = (cls, txt) => { slots.push('<span class="'+cls+'">'+txt+'</span>'); return '\uE000'+String.fromCharCode(0xE100 + slots.length - 1); };
   let s = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
+ 
   if(lang==='html'){
     s = s.replace(/&lt;!--[\s\S]*?--&gt;/g, m => mk('cm', m));
     s = s.replace(/&lt;!DOCTYPE[^&]*&gt;/gi, m => mk('kw', m));
@@ -304,7 +304,7 @@ function hl(code, lang){
   }
   return s.replace(/\uE000([\uE100-\uF8FF])/g, (m, c) => slots[c.charCodeAt(0) - 0xE100]);
 }
-
+ 
 /* =====================================================================
    STUDY TOPICS  (organized by exam domain)
    ===================================================================== */
@@ -414,10 +414,10 @@ const TOPICS = {
   <label for="email">Email</label>      <!-- for="email" links to the input's id -->
   <input type="email" id="email" name="email" required>
   <!--          ▲ validates format   ▲ name = key sent to the server -->
-
+ 
   <label for="msg">Message</label>
   <textarea id="msg" name="msg"></textarea>   <!-- needs a closing tag -->
-
+ 
   <button type="submit">Send</button>
 </form>`,'html')}</pre>
         <h4>Key points</h4>
@@ -430,7 +430,7 @@ const TOPICS = {
         <div class="callout warn"><b>Trap:</b> nesting a block element like <code class="inl">&lt;a&gt;</code> wrongly, or putting interactive controls inside each other (<code class="inl">&lt;button&gt;&lt;a&gt;...&lt;/a&gt;&lt;/button&gt;</code> is invalid — a button shouldn't wrap a link).</div>`
     }
   ],
-
+ 
   css:[
     {
       id:'css-basics', ico:'🎨', lec:'Lec 5', title:'Selectors, properties & the cascade',
@@ -553,7 +553,7 @@ const TOPICS = {
         <div class="callout tip"><b>Performance:</b> animate <code class="inl">transform</code> and <code class="inl">opacity</code> — they're GPU-composited and avoid layout/paint. Avoid animating <code class="inl">width</code>/<code class="inl">top</code>/<code class="inl">margin</code>. Respect <code class="inl">@media (prefers-reduced-motion: reduce)</code> for accessibility.</div>`
     }
   ],
-
+ 
   js:[
     {
       id:'js-oop', ico:'🧠', lec:'Lec 1–2', title:'OOP fundamentals: the four pillars',
@@ -573,7 +573,7 @@ class BankAccount {
   deposit(amount) { this.#balance += amount; }   // public interface
   get balance() { return this.#balance; }
 }
-
+ 
 // Inheritance + polymorphism
 class Shape { area() { return 0; } }
 class Circle extends Shape {
@@ -709,7 +709,7 @@ el.classList.toggle('active');`,'javascript')}</pre>
         <pre class="code"><span class="code-label">javascript</span>${hl(`alert('Hi');                         // simple message box
 const ok = confirm('Delete?');       // returns true/false
 const name = prompt('Your name?');   // returns the typed string or null
-
+ 
 const id = setTimeout(() => run(), 1000);   // once, after 1s
 clearTimeout(id);
 const t = setInterval(tick, 1000);          // repeatedly, every 1s
@@ -789,7 +789,7 @@ btn.addEventListener('click', function (event) {
         <pre class="code"><span class="code-label">javascript</span>${hl(`// math.js
 export const mul = (a, b) => a * b;     // named export
 export default function add(a,b){ return a+b; }  // default
-
+ 
 // main.js
 import add, { mul } from './math.js';`,'javascript')}</pre>
         <table class="ctable">
@@ -807,14 +807,14 @@ import add, { mul } from './math.js';`,'javascript')}</pre>
     }
   ]
 };
-
+ 
 /* topic group meta */
 const TOPIC_GROUPS = [
   {key:'html', label:'HTML', accent:'#e88'},
   {key:'css',  label:'CSS',  accent:'#5bb0e6'},
   {key:'js',   label:'JavaScript', accent:'#f4b740'}
 ];
-
+ 
 /* ===== inlined: data-mcq.js ===== */
 /* ============================================================
    MCQ BANK  — c:correct index, src:'past'|'new'|'mod'
@@ -852,7 +852,7 @@ const MCQ = [
   {tag:'html', src:'past', q:'Which tag defines an unordered list?',
    opts:['<code>&lt;ul&gt;</code>','<code>&lt;ol&gt;</code>','<code>&lt;li&gt;</code>','<code>&lt;dl&gt;</code>'], c:0,
    ex:'<code>&lt;ul&gt;</code> = unordered (bullets). <code>&lt;ol&gt;</code> = ordered (numbers), <code>&lt;li&gt;</code> = a list item, <code>&lt;dl&gt;</code> = description list.'},
-
+ 
   /* ---------- JavaScript (from past papers) ---------- */
   {tag:'js', src:'past', q:'Which is the correct way to declare a function?',
    opts:['<code>function myFunction() { return 5; }</code>','<code>function: myFunction() { return 5; }</code>','<code>let myFunction() => { return 5; }</code>','<code>function myFunction[] { return 5; }</code>'], c:0,
@@ -884,7 +884,7 @@ const MCQ = [
   {tag:'js', src:'past', q:'Which correctly fetches data from an API?',
    opts:["<code>fetch(url).then(res =&gt; res.json()).then(data =&gt; console.log(data));</code>","<code>fetchAPI(url).parseJSON().then(...)</code>","<code>fetch(url).then(res =&gt; res.text()).then(...)</code> (for JSON data)","<code>get(url).then(data =&gt; console.log(data));</code>"], c:0,
    ex:'The standard pattern is <code>fetch(url).then(res =&gt; res.json())</code>. Option C uses <code>.text()</code> which won’t parse JSON; <code>fetchAPI</code> and <code>get</code> aren’t real fetch APIs.'},
-
+ 
   /* ---------- NEW / MODIFIED (likely variants) ---------- */
   {tag:'js', src:'new', q:'What does the nullish coalescing operator <code>??</code> return in <code>let x = a ?? b;</code>?',
    opts:['<code>b</code> only if <code>a</code> is falsy (0, "", false, null, undefined)','<code>b</code> only if <code>a</code> is <code>null</code> or <code>undefined</code>','Always <code>a</code>','<code>a &amp;&amp; b</code>'], c:1,
@@ -932,7 +932,7 @@ const MCQ = [
    opts:['<code>&lt;!DOCTYPE html&gt;</code>','<code>&lt;!DOCTYPE HTML5&gt;</code>','<code>&lt;!DOCTYPE&gt;</code>','<code>&lt;doctype html&gt;</code>'], c:0,
    ex:'It’s exactly <code>&lt;!DOCTYPE html&gt;</code>. Omitting <code>html</code> or writing <code>HTML5</code> is invalid and can trigger quirks mode in browsers.'}
 ];
-
+ 
 /* ===== inlined: data-mcq-extra.js ===== */
 /* ============================================================
    MCQ BANK — EXPANSION
@@ -954,7 +954,7 @@ MCQ.push(
   {tag:'js', src:'new', q:'In JavaScript, ES6 <code>class</code> syntax is best described as:',
    opts:['A brand-new inheritance model that replaces prototypes','Syntactic sugar over JavaScript’s existing prototype-based inheritance','A way to define private modules','Only valid when you avoid the <code>new</code> keyword'], c:1,
    ex:'Classes are <b>syntactic sugar</b>: methods still live on the prototype, <code>extends</code> wires the prototype chain, and <code>super</code> calls the parent. JS did not gain a new inheritance model. Modules are unrelated, and you still instantiate classes with <code>new</code>.'},
-
+ 
   /* ---------------- Window / BOM (Lec 10) ---------------- */
   {tag:'js', src:'new', q:'What is the correct argument order for <code>setTimeout</code>?',
    opts:['<code>setTimeout(delay, callback)</code>','<code>setTimeout(callback, delay)</code>','<code>setTimeout(callback())</code>','<code>setTimeout(delay)</code>'], c:1,
@@ -968,7 +968,7 @@ MCQ.push(
   {tag:'js', src:'new', q:'How do you redirect the browser to a new URL in JavaScript?',
    opts:['<code>window.redirect("/x")</code>','<code>document.url = "/x"</code>','<code>window.location.href = "/x"</code>','<code>window.navigate("/x")</code>'], c:2,
    ex:'Assigning to <code>location.href</code> navigates the page. The other three are not real APIs.'},
-
+ 
   /* ---------------- HTML (Lec 3–4) ---------------- */
   {tag:'html', src:'new', q:'Which of these is a <b>void</b> element (no closing tag)?',
    opts:['<code>&lt;div&gt;</code>','<code>&lt;p&gt;</code>','<code>&lt;img&gt;</code>','<code>&lt;span&gt;</code>'], c:2,
@@ -985,7 +985,7 @@ MCQ.push(
   {tag:'html', src:'new', q:'Where must <code>&lt;meta&gt;</code> and <code>&lt;title&gt;</code> elements be placed?',
    opts:['Inside <code>&lt;body&gt;</code>','Inside the <code>&lt;header&gt;</code> landmark','Inside <code>&lt;head&gt;</code>','Anywhere in the document'], c:2,
    ex:'Metadata lives in <code>&lt;head&gt;</code>. <code>&lt;header&gt;</code> is a <i>visible</i> body landmark (banner/intro) — a classic trap is confusing <code>&lt;head&gt;</code> with <code>&lt;header&gt;</code>.'},
-
+ 
   /* ---------------- CSS (Lec 5–6) ---------------- */
   {tag:'css', src:'new', q:'With <code>box-sizing: border-box;</code>, how wide is an element set to <code>width: 200px</code> with <code>20px</code> padding on each side?',
    opts:['240px','220px','200px','180px'], c:2,
@@ -1011,7 +1011,7 @@ MCQ.push(
   {tag:'css', src:'new', q:'Which is the correct shorthand to centre flex items on both axes?',
    opts:['<code>justify-content: center; align-items: center;</code>','<code>text-align: center; vertical-align: middle;</code>','<code>align: center center;</code>','<code>flex-center: both;</code>'], c:0,
    ex:'In a flex container, <code>justify-content</code> centres along the main axis and <code>align-items</code> along the cross axis. <code>text-align</code>/<code>vertical-align</code> are for inline/text flow, and the other two aren’t real.'},
-
+ 
   /* ---------------- JavaScript core (Lec 7–13) ---------------- */
   {tag:'js', src:'new', q:'What does <code>typeof null</code> return?',
    opts:['<code>"null"</code>','<code>"object"</code>','<code>"undefined"</code>','<code>"number"</code>'], c:1,
@@ -1071,14 +1071,16 @@ MCQ.push(
    opts:['3','4','<code>undefined</code>','TypeError — <code>a</code> is <code>const</code>'], c:1,
    ex:'<code>push</code> appends <code>4</code>, so <code>length</code> is <b>4</b>. Crucially, <code>const</code> forbids <i>reassigning</i> the binding (<code>a = …</code>), but you <b>can</b> mutate the array’s contents — so no error.'}
 );
-
+ 
 /* ===== inlined: data-fe.js ===== */
 /* ============================================================
-   FIND-THE-ERROR BANK
-   Each snippet: lang, src, lines[] where a line is either a
-   plain string OR an array of segments; an error segment is
-   {t:'text', err:true, why:'explanation'}.
-   Correct tokens are plain strings (clicking them = penalty).
+   FIND-THE-ERROR BANK  (token-level)
+   A line is either:
+     • a plain string  -> all correct, every word is a clickable decoy
+     • {code:'full line', errs:[{e:'exact wrong substring', why:'...'}]}
+        -> the engine isolates each `e` as a clickable ERROR token,
+           the rest of the line becomes clickable CORRECT tokens.
+   Circling a correct token costs -0.25 (mirrors the real exam).
    ============================================================ */
 const FE = [
   /* ---------------- HTML ---------------- */
@@ -1086,15 +1088,15 @@ const FE = [
     lang:'html', src:'past', title:'HTML — landing page',
     lines:[
       '<!DOCTYPE html>',
-      [{t:'<html lang="english">',err:true,why:'lang takes a 2-letter code: lang="en", not "english".'}],
+      {code:'<html lang="english">', errs:[{e:'lang="english"', why:'lang takes a 2-letter code: lang="en", not "english".'}]},
       '<head>',
       '  <meta charset="UTF-8">',
-      [{t:'  <css rel="stylesheet" href="style.css">',err:true,why:'Stylesheets load via <link>, not an invented <css> tag.'}],
+      {code:'  <css rel="stylesheet" href="style.css">', errs:[{e:'<css', why:'Stylesheets load via the <link> element, not an invented <css> tag.'}]},
       '</head>',
       '<body>',
       '  <h1>Welcome to My Website</h1>',
-      [{t:'  <p>This is text with <a href="page.html">link</p>',err:true,why:'The <a> is closed by </p> — the </a> is missing before </p>. The link is left open.'}],
-      [{t:'  <img href="image.jpg" alt="My Image">',err:true,why:'<img> uses src, not href, to set the source.'}],
+      {code:'  <p>This is text with <a href="page.html">link</p>', errs:[{e:'</p>', why:'The <a> is never closed — a </a> is needed before this </p>. The link is left open.'}]},
+      {code:'  <img href="image.jpg" alt="My Image">', errs:[{e:'href="image.jpg"', why:'<img> uses src, not href, to set the source: src="image.jpg".'}]},
       '</body>',
       '</html>'
     ]
@@ -1108,13 +1110,13 @@ const FE = [
       '  <title>Sample Page</title>',
       '</head>',
       '<body>',
-      [{t:'  <h1>Welcome</h2>',err:true,why:'Mismatched tags: opened <h1> but closed </h2>.'}],
+      {code:'  <h1>Welcome</h2>', errs:[{e:'</h2>', why:'Mismatched tags: opened <h1> but closed </h2>.'}]},
       '  <ul>',
-      [{t:'    <li>Item 1',err:true,why:'This <li> is never closed with </li>.'}],
+      {code:'    <li>Item 1', errs:[{e:'<li>', why:'This <li> is never closed with </li> (the closing tag is missing).'}]},
       '    <li>Item 2</li>',
       '    <li>Item 3</li>',
-      [{t:'  </ol>',err:true,why:'List opened with <ul> must close with </ul>, not </ol>.'}],
-      [{t:'  <button><a href="/click">BUY</a></button>',err:true,why:'A <button> must not wrap an <a> — interactive elements can’t be nested like this.'}],
+      {code:'  </ol>', errs:[{e:'</ol>', why:'A list opened with <ul> must close with </ul>, not </ol>.'}]},
+      {code:'  <button><a href="/click">BUY</a></button>', errs:[{e:'<a', why:'A <button> must not contain an <a> — interactive elements cannot be nested like this.'}]},
       '</body>',
       '</html>'
     ]
@@ -1125,129 +1127,24 @@ const FE = [
       '<!DOCTYPE html>',
       '<html lang="en">',
       '<body>',
-      [{t:'<header>',err:true,why:'<meta>/<title> are metadata and belong in <head>, not the visible <header> landmark.'}],
+      {code:'<header>', errs:[{e:'<header>', why:'<meta>/<title> are metadata and belong in <head>, not the visible <header> landmark.'}]},
       '    <meta charset="UTF-8">',
       '    <title>Contact Us</title>',
       '   <section id="contact-form">',
       '       <h1>Contact Us</h1>',
       '       <form>',
-      [{t:'          <label for="text">Name</label>',err:true,why:'for="text" doesn’t match any input id — the matching input below has id="name".'}],
+      {code:'          <label for="text">Name</label>', errs:[{e:'for="text"', why:'for="text" matches no input id — the matching input below has id="name".'}]},
       '          <input type="text" id="name" required>',
       '          <label for="email">Email</label>',
       '          <input type="email" id="email" required>',
       '          <label for="message">Message</label>',
-      [{t:'          <textarea id="message" required><textarea>',err:true,why:'A <textarea> must be closed with </textarea> (a closing slash), not a second opening <textarea>.'}],
+      {code:'          <textarea id="message" required><textarea>', errs:[{e:'<textarea>', why:'A <textarea> must be closed with </textarea>, not a second opening <textarea>.'}]},
       '          <button type="submit">Send</button>',
       '       </form>',
       '    </section>',
       '</body>'
     ]
   },
-
-  /* ---------------- CSS ---------------- */
-  {
-    lang:'css', src:'past', title:'CSS — base styles',
-    lines:[
-      'body {',
-      [{t:'    font-type: Arial, sans-serif;',err:true,why:'No such property. The font family is set with font-family.'}],
-      '    background: #f0f0f0;',
-      '}',
-      '#main-content h2 {',
-      '    color: #333;',
-      [{t:'    margin-top: 0px',err:true,why:'Missing semicolon at the end of the declaration.'}],
-      '    padding: 20px 0;',
-      '}',
-      'a:hover {',
-      '    color: #0088cc;',
-      [{t:'    underliner: underline;',err:true,why:'Not a real property — underlines use text-decoration: underline;.'}],
-      '}'
-    ]
-  },
-  {
-    lang:'css', src:'past', title:'CSS — container & feedback',
-    lines:[
-      '.container {',
-      '    width: 80%;',
-      '    margin: 0 auto;',
-      [{t:'    padding: 20px 0 20px 0 20px 0;',err:true,why:'padding takes at most 4 values (top right bottom left). Six values are invalid.'}],
-      '}',
-      'h1 {',
-      [{t:'    font-size: 24;',err:true,why:'A length needs a unit: 24px (or rem, etc.). A bare number is invalid for font-size.'}],
-      '    color: #000;',
-      [{t:'    margin-bottom: 20px',err:true,why:'Missing semicolon — and the rule’s closing } is also missing below.'}],
-      [{t:'.invalid-feedback {',err:true,why:'Because the h1 block was never closed with }, this selector is nested/broken.'}],
-      '    color: red;',
-      [{t:'    display; none;',err:true,why:'A declaration uses a colon: display: none; (a semicolon after the property is wrong).'}],
-      '}'
-    ]
-  },
-  {
-    lang:'css', src:'mod', title:'CSS — navbar',
-    lines:[
-      '.navbar {',
-      [{t:'    background-img: #333;',err:true,why:'No such property. Use background-color for a colour (or background-image for an image).'}],
-      [{t:'    overflow: hide-x-axis;',err:true,why:'Invalid. To clip horizontal overflow use overflow-x: hidden;.'}],
-      '}',
-      '.navbar a {',
-      [{t:'    float: top;',err:true,why:'float only accepts left, right, or none — never top/down.'}],
-      '    color: white;',
-      '    text-align: center;',
-      '    padding: 14px 16px;',
-      '    text-decoration: none;',
-      '}',
-      '.active {',
-      '    background-color: #4CAF50;',
-      '}'
-    ]
-  },
-
-  /* ---------------- JavaScript ---------------- */
-  {
-    lang:'js', src:'past', title:'JavaScript — area calculator',
-    lines:[
-      'function calculateArea(width, height) {',
-      [{t:'    const area = width * height;',err:true,why:'area is declared const but reassigned on the next line — that throws a TypeError. Use let.'}],
-      '    area *= 2;',
-      '    return area;',
-      [{t:'})',err:true,why:'The function body closes with } only — the extra ) is a stray bracket (and a ; is conventional).'}],
-      [{t:"document.getElementsByDiv('area')",err:true,why:'No such method. Use getElementById / querySelector to select an element.'}],
-      [{t:'    .textContent = calculateArea[5, 10];',err:true,why:'Functions are called with parentheses calculateArea(5, 10), not square brackets.'}]
-    ]
-  },
-  {
-    lang:'js', src:'past', title:'JavaScript — colour loop',
-    lines:[
-      "const colors = ['Red', 'Green', 'Blue']",
-      [{t:'for(let i = 0, i < colors.length; i++) {',err:true,why:'A for header uses semicolons between its three parts. The comma after i = 0 should be a semicolon.'}],
-      [{t:"    colors.add('Orange');",err:true,why:'Arrays have no add() method — use push() to append.'}],
-      [{t:'    console.log(colors(i));',err:true,why:'Index access uses brackets colors[i], not parentheses colors(i).'}],
-      '}',
-      [{t:'if (colors.length >> 3) {',err:true,why:'>> is a bitwise right-shift, not a comparison. Use > (greater-than).'}],
-      [{t:'    colors = "red";',err:true,why:'colors is const — reassigning the binding throws a TypeError.'}],
-      '}'
-    ]
-  },
-  {
-    lang:'js', src:'mod', title:'JavaScript — toggle handler',
-    lines:[
-      [{t:'func toggleClass() {',err:true,why:'The keyword is function, not func.'}],
-      "    const el = document.getElementById('target');",
-      "    el.classList.toggle('active');",
-      [{t:"    el.textContent = el.classList.contains('active') & 'On' : 'Off';",err:true,why:'A ternary needs ? not &: condition ? a : b.'}],
-      '}',
-      [{t:"document.getElementById('btn').createEventListener('click', toggleClass);",err:true,why:'The method is addEventListener, not createEventListener.'}]
-    ]
-  }
-];
-
-/* ===== inlined: data-fe-extra.js ===== */
-/* ============================================================
-   FIND-THE-ERROR BANK — EXPANSION
-   Appended to the FE array defined in data-fe.js.
-   Plain-string lines = correct context; [{t,err,why}] = an error.
-   ============================================================ */
-FE.push(
-  /* ---------------- HTML ---------------- */
   {
     lang:'html', src:'new', title:'HTML — blog article',
     lines:[
@@ -1263,12 +1160,12 @@ FE.push(
       '    <a href="/about">About</a>',
       '  </nav>',
       '  <article>',
-      [{t:'    <h1>Post Title</h2>',err:true,why:'Mismatched heading tags: opened <h1> but closed </h2>. They must match.'}],
-      [{t:'    <image src="hero.jpg" alt="Hero">',err:true,why:'The element is <img>, not <image>. <image> is not a real HTML tag.'}],
+      {code:'    <h1>Post Title</h2>', errs:[{e:'</h2>', why:'Mismatched heading tags: opened <h1> but closed </h2>.'}]},
+      {code:'    <image src="hero.jpg" alt="Hero">', errs:[{e:'<image', why:'The element is <img>, not <image>. <image> is not a real HTML tag.'}]},
       '    <p>Some great content here.</p>',
       '  </article>',
       '  <footer>',
-      [{t:'    <p>&copy; 2025',err:true,why:'This <p> is never closed with </p> before </footer>.'}],
+      {code:'    <p>&copy; 2025', errs:[{e:'<p>', why:'This <p> is never closed with </p> before </footer>.'}]},
       '  </footer>',
       '</body>',
       '</html>'
@@ -1278,30 +1175,85 @@ FE.push(
     lang:'html', src:'new', title:'HTML — product card',
     lines:[
       '<section class="card">',
-      [{t:'  <h2>Wireless Headphones<h2>',err:true,why:'The closing tag is missing its slash — it should be </h2>, not a second <h2>.'}],
+      {code:'  <h2>Wireless Headphones<h2>', errs:[{e:'Headphones<h2>', why:'The closing tag is missing its slash: it should be </h2>, not a second <h2>.'}]},
       '  <img src="phones.png" alt="Headphones">',
       '  <ul>',
       '    <li>Bluetooth 5.0</li>',
       '    <li>30h battery</li>',
-      [{t:'  <ul>',err:true,why:'The list is closed with another opening <ul> — it should be </ul>.'}],
+      {code:'  <ul>', errs:[{e:'<ul>', why:'The list is closed with another opening <ul> — it should be </ul>.'}]},
       '  <a href="/buy">Buy now</a>',
-      [{t:'  <p>In stock</strong>',err:true,why:'Tags must nest/match: a <p> is opened but closed with </strong>.'}],
+      {code:'  <p>In stock</strong>', errs:[{e:'</strong>', why:'Tags must match: a <p> is opened but closed with </strong>.'}]},
       '</section>'
     ]
   },
-
+ 
   /* ---------------- CSS ---------------- */
+  {
+    lang:'css', src:'past', title:'CSS — base styles',
+    lines:[
+      'body {',
+      {code:'    font-type: Arial, sans-serif;', errs:[{e:'font-type', why:'No such property — the font family is set with font-family.'}]},
+      '    background: #f0f0f0;',
+      '}',
+      '#main-content h2 {',
+      '    color: #333;',
+      {code:'    margin-top: 0px', errs:[{e:'0px', why:'Missing semicolon at the end of the declaration: margin-top: 0px;'}]},
+      '    padding: 20px 0;',
+      '}',
+      'a:hover {',
+      '    color: #0088cc;',
+      {code:'    underliner: underline;', errs:[{e:'underliner', why:'Not a real property — underlines use text-decoration: underline;.'}]},
+      '}'
+    ]
+  },
+  {
+    lang:'css', src:'past', title:'CSS — container & feedback',
+    lines:[
+      '.container {',
+      '    width: 80%;',
+      '    margin: 0 auto;',
+      {code:'    padding: 20px 0 20px 0 20px 0;', errs:[{e:'20px 0 20px 0 20px 0', why:'padding takes at most 4 values (top right bottom left). Six values are invalid.'}]},
+      '}',
+      'h1 {',
+      {code:'    font-size: 24;', errs:[{e:'24', why:'A length needs a unit: 24px (or rem). A bare number is invalid for font-size.'}]},
+      '    color: #000;',
+      {code:'    margin-bottom: 20px', errs:[{e:'20px', why:'Missing semicolon at the end of this declaration.'}]},
+      {code:'.invalid-feedback {', errs:[{e:'.invalid-feedback', why:'The h1 block above was never closed with }, so this selector is broken/nested.'}]},
+      '    color: red;',
+      {code:'    display; none;', errs:[{e:'display;', why:'A declaration uses a colon: display: none; (a semicolon after the property name is wrong).'}]},
+      '}'
+    ]
+  },
+  {
+    lang:'css', src:'mod', title:'CSS — navbar',
+    lines:[
+      '.navbar {',
+      {code:'    background-img: #333;', errs:[{e:'background-img', why:'No such property. Use background-color for a colour (or background-image for an image).'}]},
+      {code:'    overflow: hide-x-axis;', errs:[{e:'hide-x-axis', why:'Invalid value. To clip horizontal overflow use overflow-x: hidden;.'}]},
+      '}',
+      '.navbar a {',
+      {code:'    float: top;', errs:[{e:'top', why:'float only accepts left, right, or none — never top/down.'}]},
+      '    color: white;',
+      '    text-align: center;',
+      '    padding: 14px 16px;',
+      '    text-decoration: none;',
+      '}',
+      '.active {',
+      '    background-color: #4CAF50;',
+      '}'
+    ]
+  },
   {
     lang:'css', src:'new', title:'CSS — card layout',
     lines:[
       '.card {',
       '    display: flex;',
-      [{t:'    flex-direction: colum;',err:true,why:'Misspelled value — it should be column (or row).'}],
+      {code:'    flex-direction: colum;', errs:[{e:'colum', why:'Misspelled value — it should be column (or row).'}]},
       '    padding: 16px;',
-      [{t:'    border-radius: 8;',err:true,why:'A length needs a unit: 8px (a bare number is invalid here).'}],
+      {code:'    border-radius: 8;', errs:[{e:'8', why:'A length needs a unit: 8px (a bare number is invalid here).'}]},
       '}',
       '.card h2 {',
-      [{t:'    color: #222',err:true,why:'Missing semicolon at the end of this declaration.'}],
+      {code:'    color: #222', errs:[{e:'#222', why:'Missing semicolon at the end of this declaration.'}]},
       '    font-weight: bold;',
       '}',
       '.card:hover {',
@@ -1317,21 +1269,57 @@ FE.push(
       '    display: grid;',
       '    grid-template-columns: repeat(3, 1fr);',
       '    gap: 20px;',
-      [{t:'    justify-items: centre;',err:true,why:'CSS uses the American spelling: center, not centre.'}],
+      {code:'    justify-items: centre;', errs:[{e:'centre', why:'CSS uses the American spelling: center, not centre.'}]},
       '}',
       '.gallery img {',
       '    width: 100%;',
-      [{t:'    height: auto',err:true,why:'Missing semicolon at the end of the declaration.'}],
+      {code:'    height: auto', errs:[{e:'auto', why:'Missing semicolon at the end of the declaration.'}]},
       '    object-fit: cover;',
       '}',
       '.gallery .featured {',
       '    grid-column: span 2;',
-      [{t:'    background-color: redish;',err:true,why:'Not a valid colour keyword — use red (or crimson, #e33, etc.).'}],
+      {code:'    background-color: redish;', errs:[{e:'redish', why:'Not a valid colour keyword — use red (or crimson, #e33, etc.).'}]},
       '}'
     ]
   },
-
+ 
   /* ---------------- JavaScript ---------------- */
+  {
+    lang:'js', src:'past', title:'JavaScript — area calculator',
+    lines:[
+      'function calculateArea(width, height) {',
+      {code:'    const area = width * height;', errs:[{e:'const', why:'area is reassigned on the next line, so it cannot be const — use let (const + reassignment throws a TypeError).'}]},
+      '    area *= 2;',
+      '    return area;',
+      {code:'})', errs:[{e:')', why:'Stray closing parenthesis — the function body should close with } only.'}]},
+      {code:"document.getElementsByDiv('area')", errs:[{e:'getElementsByDiv', why:'No such method — use getElementById or querySelector to select an element.'}]},
+      {code:'    .textContent = calculateArea[5, 10];', errs:[{e:'[5, 10]', why:'Functions are called with parentheses: calculateArea(5, 10), not square brackets.'}]}
+    ]
+  },
+  {
+    lang:'js', src:'past', title:'JavaScript — colour loop',
+    lines:[
+      "const colors = ['Red', 'Green', 'Blue']",
+      {code:'for(let i = 0, i < colors.length; i++) {', errs:[{e:'0,', why:'A for header separates its three parts with semicolons — this comma should be a semicolon: i = 0;'}]},
+      {code:"    colors.add('Orange');", errs:[{e:'add', why:'Arrays have no add() method — use push() to append.'}]},
+      {code:'    console.log(colors(i));', errs:[{e:'colors(i)', why:'Index access uses brackets: colors[i], not parentheses colors(i).'}]},
+      '}',
+      {code:'if (colors.length >> 3) {', errs:[{e:'>>', why:'>> is a bitwise right-shift, not a comparison. Use > (greater-than).'}]},
+      {code:'    colors = "red";', errs:[{e:'colors = "red"', why:'colors is const — reassigning the binding throws a TypeError.'}]},
+      '}'
+    ]
+  },
+  {
+    lang:'js', src:'mod', title:'JavaScript — toggle handler',
+    lines:[
+      {code:'func toggleClass() {', errs:[{e:'func', why:'The keyword is function, not func.'}]},
+      "    const el = document.getElementById('target');",
+      "    el.classList.toggle('active');",
+      {code:"    el.textContent = el.classList.contains('active') & 'On' : 'Off';", errs:[{e:'&', why:'A ternary uses ? not &: condition ? a : b.'}]},
+      '}',
+      {code:"document.getElementById('btn').createEventListener('click', toggleClass);", errs:[{e:'createEventListener', why:'The method is addEventListener, not createEventListener.'}]}
+    ]
+  },
   {
     lang:'js', src:'new', title:'JavaScript — form validation',
     lines:[
@@ -1339,14 +1327,14 @@ FE.push(
       "form.addEventListener('submit', function (event) {",
       '    event.preventDefault();',
       "    const email = document.getElementById('email').value;",
-      [{t:'    if (email = "") {',err:true,why:'= is assignment; a comparison needs === (this also overwrites email).'}],
+      {code:'    if (email = "") {', errs:[{e:'= ""', why:'= is assignment; a comparison needs === (this also overwrites email).'}]},
       "        alert('Email is required');",
       '        return;',
       '    }',
       '    const data = { email: email };',
-      [{t:"    data.add('verified', true);",err:true,why:'Objects have no .add() method — set a property: data.verified = true.'}],
+      {code:"    data.add('verified', true);", errs:[{e:'add', why:'Objects have no .add() method — set a property: data.verified = true.'}]},
       '    console.log(data);',
-      [{t:'}',err:true,why:'The addEventListener call is never closed — this needs }); to close the callback and the call.'}]
+      {code:'}', errs:[{e:'}', why:'The addEventListener callback/call is never closed — this should be }); to close the function and the call.'}]}
     ]
   },
   {
@@ -1355,19 +1343,19 @@ FE.push(
       'async function loadUsers() {',
       '    try {',
       "        const response = await fetch('/api/users');",
-      [{t:'        const users = response.json();',err:true,why:'response.json() returns a Promise — it needs await: const users = await response.json();'}],
-      [{t:'        users.foreach(user => {',err:true,why:'The method is forEach (capital E); JavaScript is case-sensitive.'}],
+      {code:'        const users = response.json();', errs:[{e:'response.json()', why:'response.json() returns a Promise — it needs await: const users = await response.json();'}]},
+      {code:'        users.foreach(user => {', errs:[{e:'foreach', why:'The method is forEach (capital E) — JavaScript is case-sensitive.'}]},
       '            console.log(user.name);',
       '        });',
       '    } catch (err) {',
       '        console.log(err);',
       '    }',
       '}',
-      [{t:'loadUsers;',err:true,why:'The function is referenced but never called — it needs parentheses: loadUsers();'}]
+      {code:'loadUsers;', errs:[{e:'loadUsers;', why:'The function is referenced but never called — it needs parentheses: loadUsers();'}]}
     ]
   }
-);
-
+];
+ 
 /* ===== inlined: data-oe.js ===== */
 /* ============================================================
    OPEN-ENDED BANK  (2 points each in the real exam)
@@ -1382,7 +1370,7 @@ const OE = [
      '<b>&lt;div&gt;</b> carries no semantic meaning at all — it’s a generic block container used purely as a styling or scripting hook when no semantic element fits.'
    ],
    rubric:['Article = self-contained / independently meaningful','Section = thematic group, usually with a heading','Div = non-semantic generic container','At least one correct use-case example each']},
-
+ 
   {tag:'html', src:'past', q:'Explain the importance of using correct heading tags (<code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code>) and how this affects accessibility and UX.',
    model:[
      'Headings define the document’s <b>outline / hierarchy</b>. Use a single <code>&lt;h1&gt;</code> for the main title and descend in order (<code>h2</code>, then <code>h3</code> under it) without skipping levels for visual reasons.',
@@ -1390,7 +1378,7 @@ const OE = [
      'Choose heading level by <i>meaning</i>, not by how big the text looks — use CSS for size.'
    ],
    rubric:['Headings build the page outline/hierarchy','One h1, don’t skip levels','Screen readers navigate by heading (accessibility)','Improves scannability / SEO / UX']},
-
+ 
   {tag:'html', src:'past', q:'Discuss how HTML5 embeds multimedia with <code>&lt;audio&gt;</code> and <code>&lt;video&gt;</code>. Explain key attributes and the importance of fallback content.',
    model:[
      'HTML5 added native <code>&lt;audio&gt;</code> and <code>&lt;video&gt;</code> so media plays without plugins. Multiple <code>&lt;source&gt;</code> children let the browser pick a format it supports.',
@@ -1398,7 +1386,7 @@ const OE = [
      'Fallback content (text or alternative markup between the tags) is shown to browsers that can’t play the media, so users still get something useful — important for compatibility and accessibility.'
    ],
    rubric:['Native playback, no plugins, uses <source>','Explains controls / autoplay / muted / loop','Fallback content for unsupported browsers','Connects attributes to user experience']},
-
+ 
   {tag:'html', src:'mod', q:'Build the structure of a webpage using only HTML with a header, navigation, main content, and footer. Provide the markup.',
    model:[
      'Use semantic landmark elements so the structure is meaningful to browsers and assistive tech:',
@@ -1420,7 +1408,7 @@ const OE = [
      '<code>&lt;header&gt;</code> (intro + nav), <code>&lt;nav&gt;</code> (primary links), <code>&lt;main&gt;</code> (the unique page content — one per page), and <code>&lt;footer&gt;</code> (closing info).'
    ],
    rubric:['Uses header / nav / main / footer correctly','nav contains a list of links','One main per page','Valid, well-formed markup']},
-
+ 
   /* ---- CSS ---- */
   {tag:'css', src:'past', q:'Describe the CSS Box Model and explain how each component affects layout. Also explain <code>box-sizing: content-box</code> vs <code>border-box</code>.',
    model:[
@@ -1429,7 +1417,7 @@ const OE = [
      'With <b>content-box</b> (default), <code>width</code>/<code>height</code> size only the content, so the rendered box = width + padding + border. With <b>border-box</b>, the declared width <i>includes</i> padding and border, so the box stays exactly the width you set — much easier to reason about, which is why resets often set it globally.'
    ],
    rubric:['Names all four layers in order','Explains each layer’s effect','content-box: width = content only','border-box: width includes padding+border']},
-
+ 
   {tag:'css', src:'past', q:'Explain CSS pseudo-classes vs pseudo-elements, with examples and the syntax difference.',
    model:[
      'A <b>pseudo-class</b> targets a <i>state</i> or condition of an existing element and uses a single colon: <code>:hover</code>, <code>:focus</code>, <code>:active</code>, <code>:nth-child(2)</code>. Example: <code>a:hover { color: blue; }</code> styles links while hovered.',
@@ -1437,7 +1425,7 @@ const OE = [
      'Syntax distinction: one colon for pseudo-classes, two for pseudo-elements. Common uses: pseudo-classes for interactive feedback and structural targeting; pseudo-elements for decorative generated content and styling text fragments.'
    ],
    rubric:['Pseudo-class = state, single colon','Pseudo-element = part/generated, double colon','Correct example of each','Mentions content property for ::before/::after']},
-
+ 
   {tag:'css', src:'past', q:'Discuss responsive web design principles and describe at least two CSS techniques used to create a responsive layout.',
    model:[
      'Responsive design means the layout adapts to any screen size/device rather than having fixed dimensions. Core principles: fluid grids, flexible media, and breakpoints that reflow content.',
@@ -1445,7 +1433,7 @@ const OE = [
      '<b>Flexible units & layout</b>: relative units (<code>%</code>, <code>rem</code>, <code>vw</code>) instead of fixed <code>px</code>, plus Flexbox/Grid which wrap and redistribute space automatically. (Other valid techniques: responsive images with <code>max-width: 100%</code>, the viewport meta tag.)'
    ],
    rubric:['Defines responsive = adapts to screen size','Technique 1 with explanation (e.g. media queries)','Technique 2 with explanation (e.g. flexible units / Flexbox / Grid)','Both clearly explained']},
-
+ 
   {tag:'css', src:'mod', q:'Compare <code>position: absolute</code>, <code>relative</code>, and <code>fixed</code>: how do they affect document flow, and when is each appropriate?',
    model:[
      '<b>relative</b> keeps the element in normal flow but lets you offset it from its own position with <code>top/left</code>; it still reserves its original space. Often used as a positioning context for absolute children.',
@@ -1453,7 +1441,7 @@ const OE = [
      '<b>fixed</b> also leaves flow but anchors to the <b>viewport</b>, staying put during scroll — ideal for sticky headers, back-to-top buttons, and persistent navigation.'
    ],
    rubric:['relative: stays in flow, offset from self','absolute: out of flow, vs nearest positioned ancestor','fixed: out of flow, vs viewport, fixed on scroll','A suitable scenario for each']},
-
+ 
   {tag:'css', src:'mod', q:'How do Flexbox and Grid differ for complex responsive layouts? When is each more advantageous?',
    model:[
      '<b>Flexbox is one-dimensional</b> — it lays out items along a single axis (a row or a column) and excels at distributing space and aligning items in that direction: nav bars, toolbars, button rows.',
@@ -1461,7 +1449,7 @@ const OE = [
      'They compose well: use Grid for the macro page layout and Flexbox inside individual cells. For nested/dynamic content, Grid handles the structure while Flexbox handles flexible content within a region. Neither has meaningful performance concerns for typical pages — choose by the shape of the layout.'
    ],
    rubric:['Flexbox = 1D (row or column)','Grid = 2D (rows and columns)','Appropriate scenario for each','Notes they can be combined']},
-
+ 
   /* ---- JavaScript ---- */
   {tag:'js', src:'past', q:'Explain event handling in JavaScript. Give an example interaction and describe the full flow from capturing the event to running a function.',
    model:[
@@ -1473,7 +1461,7 @@ const OE = [
 });`,'javascript') + '</pre>'
    ],
    rubric:['Defines events + handlers','Uses addEventListener with event name + function','Walks capture → handler → response','Concrete, correct example']},
-
+ 
   {tag:'js', src:'past', q:'Discuss asynchronous JavaScript with <code>async/await</code> and how it simplifies things compared to nested callbacks (callback hell).',
    model:[
      'JavaScript is single-threaded, so async lets long tasks (network, timers) run without freezing the UI; results are handled later via the event loop. This keeps apps responsive.',
@@ -1488,7 +1476,7 @@ const OE = [
 }`,'javascript') + '</pre>'
    ],
    rubric:['Async keeps UI responsive (event loop)','Describes callback hell problem','await flattens the chain / reads synchronously','try/catch centralises error handling']},
-
+ 
   {tag:'js', src:'past', q:'Describe how JavaScript manipulates the DOM (creating/modifying elements), the performance considerations, and a technique to minimise impact.',
    model:[
      'JS reads and changes the live DOM: select with <code>getElementById</code>/<code>querySelector</code>, create with <code>document.createElement</code>, insert with <code>appendChild</code>, and modify with <code>textContent</code>, <code>classList</code>, <code>setAttribute</code>.',
@@ -1503,7 +1491,7 @@ items.forEach(t => {
 list.appendChild(frag); // one DOM write`,'javascript') + '</pre>'
    ],
    rubric:['Names selection + creation + modification methods','Identifies reflow/repaint cost','Names a batching technique (fragment / single write)','Correct supporting example']},
-
+ 
   {tag:'js', src:'past', q:'Explain the null coalescing operator <code>??</code>: its functionality, purpose, and when to use it.',
    model:[
      'The nullish coalescing operator <code>a ?? b</code> evaluates to <code>a</code> unless <code>a</code> is <b><code>null</code> or <code>undefined</code></b>, in which case it returns <code>b</code>. It provides a default only for truly “missing” values.',
@@ -1511,7 +1499,7 @@ list.appendChild(frag); // one DOM write`,'javascript') + '</pre>'
      'Use it when supplying defaults for values where <code>0</code>/<code>\'\'</code>/<code>false</code> are valid — e.g. <code>const volume = settings.volume ?? 100;</code> keeps a deliberate volume of <code>0</code> instead of replacing it with 100.'
    ],
    rubric:['Returns right side only for null/undefined','Contrasts with || (falsy values)','Correct use-case where 0/""/false should be kept','Clear example']},
-
+ 
   {tag:'js', src:'mod', q:'What is type coercion in JavaScript? How does it affect equality comparisons (e.g. <code>null</code> vs <code>undefined</code>, <code>0</code> vs <code>false</code>), and how do you prevent surprises?',
    model:[
      'Type coercion is JavaScript automatically converting a value from one type to another, e.g. in <code>==</code> comparisons or string concatenation.',
@@ -1519,7 +1507,7 @@ list.appendChild(frag); // one DOM write`,'javascript') + '</pre>'
      'Prevent it by using <b>strict equality <code>===</code></b> (and <code>!==</code>), which compares value <i>and</i> type with no coercion. <code>0 === false</code> is <code>false</code> because number ≠ boolean. Also convert types explicitly (<code>Number(x)</code>, <code>String(x)</code>) when you do need conversion.'
    ],
    rubric:['Defines coercion = automatic type conversion','Correct example(s) of == coercion quirks','Recommends === / !== to avoid it','Mentions explicit conversion']},
-
+ 
   {tag:'js', src:'mod', q:'What are closures, and how do they enable private variables and function factories? Give a real-world example.',
    model:[
      'A closure is an inner function that retains access to variables from its outer (lexical) scope even after the outer function has returned — the variables stay alive, captured by the inner function.',
@@ -1536,7 +1524,7 @@ c.inc(); // 1  — count is inaccessible from outside`,'javascript') + '</pre>',
      'Real-world: a counter/ID generator, a debounced event handler that remembers its timer, or a configured logger created by a factory.'
    ],
    rubric:['Inner fn remembers outer scope after return','Explains private variables','Explains function factory','Working example']},
-
+ 
   {tag:'js', src:'mod', q:'What is the purpose of <code>Promise.all()</code>? How does it handle concurrent operations, and what issues should you consider?',
    model:[
      '<code>Promise.all([p1, p2, …])</code> runs multiple promises <b>concurrently</b> and returns a single promise that fulfils when <i>all</i> of them fulfil, resolving to an array of their results in order. It’s used to wait for several independent async tasks together (e.g. multiple fetches).',
@@ -1544,7 +1532,7 @@ c.inc(); // 1  — count is inaccessible from outside`,'javascript') + '</pre>',
      'Issues: it is <b>fail-fast</b> — if any single promise rejects, the whole <code>Promise.all</code> rejects immediately and the other results are lost. If you need every outcome regardless of failures, use <code>Promise.allSettled</code>. Also beware firing too many requests at once.'
    ],
    rubric:['Waits for all to resolve, returns results array','Runs them concurrently (time = slowest)','Fail-fast: one rejection rejects all','Mentions Promise.allSettled as alternative']},
-
+ 
   {tag:'js', src:'mod', q:'Explain the difference between syntax errors, runtime errors, and logical errors. How does proper error handling improve reliability?',
    model:[
      '<b>Syntax errors</b> break the language’s grammar (a missing bracket/quote) and are caught by the interpreter <i>before</i> the code runs — nothing executes.',
@@ -1553,7 +1541,7 @@ c.inc(); // 1  — count is inaccessible from outside`,'javascript') + '</pre>',
      'Proper handling with <code>try/catch/finally</code> (and checking for failure cases) stops one error from crashing the whole app, lets you show useful feedback, and keeps the application reliable — e.g. catching a failed <code>fetch</code> and displaying a retry message.'
    ],
    rubric:['Syntax = grammar, caught before running','Runtime = during execution (exception)','Logical = runs but wrong result','Error handling → reliability / graceful failure']},
-
+ 
   {tag:'js', src:'mod', q:'Explain the difference between default and named exports in ES modules, the benefits of modular code, and what a “barrel” is.',
    model:[
      '<b>Named exports</b>: a module can have many, and importers must use the matching name (or alias with <code>as</code>): <code>export const mul = …</code> → <code>import { mul } from \'./math.js\'</code>. They’re tree-shake friendly.',
@@ -1563,7 +1551,7 @@ c.inc(); // 1  — count is inaccessible from outside`,'javascript') + '</pre>',
    ],
    rubric:['Named: many, matching name, braces','Default: one, any name, no braces','Benefits: scope/reuse/maintainability','Correctly defines a barrel (re-export index)']}
 ];
-
+ 
 /* ===== inlined: data-oe-extra.js ===== */
 /* ============================================================
    OPEN-ENDED BANK — EXPANSION
@@ -1587,7 +1575,7 @@ OE.push(
      'In JavaScript this is done with private fields (<code class="inl">#balance</code>) or closures for truly private variables, exposing only methods/getters.'
    ],
    rubric:['Definition: bundle data + behaviour, hide internals','Mentions a controlled public interface','At least two concrete benefits','An example of how privacy is achieved in JS']},
-
+ 
   /* ---- Window / BOM (Lec 10) ---- */
   {tag:'js', src:'new', q:'Describe the difference between the <code>window</code> and <code>document</code> objects, and give two useful members of each.',
    model:[
@@ -1596,7 +1584,7 @@ OE.push(
      'Useful <code class="inl">window</code> members: <code class="inl">setTimeout()</code>, <code class="inl">location</code>, <code class="inl">navigator</code>, <code class="inl">innerWidth</code>. Useful <code class="inl">document</code> members: <code class="inl">getElementById()</code>, <code class="inl">querySelector()</code>, <code class="inl">createElement()</code>, <code class="inl">body</code>.'
    ],
    rubric:['window = global/browser-window root','document = the page DOM, a child of window','Two valid window members','Two valid document members']},
-
+ 
   /* ---- HTML (Lec 3–4) ---- */
   {tag:'html', src:'new', q:'Explain the purpose of the <code>&lt;label&gt;</code> element and its <code>for</code> attribute, and why they matter for accessibility and usability.',
    model:[
@@ -1612,7 +1600,7 @@ OE.push(
      '<b>Fallback content</b> placed between the tags is shown only when the browser can’t play the video — a message or a download link. This is graceful degradation and aids accessibility for unsupported environments.'
    ],
    rubric:['Explains at least two attributes (controls/autoplay/muted/loop)','Multiple <source> for format support','Fallback content shown when unsupported','Mentions graceful degradation / accessibility']},
-
+ 
   /* ---- CSS (Lec 5–6) ---- */
   {tag:'css', src:'new', q:'Compare Flexbox and Grid. When would you choose each?',
    model:[
@@ -1636,7 +1624,7 @@ OE.push(
      'Example: <code class="inl">#box { color: blue }</code> beats <code class="inl">.box { color: red }</code> because an id outweighs a class, regardless of order.'
    ],
    rubric:['Specificity ordering (inline > id > class > element)','Equal specificity → later rule wins','Mentions !important as an override','A correct worked example']},
-
+ 
   /* ---- JavaScript (Lec 7–13) ---- */
   {tag:'js', src:'new', q:'Explain closures in JavaScript. Give a practical example and one real use case.',
    model:[
@@ -1675,13 +1663,13 @@ next(); // 2`,'javascript')+'</pre>',
    ],
    rubric:['Single-threaded / one call stack','Async work offloaded to Web APIs','Completed callbacks are queued','Event loop runs them when the stack is empty (bonus: microtask vs macrotask)']}
 );
-
+ 
 /* ===== inlined: app-core.js ===== */
 /* ============================================================
    DA218D EXAM LAB — APP LOGIC
    ============================================================ */
 const app = document.getElementById('app');
-
+ 
 /* ---------- shell ---------- */
 app.innerHTML = `
 <header class="top">
@@ -1718,7 +1706,7 @@ app.innerHTML = `
   Built from your DA218D course materials · lectures 1–14, past exam &amp; re-exam, study guide &amp; reading list.<br>
   Practice questions blend real past-paper items with new &amp; modified variants. Verify any borderline answer against your lecture notes.
 </footer>`;
-
+ 
 /* ---------- navigation ---------- */
 const studied = new Set();
 document.getElementById('tabs').addEventListener('click', e=>{
@@ -1730,7 +1718,7 @@ document.getElementById('tabs').addEventListener('click', e=>{
   window.scrollTo({top:0,behavior:'smooth'});
 });
 function go(v){ document.querySelector(`.tab[data-v="${v}"]`).click(); }
-
+ 
 /* ============================================================
    HOME / OVERVIEW
    ============================================================ */
@@ -1746,7 +1734,7 @@ document.getElementById('v-home').innerHTML = `
     <div class="chip">📕 <span>Book: <b>HTML, CSS &amp; JS in Easy Steps</b></span></div>
   </div>
 </div>
-
+ 
 <section class="block">
   <div class="sec-head"><h2>The three sections</h2></div>
   <div class="struct">
@@ -1773,7 +1761,7 @@ document.getElementById('v-home').innerHTML = `
     </div>
   </div>
 </section>
-
+ 
 <section class="block">
   <div class="sec-head"><h2>Grade thresholds</h2></div>
   <div class="grades">
@@ -1782,7 +1770,7 @@ document.getElementById('v-home').innerHTML = `
     <div class="gcard g5"><div class="g">5</div><div class="req"><b>63</b> pts (90%)<br>+ min <b>9</b> open-ended</div></div>
   </div>
 </section>
-
+ 
 <section class="block">
   <div class="sec-head"><h2>How to use this lab</h2></div>
   <div class="struct" style="grid-template-columns:repeat(2,1fr)">
@@ -1795,7 +1783,7 @@ document.getElementById('v-home').innerHTML = `
   </div>
   <div class="callout warn" style="margin-top:22px"><b>Academic integrity reminder from your course:</b> AI tools are strictly prohibited <i>during</i> the actual exam and assessments. Use this lab to learn beforehand — then rely on your own knowledge in the hall.</div>
 </section>`;
-
+ 
 /* ============================================================
    STUDY GUIDE
    ============================================================ */
@@ -1824,7 +1812,7 @@ document.getElementById('v-home').innerHTML = `
     html += `</section>`;
   });
   v.innerHTML = html;
-
+ 
   v.querySelectorAll('.topic').forEach(t=>{
     const head = t.querySelector('.t-head');
     const body = t.querySelector('.t-body');
@@ -1835,14 +1823,14 @@ document.getElementById('v-home').innerHTML = `
     });
   });
 })();
-
+ 
 function updateProgress(){
   const total = [].concat(...Object.values(TOPICS)).length;
   const pct = Math.round(studied.size/total*100);
   document.getElementById('progFill').style.width = pct+'%';
   document.getElementById('progLabel').textContent = pct+'% studied';
 }
-
+ 
 /* ============================================================
    CODE PLAYGROUND  + lightweight syntax checker
    ============================================================ */
@@ -1877,13 +1865,13 @@ function updateProgress(){
       <div class="pg-out"><iframe id="preview" sandbox="allow-scripts"></iframe></div>
     </div>
   </div>`;
-
+ 
   const editor = v.querySelector('#editor');
   const preview = v.querySelector('#preview');
   const lint = v.querySelector('#lint');
   const title = v.querySelector('#pgTitle');
   let mode = 'html';
-
+ 
   const samples = {
     html:`<!-- A clean starting point -->
 <!DOCTYPE html>
@@ -1907,11 +1895,11 @@ body { font-family: sans-serif; background:#101418; color:#eee; padding:30px; }
     js:`// console output appears in the preview
 const items = ['HTML','CSS','JavaScript'];
 items.forEach((x, i) => console.log((i+1) + '. ' + x));
-
+ 
 function add(a, b) { return a + b; }
 console.log('2 + 3 =', add(2, 3));`
   };
-
+ 
   const buggy = {
     html:`<!DOCTYPE html>
 <html lang="english">
@@ -1945,7 +1933,7 @@ for (let i = 0, i < list.length; i++) {
 }
 list = 'x';`
   };
-
+ 
   // language switch
   v.querySelectorAll('[data-lang]').forEach(b=>{
     b.addEventListener('click',()=>{
@@ -1956,7 +1944,7 @@ list = 'x';`
       run();
     });
   });
-
+ 
   function buildSnips(){
     const s = v.querySelector('#snips');
     s.innerHTML = `<button class="snip" data-load="clean">↺ Clean ${mode.toUpperCase()} starter</button>
@@ -1968,7 +1956,7 @@ list = 'x';`
       });
     });
   }
-
+ 
   function run(){
     let doc='';
     if(mode==='html') doc = editor.value;
@@ -1984,14 +1972,14 @@ list = 'x';`
     preview.srcdoc = doc;
     runLint();
   }
-
+ 
   /* ---- the syntax checker ---- */
   function runLint(){
     const code = editor.value;
     const lines = code.split('\n');
     let issues = [];
     const add=(ln,msg,type='err')=>issues.push({ln,msg,type});
-
+ 
     if(mode==='html'){
       lines.forEach((l,i)=>{
         const n=i+1;
@@ -2054,14 +2042,14 @@ list = 'x';`
       const ob=(code.match(/{/g)||[]).length, cb=(code.match(/}/g)||[]).length;
       if(ob!==cb) add(0,`Unbalanced braces: ${ob} "{" vs ${cb} "}".`);
     }
-
+ 
     if(issues.length===0){
       lint.innerHTML = `<div class="row ok"><span class="ln">✓</span>No obvious syntax issues detected. (The checker covers common exam traps, not everything — keep verifying by eye.)</div>`;
     } else {
       lint.innerHTML = issues.map(x=>`<div class="row ${x.type}"><span class="ln">${x.ln?'L'+x.ln:'•'}</span><span>${x.msg}</span></div>`).join('');
     }
   }
-
+ 
   // init
   editor.value = samples.html;
   v.querySelector('#runBtn').addEventListener('click',run);
@@ -2073,21 +2061,21 @@ list = 'x';`
   buildSnips();
   run();
 })();
-
+ 
 /* ===== inlined: app-quiz.js ===== */
 /* ============================================================
    QUIZ ENGINES
    ============================================================ */
 const SRC_LABEL = {past:'Past paper', mod:'Modified', new:'New'};
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
-
+ 
 /* ------------------------------------------------------------
    1) MCQ DRILL
    ------------------------------------------------------------ */
 (function buildMCQ(){
   const v = document.getElementById('v-mcq');
   let pool=[], idx=0, score=0, answered=false, chosenLog=[];
-
+ 
   function setup(){
     v.innerHTML = `
     <div class="hero" style="padding:34px 0 10px">
@@ -2103,13 +2091,13 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     </div>`;
     v.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>start(b.dataset.f)));
   }
-
+ 
   function start(f){
     pool = shuffle(f==='all'?MCQ:MCQ.filter(q=>q.tag===f));
     idx=0;score=0;answered=false;chosenLog=[];
     render();
   }
-
+ 
   function render(){
     if(idx>=pool.length) return results();
     const q=pool[idx]; answered=false;
@@ -2135,7 +2123,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
         <button class="bigbtn" id="next" disabled>Next →</button>
       </div>
     </div>`;
-
+ 
     const opts=v.querySelectorAll('.opt');
     opts.forEach(o=>o.addEventListener('click',()=>{
       if(answered)return; answered=true;
@@ -2153,11 +2141,11 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
       v.querySelector('#next').disabled=false;
       v.querySelector('#skip').disabled=true;
     }));
-
+ 
     v.querySelector('#skip').addEventListener('click',()=>{ if(!answered){chosenLog.push(null);} idx++; render(); });
     v.querySelector('#next').addEventListener('click',()=>{ idx++; render(); });
   }
-
+ 
   function results(){
     const correct=chosenLog.filter(x=>x===true).length;
     const wrong=chosenLog.filter(x=>x===false).length;
@@ -2178,17 +2166,17 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     </div>`;
     v.querySelector('#again').addEventListener('click',setup);
   }
-
+ 
   setup();
 })();
-
+ 
 /* ------------------------------------------------------------
    2) FIND THE ERROR
    ------------------------------------------------------------ */
 (function buildFE(){
   const v = document.getElementById('v-error');
   let pool=[], idx=0, picks=new Set(), checked=false, totalFound=0, totalErrs=0, totalWrong=0;
-
+ 
   function setup(){
     v.innerHTML=`
     <div class="hero" style="padding:34px 0 10px">
@@ -2205,32 +2193,42 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     <div class="callout tip" style="max-width:760px"><b>Strategy:</b> scan for fake property/method names, mismatched or missing tags/brackets, wrong punctuation (<code class="inl">,</code> vs <code class="inl">;</code>, <code class="inl">;</code> vs <code class="inl">:</code>), and <code class="inl">const</code> reassignment. Don't over-circle — wrong clicks cost you.</div>`;
     v.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>start(b.dataset.f)));
   }
-
+ 
   function start(f){
     pool = f==='all'? FE.slice() : FE.filter(s=>s.lang===f);
     idx=0; totalFound=0; totalErrs=0; totalWrong=0;
     render();
   }
-
+ 
   function render(){
     if(idx>=pool.length) return results();
     const snip=pool[idx]; picks=new Set(); checked=false;
-
-    // build tokens
-    let tokId=0; const errTokens=new Set(); const reasons={};
-    const linesHtml = snip.lines.map(line=>{
-      if(typeof line==='string'){
-        return `<div>${esc(line)}</div>`;
-      }
-      // array of segments
-      return '<div>'+line.map(seg=>{
-        const id='t'+(tokId++);
-        if(seg.err){ errTokens.add(id); reasons[id]=seg.why; return `<span class="tok" data-id="${id}" data-err="1">${esc(seg.t)}</span>`; }
-        return `<span class="tok" data-id="${id}">${esc(seg.t)}</span>`;
-      }).join('')+'</div>';
-    }).join('');
-    const errCount = errTokens.size;
-
+ 
+    // build tokens — EVERY code word is clickable; only marked substrings are errors
+    let tokId=0; const reasons={}; let errCount=0;
+    const emitCorrect=(text)=>{
+      let out='';
+      text.split(/(\s+)/).forEach(part=>{
+        if(part==='') return;
+        if(/^\s+$/.test(part)){ out+=part; }              // preserve indentation/spacing
+        else { out+=`<span class="tok" data-id="t${tokId++}">${esc(part)}</span>`; }
+      });
+      return out;
+    };
+    const emitError=(text,why)=>{ const id='t'+(tokId++); reasons[id]=why; errCount++; return `<span class="tok" data-id="${id}" data-err="1">${esc(text)}</span>`; };
+    const renderLine=(line)=>{
+      if(typeof line==='string') return '<div>'+emitCorrect(line)+'</div>';
+      const code=line.code, errs=line.errs||[];
+      const spans=[]; let cursor=0;
+      errs.forEach(({e,why})=>{ const i=code.indexOf(e,cursor); if(i===-1) return; spans.push({start:i,end:i+e.length,why}); cursor=i+e.length; });
+      spans.sort((a,b)=>a.start-b.start);
+      let out='', pos=0;
+      spans.forEach(sp=>{ if(sp.start>pos) out+=emitCorrect(code.slice(pos,sp.start)); out+=emitError(code.slice(sp.start,sp.end),sp.why); pos=sp.end; });
+      if(pos<code.length) out+=emitCorrect(code.slice(pos));
+      return '<div>'+out+'</div>';
+    };
+    const linesHtml = snip.lines.map(renderLine).join('');
+ 
     v.innerHTML=`
     <div class="hero" style="padding:26px 0 6px"><h2 style="font-size:24px;font-family:var(--disp)">Find the Error</h2></div>
     <div class="q-card">
@@ -2238,9 +2236,9 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
         <span class="q-counter">Snippet ${idx+1} / ${pool.length}</span>
         <span class="q-badge ${snip.lang}">${snip.lang.toUpperCase()}</span>
         <span class="q-badge ${snip.src==='mod'?'':'new'}">${SRC_LABEL[snip.src]}</span>
-        <span class="q-counter" style="margin-left:auto">Errors to find: <b>${errCount}</b></span>
+        <span class="q-counter" style="margin-left:auto">Mark every error you find</span>
       </div>
-      <div class="q-stem" style="font-size:15px;color:var(--ink-dim)">${esc(snip.title)} — click each incorrect token.</div>
+      <div class="q-stem" style="font-size:15px;color:var(--ink-dim)">${esc(snip.title)} — click the <b>specific wrong token(s)</b>. Most tokens are correct; circling correct code costs <b>−0.25</b>.</div>
       <div class="fe-help">Selected: <span id="selCount">0</span> · click again to deselect</div>
       <div class="fe-code" id="code">${linesHtml}</div>
       <div class="errlist" id="errlist"></div>
@@ -2251,7 +2249,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
         <button class="bigbtn" id="next" ${'disabled'}>Next →</button>
       </div>
     </div>`;
-
+ 
     const codeEl=v.querySelector('#code');
     codeEl.querySelectorAll('.tok').forEach(t=>{
       t.addEventListener('click',()=>{
@@ -2262,7 +2260,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
         v.querySelector('#selCount').textContent=picks.size;
       });
     });
-
+ 
     v.querySelector('#reveal').addEventListener('click',()=>{
       if(checked)return; checked=true;
       let found=0, wrong=0;
@@ -2284,10 +2282,10 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
       v.querySelector('#reveal').disabled=true;
       v.querySelector('#next').disabled=false;
     });
-
+ 
     v.querySelector('#next').addEventListener('click',()=>{idx++;render();});
   }
-
+ 
   function results(){
     const pts=Math.max(0,totalFound-totalWrong*0.25);
     const pct=totalErrs?Math.round(totalFound/totalErrs*100):0;
@@ -2304,18 +2302,18 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     </div>`;
     v.querySelector('#again').addEventListener('click',setup);
   }
-
+ 
   function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   setup();
 })();
-
+ 
 /* ------------------------------------------------------------
    3) OPEN-ENDED
    ------------------------------------------------------------ */
 (function buildOE(){
   const v = document.getElementById('v-open');
   let pool=[], idx=0;
-
+ 
   function setup(){
     v.innerHTML=`
     <div class="hero" style="padding:34px 0 10px">
@@ -2332,12 +2330,12 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     <div class="callout warn" style="max-width:760px"><b>OBS — answer only what's asked.</b> The examiner explicitly penalises padding. Hit each part of the question, give a concrete example, and stop.</div>`;
     v.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>start(b.dataset.f)));
   }
-
+ 
   function start(f){
     pool = f==='all'?OE.slice():OE.filter(q=>q.tag===f);
     idx=0; render();
   }
-
+ 
   function render(){
     if(idx>=pool.length) return done();
     const q=pool[idx];
@@ -2371,7 +2369,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     });
     v.querySelector('#next').addEventListener('click',()=>{idx++;render();});
   }
-
+ 
   function done(){
     v.innerHTML=`
     <div class="hero" style="padding:30px 0 6px"><h2 style="font-size:24px;font-family:var(--disp)">Set complete</h2></div>
@@ -2386,10 +2384,10 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     </div>`;
     v.querySelector('#again').addEventListener('click',setup);
   }
-
+ 
   setup();
 })();
-
+ 
 /* ===== inlined: cheat-sheet.js ===== */
 /* ============================================================
    CHEAT SHEET VIEW  — condensed quick-reference for #v-cheat
@@ -2397,22 +2395,22 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
 (function(){
   const v = document.getElementById('v-cheat');
   if(!v) return;
-
+ 
   // small helper: a card with a title + list of {term, def} rows
   const card = (emoji, title, rows) => `
     <div class="cheat">
       <h4><span class="em">${emoji}</span>${title}</h4>
       <dl>${rows.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('')}</dl>
     </div>`;
-
+ 
   const html = `
     <div class="view-head">
       <h2>Cheat Sheet</h2>
       <p class="lede">The night-before condensed reference — every high-yield fact, every classic trap. Skim it, then go drill the error-finding section (it’s 30 of the 70 points).</p>
     </div>
-
+ 
     <div class="cheat-grid">
-
+ 
       ${card('🏗️','HTML — skeleton & docs',[
         ['&lt;!DOCTYPE html&gt;','Exactly this. Not <code>HTML5</code>, not omitted — triggers quirks mode otherwise.'],
         ['&lt;html lang="en"&gt;','Root element; <code>lang</code> uses a 2-letter code (<code>en</code>, <code>sv</code>) — not <code>"english"</code>.'],
@@ -2420,63 +2418,63 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
         ['&lt;meta charset="UTF-8"&gt;','Character encoding. <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> for responsive.'],
         ['Linking CSS','<code>&lt;link rel="stylesheet" href="style.css"&gt;</code> — there is no <code>&lt;css&gt;</code> tag.']
       ])}
-
+ 
       ${card('🧱','HTML — semantic tags',[
         ['Structure','<code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>aside</code>, <code>footer</code>.'],
         ['Why semantic','Accessibility (screen readers), SEO, readable markup. <code>div</code>/<code>span</code> carry no meaning.'],
         ['Headings','<code>h1</code>–<code>h6</code>, one logical outline. Don’t skip levels for styling — use CSS.'],
         ['Inline vs block','<code>span</code>/<code>a</code>/<code>strong</code> inline; <code>div</code>/<code>p</code>/<code>section</code> block.']
       ])}
-
+ 
       ${card('📋','HTML — lists, tables, media',[
         ['Lists','<code>ul</code>→<code>li</code> (unordered), <code>ol</code>→<code>li</code> (ordered), <code>dl</code>→<code>dt</code>/<code>dd</code> (description). Close with the SAME tag you opened.'],
         ['Tables','<code>table</code> › <code>thead</code>/<code>tbody</code> › <code>tr</code> › <code>th</code>/<code>td</code>. Headers are <code>th</code>, data is <code>td</code>.'],
         ['Images','<code>&lt;img src="x.png" alt="..."&gt;</code> — void element, uses <code>src</code> not <code>href</code>, no closing tag, <code>alt</code> is for accessibility.'],
         ['Multimedia','<code>&lt;audio&gt;</code>/<code>&lt;video&gt;</code> with <code>&lt;source&gt;</code> children + <code>controls</code> attribute.']
       ])}
-
+ 
       ${card('📝','HTML — forms',[
         ['&lt;form&gt;','<code>action</code> (URL) + <code>method</code> (<code>get</code>/<code>post</code>).'],
         ['&lt;input&gt;','<code>type</code> = text/email/password/checkbox/radio/number/submit… Void element.'],
         ['&lt;label&gt;','<code>&lt;label for="id"&gt;</code> tied to <code>&lt;input id="id"&gt;</code> — clickable + accessible.'],
         ['Others','<code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>→<code>&lt;option&gt;</code>, <code>&lt;button&gt;</code>. Group with <code>&lt;fieldset&gt;</code>+<code>&lt;legend&gt;</code>.']
       ])}
-
+ 
       ${card('🎯','CSS — selectors & specificity',[
         ['Basics','<code>tag</code>, <code>.class</code>, <code>#id</code>, <code>*</code> (universal).'],
         ['Combinators','<code>A B</code> descendant · <code>A &gt; B</code> child · <code>A + B</code> next sibling · <code>A ~ B</code> all siblings.'],
         ['Specificity','inline (1000) &gt; id (100) &gt; class/attr/pseudo-class (10) &gt; element/pseudo-element (1). Ties → later rule wins.'],
         ['!important','Overrides specificity. Last resort — usually a code smell.']
       ])}
-
+ 
       ${card('📦','CSS — box model',[
         ['Layers','content → <code>padding</code> → <code>border</code> → <code>margin</code> (inside-out).'],
         ['box-sizing','<code>content-box</code> (default: w/h = content only) vs <code>border-box</code> (w/h include padding+border).'],
         ['Margin collapse','Vertical margins between blocks collapse to the larger one.'],
         ['Units','<code>px</code> absolute · <code>%</code> of parent · <code>em</code> of own/parent font · <code>rem</code> of root · <code>vw</code>/<code>vh</code> of viewport. <strong>Numbers need units</strong> (except <code>0</code>, <code>line-height</code>, unitless ratios).']
       ])}
-
+ 
       ${card('🧭','CSS — display & position',[
         ['display','<code>block</code> · <code>inline</code> · <code>inline-block</code> · <code>none</code> (removed) · <code>flex</code> · <code>grid</code>.'],
         ['position','<code>static</code> (default) · <code>relative</code> (offset from self) · <code>absolute</code> (nearest positioned ancestor) · <code>fixed</code> (viewport) · <code>sticky</code>.'],
         ['float','<code>left</code>/<code>right</code>/<code>none</code> — legacy layout; <code>clear</code> to stop wrapping.'],
         ['z-index','Stacking order; only works on positioned (non-<code>static</code>) elements.']
       ])}
-
+ 
       ${card('↔️','CSS — Flexbox',[
         ['Turn on','<code>display:flex</code> on the container.'],
         ['Main axis','<code>flex-direction</code> = row (default) / column. <code>justify-content</code> aligns along it.'],
         ['Cross axis','<code>align-items</code> aligns across it; <code>align-content</code> for wrapped lines.'],
         ['Items','<code>flex-grow</code> / <code>flex-shrink</code> / <code>flex-basis</code> (shorthand <code>flex</code>). <code>flex-wrap:wrap</code> to wrap. <code>gap</code> for spacing.']
       ])}
-
+ 
       ${card('🔲','CSS — Grid',[
         ['Turn on','<code>display:grid</code> on the container.'],
         ['Tracks','<code>grid-template-columns</code>/<code>-rows</code>, e.g. <code>repeat(3, 1fr)</code>. <code>fr</code> = fraction of free space.'],
         ['Placement','<code>grid-column: 1 / 3</code> spans lines 1→3. <code>grid-template-areas</code> for named layout.'],
         ['Gap','<code>gap</code> (or <code>row-gap</code>/<code>column-gap</code>). Flex = 1D, Grid = 2D.']
       ])}
-
+ 
       ${card('📱','CSS — responsive & visual',[
         ['Media query','<code>@media (max-width: 768px){ … }</code> — applies under that width.'],
         ['Pseudo-classes','State: <code>:hover</code>, <code>:focus</code>, <code>:active</code>, <code>:nth-child(n)</code>, <code>:first-child</code>.'],
@@ -2484,82 +2482,82 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
         ['transition','<code>transition: property duration timing delay;</code> e.g. <code>transition: all .3s ease;</code>.'],
         ['animation','<code>@keyframes name{ from{…} to{…} }</code> then <code>animation: name 2s infinite;</code>.']
       ])}
-
+ 
       ${card('🔤','JS — variables & types',[
         ['Declare','<code>let</code> (block, reassignable) · <code>const</code> (block, no reassign) · <code>var</code> (function-scoped, hoisted, avoid).'],
         ['Primitives','<code>string</code>, <code>number</code>, <code>boolean</code>, <code>null</code>, <code>undefined</code>, <code>symbol</code>, <code>bigint</code>.'],
         ['typeof quirks','<code>typeof null === "object"</code> (bug), <code>typeof NaN === "number"</code>, <code>typeof []==="object"</code>.'],
         ['Equality','<code>===</code> strict (no coercion) — use it. <code>==</code> coerces (<code>0 == "" </code> → true). <code>!==</code> likewise.']
       ])}
-
+ 
       ${card('🔀','JS — operators & control flow',[
         ['Falsy','<code>false</code>, <code>0</code>, <code>""</code>, <code>null</code>, <code>undefined</code>, <code>NaN</code>. Everything else truthy ( <code>[]</code> & <code>{}</code> are truthy!).'],
         ['Logical','<code>&&</code> (and) <code>||</code> (or) <code>!</code> (not). <code>??</code> nullish coalescing (only null/undefined).'],
         ['Ternary','<code>cond ? a : b</code> — single <code>?</code> / <code>:</code>, not <code>&</code>.'],
         ['Switch','Needs <code>break</code> per case or it falls through; <code>default</code> for no match.']
       ])}
-
+ 
       ${card('🔁','JS — loops & functions',[
         ['Loops','<code>for(let i=0;i&lt;n;i++)</code> uses semicolons. <code>while</code>, <code>do…while</code>, <code>for…of</code> (values), <code>for…in</code> (keys).'],
         ['Function decl','<code>function f(a, b){…}</code> — params comma-separated in <code>( )</code>; hoisted.'],
         ['Arrow','<code>const f = (a,b) =&gt; a+b;</code> — no own <code>this</code>, not hoisted.'],
         ['Scope/closure','Inner function remembers outer variables even after outer returns = closure. Block scope via <code>let</code>/<code>const</code>.']
       ])}
-
+ 
       ${card('🧩','JS — objects, arrays, this',[
         ['Object','<code>{ key: value }</code>; access <code>obj.key</code> or <code>obj["key"]</code>.'],
         ['Array methods','<code>push</code>/<code>pop</code>/<code>shift</code>/<code>unshift</code>; <code>map</code>/<code>filter</code>/<code>reduce</code>/<code>forEach</code>. Length is <code>arr.length</code> (property, no <code>()</code>).'],
         ['this','Depends on call site: method → owner object; plain call → global/undefined; arrow → enclosing scope; <code>call/apply/bind</code> set it.'],
         ['Destructuring','<code>const {a} = obj;</code> · <code>const [x] = arr;</code> · spread <code>...</code>.']
       ])}
-
+ 
       ${card('🌳','JS — DOM & events',[
         ['Select','<code>getElementById</code>, <code>querySelector</code> (one), <code>querySelectorAll</code> (NodeList). No <code>getElementsByDiv</code>.'],
         ['Modify','<code>el.textContent</code>, <code>el.innerHTML</code>, <code>el.classList.add/remove/toggle</code>, <code>el.setAttribute</code>.'],
         ['Events','<code>el.addEventListener("click", fn)</code> — string event name + handler. Not <code>createEventListener</code>.'],
         ['Event obj','<code>e.target</code>, <code>e.preventDefault()</code>, <code>e.stopPropagation()</code>. Bubbling: child → ancestors.']
       ])}
-
+ 
       ${card('⚠️','JS — errors & exceptions',[
         ['try/catch','<code>try{ risky() } catch(err){ handle(err) } finally{ always() }</code>.'],
         ['throw','<code>throw new Error("message")</code> — throw Error objects, not strings.'],
         ['Error types','<code>SyntaxError</code>, <code>TypeError</code>, <code>ReferenceError</code>, <code>RangeError</code>.'],
         ['finally','Runs whether or not an error was thrown — cleanup.']
       ])}
-
+ 
       ${card('🧬','JS — prototypes & classes',[
         ['Prototype chain','Objects delegate to their <code>[[Prototype]]</code>; lookup walks up the chain to <code>Object.prototype</code> → <code>null</code>.'],
         ['Class','<code>class A{ constructor(){} method(){} }</code> — syntactic sugar over prototypes.'],
         ['Inherit','<code>class B extends A{ constructor(){ super(); } }</code> — <code>super()</code> calls parent ctor.'],
         ['new','Creates object, links prototype, binds <code>this</code>, returns it.']
       ])}
-
+ 
       ${card('⏳','JS — async',[
         ['Event loop','Single-threaded. Call stack → Web APIs → microtask queue (promises) → macrotask queue (timers). Microtasks drain first.'],
         ['Promise','<code>new Promise((resolve,reject)=&gt;…)</code>; consume with <code>.then().catch().finally()</code>. States: pending→fulfilled/rejected.'],
         ['async/await','<code>async</code> fn returns a promise; <code>await</code> pauses until it settles. Wrap in <code>try/catch</code>.'],
         ['fetch','<code>const r = await fetch(url); const data = await r.json();</code> — returns a promise.']
       ])}
-
+ 
       ${card('📦','JS — ES modules',[
         ['Named export','<code>export const a = 1;</code> → <code>import { a } from "./m.js";</code> — braces, matching name.'],
         ['Default export','<code>export default x;</code> → <code>import anyName from "./m.js";</code> — no braces, rename freely. One per module.'],
         ['Rename / all','<code>import { a as b }</code> · <code>import * as ns from "./m.js"</code>.'],
         ['Live bindings','Imports are read-only live views of the export (not copies). <strong>Barrel</strong> = an <code>index.js</code> re-exporting from several modules.']
       ])}
-
+ 
       ${card('🏁','Exam strategy',[
         ['Scoring','MCQ +1 / −0.5 (blank = 0, so skip pure guesses). Errors +1 each, −0.25 if you circle correct code. Open-ended 2 pts each.'],
         ['Pass marks','Grade 3 = 42/70 + ≥5 open-ended · 4 = 53 + ≥7 · 5 = 63 + ≥9.'],
         ['Time','30 errors = the biggest block — budget the most time there. Read each line; mismatched tags & fake property names are the usual traps.'],
         ['Open-ended','Answer the actual verb: “explain” → why/how; “describe” → what. Hit each rubric point in a sentence.']
       ])}
-
+ 
     </div>`;
-
+ 
   v.innerHTML = html;
 })();
-
+ 
 </script>
 </body>
 </html>
