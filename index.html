@@ -522,6 +522,185 @@ const DIAG = {
   </svg>`, 'Named exports (many per file, import by name) and one default (any name). A <b>barrel</b> <code>index.js</code> re-exports several modules behind a single import.')
 };
 
+/* ============================================================
+   DIDACTIC SET 2 — anatomy & flow diagrams
+   ============================================================ */
+Object.assign(DIAG, {
+
+  /* ---------- ANATOMY OF AN HTML ELEMENT ---------- */
+  elementAnatomy: fig(`<svg viewBox="0 0 600 210" role="img" aria-label="Anatomy of an HTML element">
+    <g style="${MF}" font-size="15">
+      <text x="150" y="92" textLength="18"  fill="#5bb0e6">&lt;a</text>
+      <text x="177" y="92" textLength="36"  fill="#f4b740">href</text>
+      <text x="213" y="92" textLength="9"   fill="#9aa6b6">=</text>
+      <text x="222" y="92" textLength="99"  fill="#a9e07f">"page.html"</text>
+      <text x="321" y="92" textLength="9"   fill="#5bb0e6">&gt;</text>
+      <text x="330" y="92" textLength="81"  fill="#e8ecf1">Visit HKR</text>
+      <text x="411" y="92" textLength="36"  fill="#5bb0e6">&lt;/a&gt;</text>
+    </g>
+    <path d="M150,68 L150,60 L330,60 L330,68" fill="none" stroke="#5bb0e6"/>
+    <text x="240" y="50" text-anchor="middle" style="${FF}" font-size="11" fill="#5bb0e6">opening tag</text>
+    <path d="M334,68 L334,60 L407,60 L407,68" fill="none" stroke="#e8ecf1"/>
+    <text x="371" y="50" text-anchor="middle" style="${FF}" font-size="11" fill="#e8ecf1">content</text>
+    <line x1="195" y1="124" x2="195" y2="100" stroke="#f4b740"/>
+    <text x="195" y="140" text-anchor="middle" style="${FF}" font-size="11" fill="#f4b740">attribute name</text>
+    <line x1="271" y1="124" x2="271" y2="100" stroke="#a9e07f"/>
+    <text x="271" y="158" text-anchor="middle" style="${FF}" font-size="11" fill="#a9e07f">attribute value</text>
+    <line x1="429" y1="124" x2="429" y2="100" stroke="#5bb0e6"/>
+    <text x="429" y="140" text-anchor="middle" style="${FF}" font-size="11" fill="#5bb0e6">closing tag</text>
+    <text x="300" y="190" text-anchor="middle" style="${FF}" font-size="11.5" fill="#9aa6b6">element = opening tag + content + closing tag · attributes live <tspan fill="#e8ecf1">only in the opening tag</tspan></text>
+  </svg>`, 'The vocabulary the exam uses. A <b>tag</b> is the bracketed marker; the <b>element</b> is the whole thing; <b>attributes</b> are name="value" pairs in the opening tag.'),
+
+  /* ---------- ANATOMY OF A CSS RULE ---------- */
+  cssRuleAnatomy: fig(`<svg viewBox="0 0 600 215" role="img" aria-label="Anatomy of a CSS rule">
+    <g style="${MF}" font-size="15">
+      <text x="175" y="92" textLength="18"  fill="#7ec64a">h1</text>
+      <text x="202" y="92" textLength="9"   fill="#9aa6b6">{</text>
+      <text x="220" y="92" textLength="45"  fill="#f4b740">color</text>
+      <text x="265" y="92" textLength="9"   fill="#9aa6b6">:</text>
+      <text x="283" y="92" textLength="27"  fill="#e8ecf1">red</text>
+      <text x="310" y="92" textLength="9"   fill="#9aa6b6">;</text>
+      <text x="328" y="92" textLength="9"   fill="#9aa6b6">}</text>
+    </g>
+    <line x1="184" y1="62" x2="184" y2="78" stroke="#7ec64a"/>
+    <text x="184" y="52" text-anchor="middle" style="${FF}" font-size="11" fill="#7ec64a">selector — who is styled</text>
+    <line x1="242" y1="124" x2="242" y2="100" stroke="#f4b740"/>
+    <text x="242" y="140" text-anchor="middle" style="${FF}" font-size="11" fill="#f4b740">property</text>
+    <line x1="296" y1="124" x2="296" y2="100" stroke="#e8ecf1"/>
+    <text x="305" y="158" text-anchor="middle" style="${FF}" font-size="11" fill="#e8ecf1">value</text>
+    <path d="M220,118 L220,112 L319,112 L319,118" fill="none" stroke="#9aa6b6" transform="translate(0,-52)"/>
+    <text x="430" y="63" text-anchor="middle" style="${FF}" font-size="11" fill="#9aa6b6">declaration = property: value;</text>
+    <text x="300" y="195" text-anchor="middle" style="${FF}" font-size="11.5" fill="#9aa6b6">the braces { } are the <tspan fill="#e8ecf1">declaration block</tspan> — many declarations, each ending in <tspan style="${MF}" fill="#e8ecf1">;</tspan></text>
+  </svg>`, 'Selector targets the element; each <b>declaration</b> is a <code>property: value;</code> pair. Forgetting the <code>;</code> or swapping <code>:</code>/<code>;</code> are classic Section-2 plants.'),
+
+  /* ---------- FORM DATA FLOW ---------- */
+  formFlow: fig(`<svg viewBox="0 0 620 230" role="img" aria-label="How form data travels">
+    <defs><marker id="ahForm" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa6b6"/></marker></defs>
+    <rect x="22" y="44" width="150" height="58" rx="9" fill="#222a36" stroke="#5bb0e6"/>
+    <text x="97" y="68" text-anchor="middle" style="${MF}" font-size="11.5" fill="#5bb0e6">&lt;label</text>
+    <text x="97" y="86" text-anchor="middle" style="${MF}" font-size="11.5" fill="#f4b740">for="email"&gt;</text>
+    <rect x="232" y="44" width="170" height="58" rx="9" fill="#222a36" stroke="#7ec64a"/>
+    <text x="317" y="64" text-anchor="middle" style="${MF}" font-size="11.5" fill="#7ec64a">&lt;input id="email"</text>
+    <text x="317" y="82" text-anchor="middle" style="${MF}" font-size="11.5" fill="#f4b740">name="email"&gt;</text>
+    <text x="317" y="96" text-anchor="middle" style="${FF}" font-size="9.5" fill="#9aa6b6">user types: ada@hkr.se</text>
+    <rect x="472" y="44" width="126" height="58" rx="9" fill="#222a36" stroke="#b48ce0"/>
+    <text x="535" y="78" text-anchor="middle" style="${MF}" font-size="12" fill="#b48ce0">server</text>
+    <path d="M172,73 L230,73" stroke="#9aa6b6" stroke-dasharray="4 3" marker-end="url(#ahForm)"/>
+    <path d="M230,84 L172,84" stroke="#9aa6b6" stroke-dasharray="4 3" marker-end="url(#ahForm)"/>
+    <text x="201" y="64" text-anchor="middle" style="${FF}" font-size="9.5" fill="#9aa6b6">for ↔ id</text>
+    <line x1="402" y1="73" x2="470" y2="73" stroke="#9aa6b6" marker-end="url(#ahForm)"/>
+    <text x="436" y="63" text-anchor="middle" style="${FF}" font-size="9.5" fill="#9aa6b6">on submit</text>
+    <rect x="120" y="150" width="380" height="40" rx="8" fill="#0f1115" stroke="#2c3542"/>
+    <text x="310" y="175" text-anchor="middle" style="${MF}" font-size="12" fill="#a9e07f">POST /signup   email=ada%40hkr.se</text>
+    <line x1="317" y1="106" x2="317" y2="148" stroke="#9aa6b6" stroke-dasharray="4 3" marker-end="url(#ahForm)"/>
+    <text x="310" y="212" text-anchor="middle" style="${FF}" font-size="11" fill="#9aa6b6">what travels = <tspan fill="#f4b740">name</tspan><tspan fill="#e8ecf1">=value</tspan> pairs, to the form's <tspan style="${MF}" fill="#e8ecf1">action</tspan> using its <tspan style="${MF}" fill="#e8ecf1">method</tspan></text>
+  </svg>`, '<code>for</code> pairs the label to the input\u2019s <code>id</code> (usability + screen readers); the <b><code>name</code></b> is what becomes the key the server receives. No <code>name</code> → the field is silently not submitted.'),
+
+  /* ---------- JS TYPE SYSTEM ---------- */
+  typesMap: fig(`<svg viewBox="0 0 600 250" role="img" aria-label="JavaScript value types">
+    <rect x="18" y="34" width="276" height="150" rx="10" fill="#1b212b" stroke="#5bb0e6"/>
+    <text x="34" y="58" style="${MF}" font-size="13" fill="#5bb0e6">Primitives</text>
+    <text x="34" y="74" style="${FF}" font-size="10" fill="#9aa6b6">immutable single values · copied by value</text>
+    <g style="${MF}" font-size="11.5" fill="#e8ecf1">
+      <rect x="34"  y="86" width="72" height="26" rx="6" fill="#222a36" stroke="#2c3542"/><text x="70"  y="103" text-anchor="middle">string</text>
+      <rect x="114" y="86" width="72" height="26" rx="6" fill="#222a36" stroke="#2c3542"/><text x="150" y="103" text-anchor="middle">number</text>
+      <rect x="194" y="86" width="82" height="26" rx="6" fill="#222a36" stroke="#2c3542"/><text x="235" y="103" text-anchor="middle">boolean</text>
+      <rect x="34"  y="120" width="92" height="26" rx="6" fill="#222a36" stroke="#2c3542"/><text x="80"  y="137" text-anchor="middle">undefined</text>
+      <rect x="134" y="120" width="62" height="26" rx="6" fill="#222a36" stroke="#f4b740"/><text x="165" y="137" text-anchor="middle" fill="#f4b740">null</text>
+    </g>
+    <text x="34" y="170" style="${FF}" font-size="10.5" fill="#f4b740">⚠ typeof null → "object" (historic quirk)</text>
+    <rect x="312" y="34" width="270" height="150" rx="10" fill="#1b212b" stroke="#7ec64a"/>
+    <text x="328" y="58" style="${MF}" font-size="13" fill="#7ec64a">Objects</text>
+    <text x="328" y="74" style="${FF}" font-size="10" fill="#9aa6b6">key→value collections · copied by reference</text>
+    <g style="${MF}" font-size="11.5" fill="#e8ecf1">
+      <rect x="328" y="86" width="72" height="26" rx="6" fill="#222a36" stroke="#2c3542"/><text x="364" y="103" text-anchor="middle">object</text>
+      <rect x="408" y="86" width="72" height="26" rx="6" fill="#222a36" stroke="#2c3542"/><text x="444" y="103" text-anchor="middle">array</text>
+      <rect x="488" y="86" width="82" height="26" rx="6" fill="#222a36" stroke="#2c3542"/><text x="529" y="103" text-anchor="middle">function</text>
+    </g>
+    <text x="328" y="140" style="${FF}" font-size="10.5" fill="#9aa6b6">typeof [] → "object" → use Array.isArray()</text>
+    <text x="328" y="158" style="${FF}" font-size="10.5" fill="#9aa6b6">typeof fn → "function"</text>
+    <text x="300" y="222" text-anchor="middle" style="${FF}" font-size="11.5" fill="#9aa6b6">primitives are compared by <tspan fill="#e8ecf1">value</tspan> · objects by <tspan fill="#e8ecf1">reference</tspan> — two equal-looking arrays are <tspan style="${MF}" fill="#ef5f5f">!==</tspan></text>
+  </svg>`, 'The two families of values. The <code>typeof</code> quirks here are favourite MCQ bait: <code>null</code> reports <code>"object"</code>, arrays report <code>"object"</code>.'),
+
+  /* ---------- FOR-LOOP EXECUTION ORDER ---------- */
+  loopAnatomy: fig(`<svg viewBox="0 0 620 240" role="img" aria-label="for loop execution order">
+    <defs><marker id="ahLoop" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa6b6"/></marker></defs>
+    <g style="${MF}" font-size="14">
+      <text x="120" y="46" fill="#9aa6b6">for (</text>
+      <text x="170" y="46" fill="#5bb0e6">let i = 0</text>
+      <text x="252" y="46" fill="#9aa6b6">;</text>
+      <text x="268" y="46" fill="#f4b740">i &lt; 3</text>
+      <text x="318" y="46" fill="#9aa6b6">;</text>
+      <text x="334" y="46" fill="#b48ce0">i++</text>
+      <text x="366" y="46" fill="#9aa6b6">)</text>
+    </g>
+    <text x="206" y="22" text-anchor="middle" style="${FF}" font-size="10" fill="#5bb0e6">① init — runs once</text>
+    <text x="292" y="70" text-anchor="middle" style="${FF}" font-size="10" fill="#f4b740">② condition — checked every lap</text>
+    <text x="350" y="22" text-anchor="middle" style="${FF}" font-size="10" fill="#b48ce0">④ update — after the body</text>
+    <g style="${MF}" font-size="12">
+      <rect x="60"  y="120" width="110" height="44" rx="9" fill="#222a36" stroke="#f4b740"/><text x="115" y="146" text-anchor="middle" fill="#f4b740">i &lt; 3 ?</text>
+      <rect x="240" y="120" width="120" height="44" rx="9" fill="#222a36" stroke="#7ec64a"/><text x="300" y="146" text-anchor="middle" fill="#7ec64a">③ body runs</text>
+      <rect x="430" y="120" width="100" height="44" rx="9" fill="#222a36" stroke="#b48ce0"/><text x="480" y="146" text-anchor="middle" fill="#b48ce0">④ i++</text>
+      <rect x="60"  y="196" width="110" height="34" rx="9" fill="#222a36" stroke="#9aa6b6"/><text x="115" y="218" text-anchor="middle" fill="#9aa6b6">exit loop</text>
+    </g>
+    <line x1="170" y1="142" x2="238" y2="142" stroke="#9aa6b6" marker-end="url(#ahLoop)"/><text x="204" y="134" text-anchor="middle" style="${FF}" font-size="9.5" fill="#3ecf8e">true</text>
+    <line x1="360" y1="142" x2="428" y2="142" stroke="#9aa6b6" marker-end="url(#ahLoop)"/>
+    <path d="M480,120 C480,84 160,84 122,118" fill="none" stroke="#9aa6b6" marker-end="url(#ahLoop)"/>
+    <text x="300" y="96" text-anchor="middle" style="${FF}" font-size="9.5" fill="#9aa6b6">back to ② — check again</text>
+    <line x1="115" y1="164" x2="115" y2="194" stroke="#9aa6b6" marker-end="url(#ahLoop)"/><text x="138" y="182" style="${FF}" font-size="9.5" fill="#ef5f5f">false</text>
+  </svg>`, 'Run order: <b>① init once → ② condition → ③ body → ④ update → back to ②</b>. With <code>i &lt; 3</code> the body runs for i = 0, 1, 2 — three times, never for 3.'),
+
+  /* ---------- SCOPE CHAIN / CLOSURE ---------- */
+  scopeChain: fig(`<svg viewBox="0 0 560 250" role="img" aria-label="Scope chain lookup">
+    <defs><marker id="ahScope" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa6b6"/></marker></defs>
+    <rect x="20" y="20" width="520" height="210" rx="12" fill="#1b212b" stroke="#9aa6b6"/>
+    <text x="36" y="44" style="${MF}" font-size="12" fill="#9aa6b6">global scope</text>
+    <text x="36" y="62" style="${MF}" font-size="11" fill="#a9e07f">const greeting = "hi"</text>
+    <rect x="70" y="78" width="430" height="134" rx="10" fill="#222a36" stroke="#5bb0e6"/>
+    <text x="86" y="102" style="${MF}" font-size="12" fill="#5bb0e6">function makeCounter()</text>
+    <text x="86" y="120" style="${MF}" font-size="11" fill="#a9e07f">let count = 0</text>
+    <rect x="120" y="132" width="330" height="62" rx="8" fill="#2a3342" stroke="#7ec64a"/>
+    <text x="136" y="154" style="${MF}" font-size="12" fill="#7ec64a">() =&gt; ++count</text>
+    <text x="136" y="172" style="${FF}" font-size="10" fill="#9aa6b6">uses count ✓ · could use greeting ✓</text>
+    <path d="M118,162 C92,162 84,140 84,124" fill="none" stroke="#9aa6b6" stroke-dasharray="4 3" marker-end="url(#ahScope)"/>
+    <path d="M70,96 C48,92 40,76 40,64" fill="none" stroke="#9aa6b6" stroke-dasharray="4 3" marker-end="url(#ahScope)"/>
+    <text x="508" y="158" text-anchor="end" style="${FF}" font-size="10.5" fill="#9aa6b6">lookup goes</text>
+    <text x="508" y="173" text-anchor="end" style="${FF}" font-size="10.5" fill="#9aa6b6">outward only →</text>
+  </svg>`, 'Inner functions see outward, never the reverse. A <b>closure</b> is the inner function keeping this chain alive after <code>makeCounter()</code> has returned — so <code>count</code> persists, privately.'),
+
+  /* ---------- TRY / CATCH / FINALLY FLOW ---------- */
+  tryCatchFlow: fig(`<svg viewBox="0 0 600 230" role="img" aria-label="try catch finally flow">
+    <defs><marker id="ahTry" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa6b6"/></marker></defs>
+    <g style="${MF}" font-size="12.5">
+      <rect x="30" y="40" width="120" height="48" rx="9" fill="#222a36" stroke="#5bb0e6"/><text x="90" y="68" text-anchor="middle" fill="#5bb0e6">try { … }</text>
+      <path d="M230,40 L300,64 L230,88 L160,64 Z" fill="#222a36" stroke="#f4b740"/><text x="230" y="68" text-anchor="middle" fill="#f4b740" font-size="11">error?</text>
+      <rect x="350" y="14" width="150" height="44" rx="9" fill="#222a36" stroke="#ef5f5f"/><text x="425" y="40" text-anchor="middle" fill="#ef5f5f">catch (err) { … }</text>
+      <rect x="350" y="138" width="150" height="44" rx="9" fill="#222a36" stroke="#7ec64a"/><text x="425" y="164" text-anchor="middle" fill="#7ec64a">finally { … }</text>
+    </g>
+    <line x1="150" y1="64" x2="158" y2="64" stroke="#9aa6b6" marker-end="url(#ahTry)"/>
+    <path d="M280,48 C310,36 330,36 348,36" fill="none" stroke="#9aa6b6" marker-end="url(#ahTry)"/><text x="312" y="26" text-anchor="middle" style="${FF}" font-size="10" fill="#ef5f5f">thrown</text>
+    <path d="M280,80 C310,108 330,140 348,154" fill="none" stroke="#9aa6b6" marker-end="url(#ahTry)"/><text x="288" y="122" text-anchor="middle" style="${FF}" font-size="10" fill="#3ecf8e">no error</text>
+    <path d="M425,58 L425,136" stroke="#9aa6b6" marker-end="url(#ahTry)"/><text x="452" y="100" style="${FF}" font-size="10" fill="#9aa6b6">then</text>
+    <line x1="500" y1="160" x2="560" y2="160" stroke="#9aa6b6" marker-end="url(#ahTry)"/>
+    <text x="560" y="146" text-anchor="end" style="${FF}" font-size="10" fill="#9aa6b6">code continues</text>
+    <text x="300" y="214" text-anchor="middle" style="${FF}" font-size="11.5" fill="#9aa6b6"><tspan style="${MF}" fill="#7ec64a">finally</tspan> runs on <tspan fill="#e8ecf1">both</tspan> paths — success or failure — which makes it the cleanup spot</text>
+  </svg>`, 'The error path jumps to <code>catch</code>; the happy path skips it. <b><code>finally</code> always runs</b> — the single most-asked fact about exceptions.'),
+
+  /* ---------- EVENT BUBBLING ---------- */
+  eventBubbling: fig(`<svg viewBox="0 0 560 260" role="img" aria-label="Event bubbling">
+    <defs><marker id="ahBub" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#7ec64a"/></marker></defs>
+    <rect x="20" y="20" width="520" height="220" rx="12" fill="#1b212b" stroke="#9aa6b6"/><text x="36" y="44" style="${MF}" font-size="12" fill="#9aa6b6">document</text>
+    <rect x="60" y="58" width="440" height="160" rx="10" fill="#222a36" stroke="#b48ce0"/><text x="76" y="80" style="${MF}" font-size="12" fill="#b48ce0">body</text>
+    <rect x="100" y="94" width="360" height="100" rx="9" fill="#2a3342" stroke="#5bb0e6"/><text x="116" y="116" style="${MF}" font-size="12" fill="#5bb0e6">div.card</text>
+    <rect x="140" y="128" width="180" height="44" rx="8" fill="#33405a" stroke="#7ec64a"/><text x="230" y="155" text-anchor="middle" style="${MF}" font-size="12" fill="#7ec64a">button ⭐ click!</text>
+    <path d="M330,150 C384,150 396,130 400,112" fill="none" stroke="#7ec64a" marker-end="url(#ahBub)"/>
+    <path d="M430,94 C448,90 456,82 460,74" fill="none" stroke="#7ec64a" marker-end="url(#ahBub)"/>
+    <path d="M480,58 C498,54 506,46 510,38" fill="none" stroke="#7ec64a" marker-end="url(#ahBub)"/>
+    <text x="430" y="136" style="${FF}" font-size="10" fill="#a9e07f">bubbles up ↗</text>
+    <text x="36" y="232" style="${FF}" font-size="10.5" fill="#9aa6b6">e.target = the button it started on · e.stopPropagation() halts the climb</text>
+  </svg>`, 'Events fire on the target, then <b>bubble up</b> through every ancestor. That\u2019s why one listener on a parent can handle clicks for all its children — <b>event delegation</b>.')
+});
+
 /* ===== inlined: data-topics.js ===== */
 /* ============================================================
    DA218D EXAM LAB — DATA
@@ -567,6 +746,8 @@ const TOPICS = {
       id:'html-struct', ico:'🏗️', lec:'Lec 3', title:'Document structure & the head',
       body:`
         <p>Every HTML document needs a <b>doctype</b>, an <code class="inl">&lt;html&gt;</code> root with a <code class="inl">lang</code> attribute, a <code class="inl">&lt;head&gt;</code> (info <i>about</i> the page), and a <code class="inl">&lt;body&gt;</code> (the visible content).</p>
+        <p>First, the vocabulary — the exam is precise about these words, so get them straight before anything else:</p>
+        ${DIAG.elementAnatomy}
         <pre class="code"><span class="code-label">html</span>${hl(`<!DOCTYPE html>            <!-- tells the browser this is HTML5 -->
 <html lang="en">           <!-- root element; lang aids screen readers & SEO -->
 <head>                     <!-- metadata: NOT shown on the page -->
@@ -674,6 +855,7 @@ const TOPICS = {
 
   <button type="submit">Send</button>
 </form>`,'html')}</pre>
+        ${DIAG.formFlow}
         <h4>Key points</h4>
         <ul>
           <li><kbd>&lt;label for="x"&gt;</kbd> must match an input's <kbd>id="x"</kbd> — this links them so clicking the label focuses the field (accessibility + usability).</li>
@@ -690,6 +872,7 @@ const TOPICS = {
       id:'css-basics', ico:'🎨', lec:'Lec 5', title:'Selectors, properties & the cascade',
       body:`
         <p>A CSS rule = <b>selector</b> + <b>declaration block</b>. Each declaration is <code class="inl">property: value;</code>.</p>
+        ${DIAG.cssRuleAnatomy}
         <pre class="code"><span class="code-label">css</span>${hl(`h1 { color: #333; font-size: 2rem; }   /* type selector */
 .btn { padding: 10px; }                  /* class selector */
 #hero { background: #faf; }              /* id selector */`,'css')}</pre>
@@ -846,6 +1029,8 @@ shapes.forEach(s => console.log(s.area())); // same call, different result`,'jav
     {
       id:'js-vars', ico:'📦', lec:'Lec 7', title:'Variables, types & operators',
       body:`
+        <p>JavaScript values come in two families — <b>primitives</b> (simple, immutable, compared by value) and <b>objects</b> (collections, compared by reference). Knowing which is which explains most "surprising" exam results.</p>
+        ${DIAG.typesMap}
         <table class="ctable">
           <tr><th>Keyword</th><th>Reassign?</th><th>Scope</th><th>Hoisting</th></tr>
           <tr><td><code>const</code></td><td>No</td><td>Block</td><td>Not usable before declaration (TDZ)</td></tr>
@@ -871,6 +1056,7 @@ const mul = (a, b) => a * b;              // arrow expression`,'javascript')}</p
         <p>The interpreter makes two passes. The first registers <b>function declarations</b>, so you can call them before they appear. Functions assigned to <code class="inl">let</code>/<code class="inl">const</code> are <b>not</b> hoisted that way.</p>
         <h4>Scope & closures</h4>
         <p>A <b>closure</b> is a function bundled together with the variables from the scope where it was <i>defined</i> — and it keeps a <b>live reference</b> to them (not a copy), even after that outer function has returned. That captured, still-mutable state is what makes "private" variables in JS possible.</p>
+        ${DIAG.scopeChain}
         <pre class="code"><span class="code-label">javascript</span>${hl(`function counter() {
   let count = 0;                 // private
   return () => ++count;          // inner fn keeps access to count
@@ -884,6 +1070,8 @@ next(); // 2`,'javascript')}</pre>
       id:'js-control', ico:'🔁', lec:'Lec 8–9', title:'Control flow, loops & arrays',
       body:`
         <h4>Loops</h4>
+        <p>A <code class="inl">for</code> loop has three semicolon-separated parts, and they run in a specific order. The <kbd>;</kbd> separators (not commas) are a favourite error-spotting plant.</p>
+        ${DIAG.loopAnatomy}
         <pre class="code"><span class="code-label">javascript</span>${hl(`for (let i = 0; i < arr.length; i++) { ... }   // note ; separators
 while (cond) { ... }
 do { ... } while (cond);   // runs AT LEAST ONCE`,'javascript')}</pre>
@@ -981,6 +1169,7 @@ clearInterval(t);`,'javascript')}</pre>
       id:'js-events', ico:'⚡', lec:'Lec 10', title:'Events & event handling',
       body:`
         <p>An <b>event</b> is something that happens in the page (click, keydown, change, submit, load). You attach an <b>event handler</b> with <code class="inl">addEventListener</code>.</p>
+        ${DIAG.eventBubbling}
         <pre class="code"><span class="code-label">javascript</span>${hl(`const btn = document.getElementById('save');
 btn.addEventListener('click', function (event) {
   event.preventDefault();          // stop default (e.g. form submit)
@@ -997,6 +1186,7 @@ btn.addEventListener('click', function (event) {
     {
       id:'js-errors', ico:'🛡️', lec:'Lec 8', title:'Errors & exception handling',
       body:`
+        ${DIAG.tryCatchFlow}
         <h4>Three kinds of error</h4>
         <ul>
           <li><b>Syntax error</b> — breaks the language rules; caught <i>before</i> the code runs (e.g. a missing bracket).</li>
@@ -2663,7 +2853,8 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
   const DUR = 4*60*60;                         // 14400 seconds
   let mcqSet=[], feSet=[], feMeta=[], oeSet=[];
   let mcqPick=[], fePicks=[], oeText=[], oeScore=[];
-  let remaining=DUR, timerId=null, sec='s1', gradeData=null;
+  let mcqFlag=[], oeFlag=[];
+  let remaining=DUR, timerId=null, sec='s1', gradeData=null, keyHandler=null;
   const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
   /* ---------- sampling ---------- */
@@ -2677,6 +2868,8 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     fePicks = feSet.map(()=>new Set());
     oeText  = Array(oeSet.length).fill('');
     oeScore = Array(oeSet.length).fill(null);
+    mcqFlag = Array(mcqSet.length).fill(false);
+    oeFlag  = Array(oeSet.length).fill(false);
     remaining = DUR; sec='s1'; gradeData=null;
   }
 
@@ -2728,6 +2921,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
   /* ---------- intro ---------- */
   function intro(){
     stopTimer();
+    if(keyHandler){ document.removeEventListener('keydown',keyHandler); keyHandler=null; }
     v.innerHTML = `
     <div class="hero" style="padding:34px 0 10px">
       <div class="kicker">The dress rehearsal</div>
@@ -2777,7 +2971,19 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     const fb=v.querySelector('#finishBtn');
     if(fb) fb.addEventListener('click',confirmFinish);
   }
-  function confirmFinish(){ if(confirm('Finish the exam and see your results? Sections 1 and 2 are graded automatically; you will self-mark Section 3.')) grade(false); }
+  function confirmFinish(){
+    const blanks = mcqPick.filter(x=>x===null).length;
+    const noErr = fePicks.filter(s=>s.size===0).length;
+    const empty = oeText.filter(t=>!t.trim()).length;
+    let msg='Finish the exam and see your results?';
+    const bits=[];
+    if(blanks) bits.push(`${blanks} MCQ${blanks>1?'s':''} unanswered`);
+    if(noErr)  bits.push(`${noErr} snippet${noErr>1?'s':''} with nothing marked`);
+    if(empty)  bits.push(`${empty} open-ended question${empty>1?'s':''} blank`);
+    if(bits.length) msg += `\n\nStill incomplete: ${bits.join(', ')}.\n\nSubmit anyway? (Sections 1 & 2 grade automatically; you'll self-mark Section 3.)`;
+    else msg += '\n\nSections 1 & 2 grade automatically; you will self-mark Section 3.';
+    if(confirm(msg)){ if(keyHandler){document.removeEventListener('keydown',keyHandler);keyHandler=null;} grade(false); }
+  }
 
   /* ---------- sections ---------- */
   function secHead(no,title,sub){ return `<div class="hero" style="padding:16px 0 4px"><div class="kicker">Section ${no}</div><h2 style="font-size:26px;font-family:var(--disp)">${title}</h2><p class="lede" style="margin-top:4px">${sub}</p></div>`; }
@@ -2796,68 +3002,140 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
   }
 
   function renderSection(){
+    if(keyHandler){ document.removeEventListener('keydown',keyHandler); keyHandler=null; }
     if(sec==='s1') renderS1();
     else if(sec==='s2') renderS2();
     else renderS3();
     wireBar(); wireNav();
   }
 
+  /* a clickable jump-grid for the current section */
+  function navigator(kind){
+    let dots='';
+    if(kind==='s1'){
+      dots = mcqSet.map((q,i)=>{ const done=mcqPick[i]!==null, fl=mcqFlag[i];
+        return `<button class="qnav-dot ${done?'done':''} ${fl?'flag':''}" data-go="${i}">${i+1}</button>`; }).join('');
+    } else if(kind==='s2'){
+      dots = feSet.map((s,i)=>{ const done=fePicks[i].size>0;
+        return `<button class="qnav-dot ${done?'done':''}" data-go="${i}">${i+1}</button>`; }).join('');
+    } else {
+      dots = oeSet.map((q,i)=>{ const done=(oeText[i]||'').trim().length>0, fl=oeFlag[i];
+        return `<button class="qnav-dot ${done?'done':''} ${fl?'flag':''}" data-go="${i}">${i+1}</button>`; }).join('');
+    }
+    const legend = `<div class="qnav-legend"><span><i style="background:var(--panel);border:1px solid var(--line)"></i>not done</span><span><i style="background:rgba(91,176,230,.4);border:1px solid var(--blue)"></i>${kind==='s2'?'marked':'answered'}</span>${kind!=='s2'?'<span><i style="background:var(--amber)"></i>flagged for review</span>':''}<span style="margin-left:auto">tap a number to jump</span></div>`;
+    return `<div class="qnav-grid">${dots}</div>${legend}`;
+  }
+  function wireNavigator(){
+    v.querySelectorAll('.qnav-dot').forEach(d=>d.addEventListener('click',()=>{
+      const el=document.getElementById('qc-'+d.dataset.go);
+      if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+    }));
+  }
+
   function renderS1(){
     const cards = mcqSet.map((q,i)=>`
-      <div class="q-card" style="margin-bottom:16px">
-        <div class="q-top"><span class="q-counter">Q${i+1} / 20</span><span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span><span class="q-counter" style="margin-left:auto">1 pt</span></div>
+      <div class="q-card ${mcqFlag[i]?'flagged':''}" id="qc-${i}" style="margin-bottom:16px">
+        <div class="q-top"><span class="q-counter">Q${i+1} / 20</span><span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span>
+          <button class="flag-btn ${mcqFlag[i]?'on':''}" data-flag="${i}">${mcqFlag[i]?'★ flagged':'⚑ flag'}</button>
+          <span class="q-counter" style="margin-left:auto">1 pt</span></div>
         <div class="q-stem">${q.q}</div>
         <div class="q-opts" data-q="${i}">
-          ${q.opts.map((o,j)=>`<div class="opt ${mcqPick[i]===j?'sel':''}" data-i="${j}"><span class="ltr">${'ABCD'[j]}</span><span>${o}</span></div>`).join('')}
+          ${q.opts.map((o,j)=>`<div class="opt ${mcqPick[i]===j?'sel':''}" data-i="${j}"><span class="ltr">${'ABCD'[j]}</span><span>${o}</span><span class="key">${'ABCD'[j]}</span></div>`).join('')}
         </div>
       </div>`).join('');
-    v.innerHTML = bar() + secHead(1,'Multiple Choice','Select one answer per question. Click a selected option again to clear it (blank scores 0 — safer than a wrong guess at −0.5).') + cards + navBtns();
+    v.innerHTML = bar() + secHead(1,'Multiple Choice','Select one answer per question. Click it again to clear (blank scores 0 — safer than −0.5 for a wrong guess).')
+      + `<div class="kbd-tip">Tip: with a question on screen, press <b>A</b>–<b>D</b> to answer the first unanswered one, or just click. Flag anything you want to revisit.</div>`
+      + navigator('s1') + cards + navBtns();
     v.querySelectorAll('.q-opts').forEach(box=>{
       const qi=+box.dataset.q;
       box.querySelectorAll('.opt').forEach(o=>o.addEventListener('click',()=>{
         const j=+o.dataset.i;
         if(mcqPick[qi]===j){ mcqPick[qi]=null; o.classList.remove('sel'); }
         else { mcqPick[qi]=j; box.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); o.classList.add('sel'); }
-        updHint();
+        refreshDot(qi,'s1'); updHint();
       }));
     });
+    v.querySelectorAll('[data-flag]').forEach(b=>b.addEventListener('click',()=>{
+      const qi=+b.dataset.flag; mcqFlag[qi]=!mcqFlag[qi];
+      b.classList.toggle('on',mcqFlag[qi]); b.textContent=mcqFlag[qi]?'★ flagged':'⚑ flag';
+      document.getElementById('qc-'+qi).classList.toggle('flagged',mcqFlag[qi]); refreshDot(qi,'s1');
+    }));
+    wireNavigator();
+    // keyboard A–D answers the topmost question currently in view
+    keyHandler = e=>{
+      if(/^[a-dA-D]$/.test(e.key) && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)){
+        const j='abcd'.indexOf(e.key.toLowerCase());
+        const qi=topVisibleCard(); if(qi<0)return;
+        const box=v.querySelector(`.q-opts[data-q="${qi}"]`); if(!box)return;
+        const opt=box.querySelector(`.opt[data-i="${j}"]`); if(opt)opt.click();
+      }
+    };
+    document.addEventListener('keydown',keyHandler);
+  }
+  function topVisibleCard(){
+    const cards=[...v.querySelectorAll('.q-card[id^="qc-"]')];
+    const mid=window.innerHeight*0.4;
+    for(const c of cards){ const r=c.getBoundingClientRect(); if(r.bottom>mid && r.top<window.innerHeight) return +c.id.slice(3); }
+    return cards.length?+cards[0].id.slice(3):-1;
+  }
+  function refreshDot(i,kind){
+    const dot=v.querySelector(`.qnav-dot[data-go="${i}"]`); if(!dot)return;
+    let done=false;
+    if(kind==='s1')done=mcqPick[i]!==null; else if(kind==='s2')done=fePicks[i].size>0; else done=(oeText[i]||'').trim().length>0;
+    dot.classList.toggle('done',done);
+    if(kind!=='s2')dot.classList.toggle('flag',kind==='s1'?mcqFlag[i]:oeFlag[i]);
   }
 
   function renderS2(){
     const cards = feSet.map((s,i)=>`
-      <div class="q-card" style="margin-bottom:16px">
-        <div class="q-top"><span class="q-counter">Snippet ${i+1} / 9</span><span class="q-badge ${s.lang}">${s.lang.toUpperCase()}</span><span class="q-counter" style="margin-left:auto">${esc(s.title)}</span></div>
+      <div class="q-card" id="qc-${i}" style="margin-bottom:16px">
+        <div class="q-top"><span class="q-counter">Snippet ${i+1} / 9</span><span class="q-badge ${s.lang}">${s.lang.toUpperCase()}</span>
+          <span class="marked-pill ${fePicks[i].size?'has':''}" id="mp-${i}">${fePicks[i].size} marked</span>
+          <span class="q-counter" style="margin-left:auto">${esc(s.title)}</span></div>
         <div class="q-stem" style="font-size:14px;color:var(--ink-dim)">Click the specific wrong token(s). Most tokens are correct; circling correct code costs −0.25.</div>
         <div class="fe-code" data-s="${i}">${feMeta[i].html}</div>
       </div>`).join('');
-    v.innerHTML = bar() + secHead(2,'Find the Errors','Three snippets each in HTML, CSS and JavaScript. Mark only what is actually wrong.') + cards + navBtns();
+    v.innerHTML = bar() + secHead(2,'Find the Errors','Three snippets each in HTML, CSS and JavaScript. Mark only what is actually wrong — precision beats quantity.')
+      + navigator('s2') + cards + navBtns();
     v.querySelectorAll('.fe-code').forEach(box=>{
       const si=+box.dataset.s;
       box.querySelectorAll('.tok').forEach(t=>t.addEventListener('click',()=>{
         const id=t.dataset.id;
         if(fePicks[si].has(id)){fePicks[si].delete(id);t.classList.remove('picked');}
         else{fePicks[si].add(id);t.classList.add('picked');}
-        updHint();
+        const mp=document.getElementById('mp-'+si);
+        mp.textContent=fePicks[si].size+' marked'; mp.classList.toggle('has',fePicks[si].size>0);
+        refreshDot(si,'s2'); updHint();
       }));
-      // restore any prior picks (after a section switch)
       fePicks[si].forEach(id=>{ const el=box.querySelector('.tok[data-id="'+id+'"]'); if(el)el.classList.add('picked'); });
     });
+    wireNavigator();
   }
 
   function renderS3(){
     const cards = oeSet.map((q,i)=>`
-      <div class="oe-card" style="margin-bottom:16px">
-        <div class="q-top"><span class="q-counter">Q${i+1} / 10</span><span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span><span class="q-counter" style="margin-left:auto">2 pts</span></div>
+      <div class="oe-card ${oeFlag[i]?'flagged':''}" id="qc-${i}" style="margin-bottom:16px">
+        <div class="q-top"><span class="q-counter">Q${i+1} / 10</span><span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span>
+          <button class="flag-btn ${oeFlag[i]?'on':''}" data-flag="${i}">${oeFlag[i]?'★ flagged':'⚑ flag'}</button>
+          <span class="q-counter" style="margin-left:auto">2 pts</span></div>
         <div class="oe-q">${q.q}</div>
         <textarea class="oe-area" data-q="${i}" placeholder="Write your answer…">${esc(oeText[i]||'')}</textarea>
       </div>`).join('');
-    v.innerHTML = bar() + secHead(3,'Open-Ended','Answer only what each question asks. You will self-mark these against the model answers when you finish.') + cards + navBtns();
-    v.querySelectorAll('.oe-area').forEach(t=>t.addEventListener('input',()=>{ oeText[+t.dataset.q]=t.value; updHint(); }));
+    v.innerHTML = bar() + secHead(3,'Open-Ended','Answer only what each question asks. You will self-mark these against the model answers when you finish.')
+      + navigator('s3') + cards + navBtns();
+    v.querySelectorAll('.oe-area').forEach(t=>t.addEventListener('input',()=>{ oeText[+t.dataset.q]=t.value; refreshDot(+t.dataset.q,'s3'); updHint(); }));
+    v.querySelectorAll('[data-flag]').forEach(b=>b.addEventListener('click',()=>{
+      const qi=+b.dataset.flag; oeFlag[qi]=!oeFlag[qi];
+      b.classList.toggle('on',oeFlag[qi]); b.textContent=oeFlag[qi]?'★ flagged':'⚑ flag';
+      document.getElementById('qc-'+qi).classList.toggle('flagged',oeFlag[qi]); refreshDot(qi,'s3');
+    }));
+    wireNavigator();
   }
 
   /* ---------- grading + review ---------- */
   function grade(timeUp){
     stopTimer();
+    if(keyHandler){ document.removeEventListener('keydown',keyHandler); keyHandler=null; }
     let s1=0,c=0,w=0,bl=0;
     mcqSet.forEach((q,i)=>{ const p=mcqPick[i]; if(p===null){bl++;} else if(p===q.c){s1+=1;c++;} else {s1-=0.5;w++;} });
     s1=Math.max(0,s1);
@@ -2902,7 +3180,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
   function renderReview(){
     stopTimer();
     const s3cards = oeSet.map((q,i)=>`
-      <div class="oe-card" style="margin-bottom:16px">
+      <div class="oe-card ${oeScore[i]===null?'unmarked':'marked'}" id="sm-${i}" style="margin-bottom:16px">
         <div class="q-top"><span class="q-counter">Q${i+1}</span><span class="q-badge ${q.tag}">${q.tag.toUpperCase()}</span><span class="q-counter" style="margin-left:auto">self-mark /2</span></div>
         <div class="oe-q">${q.q}</div>
         <div class="your-ans">${oeText[i] && oeText[i].trim() ? esc(oeText[i]) : '(left blank)'}</div>
@@ -2937,7 +3215,8 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
       <div class="hero" style="padding:26px 0 4px"><div class="kicker">Mock exam · results</div><h2 style="font-size:28px;font-family:var(--disp)">Your result</h2></div>
       <div id="mockScore">${scorecard()}</div>
       <div class="mock-yan">Section 3 · self-mark your answers</div>
-      <p class="lede" style="font-size:14px;margin:6px 0 12px">Compare each answer to the model and award <b>0</b>, <b>1</b>, or <b>2</b>. Your total and grade update live above.</p>
+      <div class="oe-selfmark-banner" id="smBanner"></div>
+      <p class="lede" style="font-size:14px;margin:6px 0 12px">Compare each answer to the model and award <b>0</b>, <b>1</b>, or <b>2</b>. Be strict — credit only the rubric points you actually made. Your total and grade update live above.</p>
       ${s3cards}
       <div class="mock-yan">Section 1 · MCQ review</div>${s1cards}
       <div class="mock-yan">Section 2 · error review</div>${s2cards}
@@ -2946,13 +3225,25 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
         <button class="bigbtn ghost" onclick="go('study')">Back to study</button>
         <button class="bigbtn ghost" onclick="go('home')">Overview</button>
       </div>`;
+    function updBanner(){
+      const marked=oeScore.filter(x=>x!==null).length, pts=s3total();
+      const b=document.getElementById('smBanner'); if(!b)return;
+      if(marked===10){ b.className='oe-selfmark-banner done';
+        b.innerHTML=`<b style="color:var(--ok)">✓ All 10 marked</b><span>Section 3 total: <b>${pts}/20</b></span><span style="color:var(--ink-dim)">Your grade above is now final.</span>`;
+      } else { b.className='oe-selfmark-banner';
+        b.innerHTML=`<b style="color:var(--amber)">${marked}/10 marked</b><span>so far: ${pts} pts</span><span style="color:var(--ink-dim)">Mark the remaining ${10-marked} to finalise your grade.</span>`;
+      }
+    }
     v.querySelectorAll('.oe-mark').forEach(box=>{ const qi=+box.dataset.q;
       box.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
         oeScore[qi]=+b.dataset.v;
         box.querySelectorAll('button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+        const card=document.getElementById('sm-'+qi); if(card){card.classList.remove('unmarked');card.classList.add('marked');}
         document.getElementById('mockScore').innerHTML=scorecard();
+        updBanner();
       }));
     });
+    updBanner();
     v.querySelector('#retake').addEventListener('click',()=>{ sample(); startTimer(); sec='s1'; renderSection(); window.scrollTo({top:0,behavior:'smooth'}); });
     window.scrollTo({top:0,behavior:'smooth'});
   }
