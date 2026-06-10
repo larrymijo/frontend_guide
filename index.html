@@ -1264,6 +1264,127 @@ const TOPIC_GROUPS = [
   {key:'js',   label:'JavaScript', accent:'#f4b740'}
 ];
 
+/* ===== inlined: data-recall.js ===== */
+/* ============================================================
+   ACTIVE-RECALL BANK
+   2–3 self-check questions per study topic, keyed by topic id.
+   Rendered as click-to-reveal <details> at the end of each topic.
+   Didactic rationale: retrieval practice — answering from memory
+   before peeking — beats re-reading for retention.
+   ============================================================ */
+const RECALL = {
+  'html-struct': [
+    {q:'From memory: what four things does every valid HTML document need, top to bottom?', a:'<code>&lt;!DOCTYPE html&gt;</code>, an <code>&lt;html lang="…"&gt;</code> root, a <code>&lt;head&gt;</code> (metadata), and a <code>&lt;body&gt;</code> (visible content).'},
+    {q:'What is the difference between a <i>tag</i>, an <i>element</i>, and an <i>attribute</i>?', a:'A tag is the bracketed marker (<code>&lt;a&gt;</code>); the element is opening tag + content + closing tag; attributes are <code>name="value"</code> pairs that live only in the opening tag.'},
+    {q:'<code>&lt;head&gt;</code> vs <code>&lt;header&gt;</code> — which is which?', a:'<code>&lt;head&gt;</code> holds metadata (<code>&lt;title&gt;</code>, <code>&lt;meta&gt;</code>, <code>&lt;link&gt;</code>) and renders nothing; <code>&lt;header&gt;</code> is a visible landmark inside <code>&lt;body&gt;</code>.'}
+  ],
+  'html-semantic': [
+    {q:'Name four semantic landmark elements and what each marks.', a:'<code>&lt;header&gt;</code> intro/banner · <code>&lt;nav&gt;</code> navigation · <code>&lt;main&gt;</code> the unique main content · <code>&lt;footer&gt;</code> closing info (also <code>&lt;aside&gt;</code> for tangential content).'},
+    {q:'<code>&lt;article&gt;</code> vs <code>&lt;section&gt;</code> vs <code>&lt;div&gt;</code> — one line each.', a:'<code>&lt;article&gt;</code> = self-contained, makes sense standalone (blog post, card). <code>&lt;section&gt;</code> = thematic grouping, not independent. <code>&lt;div&gt;</code> = no meaning at all, styling hook only.'},
+    {q:'Give two concrete reasons semantic tags beat <code>&lt;div&gt;</code>.', a:'Screen-reader users can jump between landmarks (accessibility), and search engines weight content by its role (SEO). Readability for other developers is a third.'}
+  ],
+  'html-headings': [
+    {q:'How many <code>&lt;h1&gt;</code> elements should a page have, and why do heading levels matter?', a:'One <code>&lt;h1&gt;</code>; levels h1→h6 form the document outline that screen readers and SEO use — don\u2019t skip levels for looks, restyle with CSS instead.'},
+    {q:'Sketch the tag structure of a 2-column, 1-row table with headers, from memory.', a:'<code>&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;…&lt;/th&gt;&lt;th&gt;…&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;…&lt;/td&gt;&lt;td&gt;…&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</code> — rows are <code>&lt;tr&gt;</code>, header cells <code>&lt;th&gt;</code>, data cells <code>&lt;td&gt;</code>.'},
+    {q:'Ordered vs unordered list — elements involved?', a:'<code>&lt;ol&gt;</code> numbered, <code>&lt;ul&gt;</code> bulleted, both contain only <code>&lt;li&gt;</code> items. Closing <code>&lt;ul&gt;</code> with <code>&lt;/ol&gt;</code> is a classic plant.'}
+  ],
+  'html-media': [
+    {q:'Why must every <code>&lt;img&gt;</code> have an <code>alt</code>? Two reasons.', a:'Screen readers announce it (accessibility), and it displays if the image fails to load. It is not the hover tooltip — that\u2019s <code>title</code>.'},
+    {q:'Name three void (self-closing) elements.', a:'<code>&lt;img&gt;</code>, <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;meta&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;link&gt;</code> — any three. They never take closing tags.'},
+    {q:'What goes between <code>&lt;video&gt;…&lt;/video&gt;</code> tags and when does the user see it?', a:'Fallback content (message/download link), shown only when the browser can\u2019t play any provided <code>&lt;source&gt;</code> — graceful degradation.'}
+  ],
+  'html-forms': [
+    {q:'What exactly links a <code>&lt;label&gt;</code> to its input, and what two benefits follow?', a:'<code>for="x"</code> matching the input\u2019s <code>id="x"</code>. Clicking the label focuses the control, and screen readers announce it.'},
+    {q:'Which attribute decides the <i>key name</i> the server receives — <code>id</code> or <code>name</code>?', a:'<code>name</code>. A field without <code>name</code> is silently not submitted. <code>id</code> is for the label/JS/CSS on the page.'},
+    {q:'What do <code>action</code> and <code>method</code> on <code>&lt;form&gt;</code> control?', a:'<code>action</code> = the URL the data is sent to; <code>method</code> = how (GET in the URL, POST in the request body).'}
+  ],
+  'css-basics': [
+    {q:'Anatomy check: in <code>h1 { color: red; }</code> name each part.', a:'<code>h1</code> selector · <code>color</code> property · <code>red</code> value · <code>color: red;</code> a declaration · <code>{ … }</code> the declaration block.'},
+    {q:'Two rules tie on specificity — who wins? And what trumps specificity entirely?', a:'The rule written later in the stylesheet (the cascade). <code>!important</code> overrides normal specificity — use sparingly.'},
+    {q:'Rank: inline style, <code>.class</code>, <code>#id</code>, <code>div</code> — weakest to strongest.', a:'<code>div</code> (1) &lt; <code>.class</code>/<code>:hover</code> (10) &lt; <code>#id</code> (100) &lt; inline <code>style=""</code> (1000).'}
+  ],
+  'css-box': [
+    {q:'Inside-out, name the four box-model layers.', a:'content → padding → border → margin. Background paints content+padding; margin is always transparent.'},
+    {q:'Box maths: <code>width:200px; padding:20px; border:5px</code> — rendered width under <code>content-box</code> vs <code>border-box</code>?', a:'content-box: 200+40+10 = <b>250px</b>. border-box: stays <b>200px</b> (content shrinks to fit).'},
+    {q:'Why does nearly every project set <code>box-sizing: border-box</code> globally?', a:'Declared width = rendered width regardless of padding/border, which makes layout arithmetic predictable.'}
+  ],
+  'css-position': [
+    {q:'One line each: static, relative, absolute, fixed.', a:'static = default, in flow. relative = in flow, nudged from its own spot. absolute = out of flow, anchored to nearest <i>positioned</i> ancestor. fixed = out of flow, anchored to the viewport (ignores scroll).'},
+    {q:'The classic pairing for precise placement inside a card?', a:'<code>position: relative</code> on the parent + <code>position: absolute</code> on the child.'},
+    {q:'When does <code>z-index</code> simply do nothing?', a:'On a <code>position: static</code> element — it only applies to positioned elements.'}
+  ],
+  'css-flexgrid': [
+    {q:'The one-line exam answer: Flexbox vs Grid?', a:'Flexbox lays items along <b>one</b> axis (row OR column); Grid controls <b>two</b> (rows AND columns together).'},
+    {q:'In a flex row, which property centres along the main axis, and which along the cross axis?', a:'<code>justify-content</code> = main axis; <code>align-items</code> = cross axis. Both set to <code>center</code> = perfect centring.'},
+    {q:'What does <code>grid-template-columns: repeat(3, 1fr)</code> produce?', a:'Three equal-width columns, each one fraction of the free space.'}
+  ],
+  'css-responsive': [
+    {q:'Why is <code>rem</code> the accessibility-friendly unit?', a:'It scales with the root font-size, so user font-size preferences are respected; <code>px</code> ignores them.'},
+    {q:'Describe mobile-first in one sentence, including the media-query type.', a:'Write base styles for small screens, then layer <code>@media (min-width: …)</code> queries to enhance for larger ones.'},
+    {q:'What does the viewport meta tag do, and roughly how is it written?', a:'<code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> — tells mobile browsers to use the real device width instead of a zoomed-out desktop layout.'}
+  ],
+  'css-pseudo': [
+    {q:'Pseudo-class vs pseudo-element — definition and syntax difference.', a:'Pseudo-class = a <i>state</i> of an element (<code>:hover</code>, <code>:focus</code>), one colon. Pseudo-element = a <i>part/generated piece</i> (<code>::before</code>, <code>::first-line</code>), two colons.'},
+    {q:'What must every <code>::before</code>/<code>::after</code> rule include to render at all?', a:'A <code>content</code> property — even empty: <code>content: "";</code>.'},
+    {q:'<code>transition</code> vs <code>animation</code> — when do you need each?', a:'<code>transition</code> animates between two states and needs a trigger (hover, class change). <code>animation</code> + <code>@keyframes</code> runs on its own with as many steps as you like.'}
+  ],
+  'js-oop': [
+    {q:'Name the four pillars, one phrase each.', a:'Encapsulation = bundle state+methods, hide internals. Abstraction = simple surface, hidden complexity. Inheritance = child reuses parent. Polymorphism = same call, many forms (overriding).'},
+    {q:'Class vs object — relationship?', a:'The class is the blueprint; objects/instances are built from it with <code>new</code>, each holding its own state.'},
+    {q:'A subclass overrides <code>area()</code> so each shape computes differently — which pillar is that?', a:'Polymorphism (inheritance made the subclass possible, but the differing behaviour at one call site is polymorphism).'}
+  ],
+  'js-vars': [
+    {q:'<code>let</code> vs <code>const</code> vs <code>var</code> — scope and reassignment in one line each.', a:'<code>let</code>: block-scoped, reassignable. <code>const</code>: block-scoped, no reassignment (but object <i>contents</i> can mutate). <code>var</code>: function-scoped, hoisted as <code>undefined</code> — avoid.'},
+    {q:'What do <code>typeof null</code> and <code>typeof []</code> return, and what do you use instead for arrays?', a:'Both return <code>"object"</code>. Use <code>Array.isArray(x)</code> to detect arrays.'},
+    {q:'<code>==</code> vs <code>===</code>: what does <code>0 == ""</code> give and why?', a:'<code>true</code> — loose equality coerces <code>""</code> to <code>0</code>. <code>===</code> compares type+value, giving <code>false</code>; prefer it.'}
+  ],
+  'js-functions': [
+    {q:'Which can you call before its definition line — declaration or arrow expression — and why?', a:'A function <i>declaration</i> (hoisted with its body). <code>const f = () =&gt; …</code> sits in the TDZ until that line runs.'},
+    {q:'Define a closure in one sentence, then name one practical use.', a:'A function that keeps live access to variables from the scope where it was defined, even after that scope returned — used for private state (counters), function factories, callbacks remembering setup.'},
+    {q:'What is special about <code>this</code> in an arrow function?', a:'It has none of its own — it inherits <code>this</code> from the surrounding scope, and it can\u2019t be used as a constructor.'}
+  ],
+  'js-control': [
+    {q:'Recite the for-loop execution order with the header <code>for (init; cond; update)</code>.', a:'init once → check cond → run body → update → check cond again … exits the first time cond is false.'},
+    {q:'<code>while</code> vs <code>do…while</code> — the one behavioural difference?', a:'<code>do…while</code> runs the body once before checking, so it always executes at least once.'},
+    {q:'Add to the end of an array and read its length — exact syntax.', a:'<code>arr.push(item)</code> and <code>arr.length</code> (a property — <code>arr.length()</code> throws).'}
+  ],
+  'js-objects': [
+    {q:'Dot vs bracket access — when must you use brackets?', a:'When the key is dynamic (in a variable) or not a valid identifier: <code>obj[key]</code>, <code>obj["my-key"]</code>.'},
+    {q:'<code>const user = {…}</code> — what can and can\u2019t change?', a:'You can mutate properties (<code>user.name = "B"</code>); you can\u2019t reassign the binding (<code>user = {}</code> throws).'},
+    {q:'Name the three classic array iteration methods and what each returns.', a:'<code>forEach</code> (nothing — side effects), <code>map</code> (new same-length array), <code>filter</code> (new array of items passing the test).'}
+  ],
+  'js-dom': [
+    {q:'The 4-step loop behind every interactive feature?', a:'Select the element → Listen for an event → run Logic → Update the DOM.'},
+    {q:'<code>textContent</code> vs <code>innerHTML</code> — difference and the safety rule.', a:'<code>textContent</code> sets plain text; <code>innerHTML</code> parses markup. Never feed user input to <code>innerHTML</code> (injection risk).'},
+    {q:'Two ways to select a single element by id?', a:'<code>document.getElementById("x")</code> or <code>document.querySelector("#x")</code> (querySelector takes any CSS selector).'}
+  ],
+  'js-window': [
+    {q:'<code>window</code> vs <code>document</code> in one line each, plus their relationship.', a:'<code>window</code> = the global browser-tab object (root of everything); <code>document</code> = the page/DOM, a child of window (<code>window.document</code>).'},
+    {q:'Argument order of <code>setTimeout</code>, and the classic mistake?', a:'<code>setTimeout(fn, ms)</code> — function first. Writing <code>setTimeout(fn(), 1000)</code> calls fn immediately instead of passing it.'},
+    {q:'What do <code>confirm()</code> and <code>prompt()</code> return?', a:'<code>confirm</code> → boolean (OK/Cancel). <code>prompt</code> → the typed string, or <code>null</code> on cancel.'}
+  ],
+  'js-events': [
+    {q:'What is event bubbling, and which property tells you where the event started?', a:'After firing on the target, the event climbs through every ancestor (button → div → body → document). <code>e.target</code> is the original element.'},
+    {q:'How does event delegation exploit bubbling?', a:'One listener on a parent handles events from all current and future children — check <code>e.target</code> to see which child fired.'},
+    {q:'What does <code>event.preventDefault()</code> do on a form submit?', a:'Stops the browser\u2019s default action — the page-reloading submission — so JS can handle the data instead.'}
+  ],
+  'js-errors': [
+    {q:'Which block always runs in try/catch/finally, and why is that useful?', a:'<code>finally</code> — success or failure — making it the place for cleanup (hide spinner, close resource).'},
+    {q:'Match the error: calling a method on <code>undefined</code> vs using an undeclared variable vs a missing bracket.', a:'TypeError · ReferenceError · SyntaxError (syntax errors are caught before the code even runs).'},
+    {q:'How do you raise your own error with a message?', a:'<code>throw new Error("message")</code> — it travels up until a <code>catch</code> handles it.'}
+  ],
+  'js-async': [
+    {q:'Explain in 3 steps how single-threaded JS stays responsive during a 2s timer.', a:'The timer is handed to a browser Web API → when done, its callback joins the task queue → the event loop pushes it onto the call stack only once the stack is empty.'},
+    {q:'A promise\u2019s three states, and the settling rule?', a:'pending → fulfilled (value) or rejected (error); it settles exactly once and never changes again.'},
+    {q:'Why does <code>const data = await res.json()</code> need the <code>await</code>?', a:'<code>res.json()</code> returns a Promise; without await you store the promise itself, not the parsed data.'}
+  ],
+  'js-modules': [
+    {q:'Named vs default export — count per file and import syntax.', a:'Named: many per file, <code>import { a, b }</code> with exact names (alias via <code>as</code>). Default: one per file, <code>import Anything from</code> — no braces.'},
+    {q:'What does it mean that imports are "live bindings"?', a:'They are read-only views: if the exporting module updates the value, importers see the change; importers can never reassign it.'},
+    {q:'What is a barrel file?', a:'An <code>index.js</code> that re-exports several modules so consumers can import everything from one path.'}
+  ]
+};
+
 /* ===== inlined: data-mcq.js ===== */
 /* ============================================================
    MCQ BANK  — c:correct index, src:'past'|'new'|'mod'
@@ -2245,12 +2366,19 @@ document.getElementById('v-home').innerHTML = `
     <div class="kicker">Lectures 1–14 · condensed</div>
     <h2 style="font-size:clamp(28px,4vw,42px)">Study Guide</h2>
     <p class="lede">Every topic the exam draws from, grouped by language. Each card opens to the essentials plus the exact traps that show up in the error-spotting section. Tap to expand.</p>
+    <p class="lede" style="font-size:13px;margin-top:8px">📐 <b>The loop that works:</b> read a topic → answer its <b>self-check from memory</b> → drill that area in MCQ / Find-the-Error → once most topics are green, sit the full mock. Re-reading feels productive; <i>retrieving</i> is what builds exam recall.</p>
   </div>`;
   TOPIC_GROUPS.forEach(g=>{
     html += `<section class="block"><div class="sec-head">
       <h2 style="color:${g.accent}">${g.label}</h2>
       <span class="tag">${TOPICS[g.key].length} topics</span></div>`;
     TOPICS[g.key].forEach(t=>{
+      const rc = (typeof RECALL!=='undefined' && RECALL[t.id]) ? `
+        <div class="recall-block">
+          <h4>🧠 Quick self-check <span>answer from memory <i>before</i> revealing — retrieval is what makes it stick</span></h4>
+          ${RECALL[t.id].map(r=>`<details class="recall"><summary>${r.q}</summary><div class="r-a">${r.a}</div></details>`).join('')}
+          <div class="recall-actions">Got them all? <a onclick="go('mcq')">drill MCQs →</a> <a onclick="go('error')">hunt errors →</a></div>
+        </div>` : '';
       html += `<div class="topic" data-id="${t.id}">
         <div class="t-head">
           <div class="t-ico">${t.ico}</div>
@@ -2258,7 +2386,7 @@ document.getElementById('v-home').innerHTML = `
           <span class="lec">${t.lec}</span>
           <span class="caret">▶</span>
         </div>
-        <div class="t-body"><div class="t-inner">${t.body}</div></div>
+        <div class="t-body"><div class="t-inner">${t.body}${rc}</div></div>
       </div>`;
     });
     html += `</section>`;
@@ -2273,6 +2401,9 @@ document.getElementById('v-home').innerHTML = `
       body.style.maxHeight = open ? body.scrollHeight+'px' : '0';
       if(open){ studied.add(t.dataset.id); updateProgress(); }
     });
+    t.querySelectorAll('details.recall').forEach(d=>d.addEventListener('toggle',()=>{
+      if(t.classList.contains('open')) body.style.maxHeight = body.scrollHeight+'px';
+    }));
   });
 })();
 
@@ -2938,6 +3069,12 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
       <div class="gcard g4"><div class="g">4</div><div class="req"><b>53</b> total<br>+ <b>7</b> open-ended</div></div>
       <div class="gcard g5"><div class="g">5</div><div class="req"><b>63</b> total<br>+ <b>9</b> open-ended</div></div>
     </div>
+    <div class="exam-meta" style="margin-top:16px">
+      <div class="chip">⏱️ <span>Suggested pacing — S1: <b>~50 min</b></span></div>
+      <div class="chip">🔍 <span>S2: <b>~90 min</b> (most points, go careful)</span></div>
+      <div class="chip">✍️ <span>S3: <b>~70 min</b></span></div>
+      <div class="chip">🔁 <span>Review pass: <b>~30 min</b></span></div>
+    </div>
     <div class="callout warn" style="max-width:760px"><b>How it works:</b> the clock starts the moment you begin and runs continuously — switch sections freely with the tabs in the bar. Sections 1 &amp; 2 are graded automatically; Section 3 you grade yourself against the model answers. Finish early any time, or it auto-submits at 0:00.</div>
     <div style="margin-top:18px"><button class="bigbtn" id="startBtn">Start the 4-hour exam →</button></div>`;
     v.querySelector('#startBtn').addEventListener('click',()=>{ sample(); startTimer(); sec='s1'; renderSection(); window.scrollTo({top:0,behavior:'smooth'}); });
@@ -3140,9 +3277,14 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     mcqSet.forEach((q,i)=>{ const p=mcqPick[i]; if(p===null){bl++;} else if(p===q.c){s1+=1;c++;} else {s1-=0.5;w++;} });
     s1=Math.max(0,s1);
     let found=0,wrong=0,totErr=0;
-    feSet.forEach((s,i)=>{ const m=feMeta[i]; totErr+=m.errCount; fePicks[i].forEach(id=>{ if(m.errIds.has(id))found++; else wrong++; }); });
+    const byArea={html:{mc:0,mn:0,ff:0,ft:0,fw:0},css:{mc:0,mn:0,ff:0,ft:0,fw:0},js:{mc:0,mn:0,ff:0,ft:0,fw:0}};
+    mcqSet.forEach((q,i)=>{ const a=byArea[q.tag]; if(a){a.mn++; if(mcqPick[i]===q.c)a.mc++;} });
+    feSet.forEach((s,i)=>{ const m=feMeta[i]; totErr+=m.errCount;
+      const a=byArea[s.lang]; if(a)a.ft+=m.errCount;
+      fePicks[i].forEach(id=>{ if(m.errIds.has(id)){found++; if(a)a.ff++;} else {wrong++; if(a)a.fw++;} });
+    });
     const s2 = totErr ? Math.max(0,found-0.25*wrong)/totErr*30 : 0;
-    gradeData={timeUp,s1,c,w,bl,found,wrong,totErr,s2};
+    gradeData={timeUp,s1,c,w,bl,found,wrong,totErr,s2,byArea};
     renderReview();
   }
 
@@ -3174,6 +3316,39 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
         <div class="mb"><b>${s3}</b><span>S3 · Open /20<br>${marked}/10 self-marked</span></div>
       </div>
       <div class="mock-gate" style="color:${g===0?'var(--amber)':'var(--grn-soft)'}">${gate}</div>
+    </div>`;
+  }
+
+  function areaPerf(){
+    const COLORS={html:'#5bb0e6',css:'#f4b740',js:'#7ec64a'};
+    const ADVICE={
+      html:'semantic containers (article vs section vs div), forms (label/for, name), tables & void elements',
+      css:'box-model maths & border-box, specificity, flexbox vs grid axes, positioning',
+      js:'async/await & promises, prototypes vs classes, loops & the type quirks (typeof, == vs ===)'
+    };
+    const rows=[], accs={};
+    ['html','css','js'].forEach(k=>{
+      const a=gradeData.byArea[k];
+      const mcqAcc = a.mn? a.mc/a.mn : null;
+      const feAcc  = a.ft? Math.max(0,a.ff-0.25*a.fw)/a.ft : null;
+      const parts=[mcqAcc,feAcc].filter(x=>x!==null);
+      const acc = parts.length? parts.reduce((x,y)=>x+y,0)/parts.length : 0;
+      accs[k]=acc;
+      const pct=Math.round(acc*100);
+      rows.push(`<div class="area-row">
+        <span class="al" style="color:${COLORS[k]}">${k.toUpperCase()}</span>
+        <div class="area-track"><div class="area-fill" style="width:${pct}%;background:${COLORS[k]}"></div></div>
+        <span class="av">${pct}% · ${a.mc}/${a.mn} mcq · ${a.ff}/${a.ft} err</span>
+      </div>`);
+    });
+    const weakest=['html','css','js'].sort((x,y)=>accs[x]-accs[y])[0];
+    const strong = accs[weakest]>=0.85;
+    return `<div class="area-perf">
+      <h4>Performance by area</h4>
+      ${rows.join('')}
+      <div class="area-advice">${strong
+        ? `Solid across the board — keep all three warm with mixed drills.`
+        : `<b>Weakest area: ${weakest.toUpperCase()}.</b> Prioritise: ${ADVICE[weakest]}. <a style="color:var(--grn-soft);cursor:pointer" onclick="go('study')">→ open the study guide</a>`}</div>
     </div>`;
   }
 
@@ -3214,6 +3389,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
     v.innerHTML = `
       <div class="hero" style="padding:26px 0 4px"><div class="kicker">Mock exam · results</div><h2 style="font-size:28px;font-family:var(--disp)">Your result</h2></div>
       <div id="mockScore">${scorecard()}</div>
+      ${areaPerf()}
       <div class="mock-yan">Section 3 · self-mark your answers</div>
       <div class="oe-selfmark-banner" id="smBanner"></div>
       <p class="lede" style="font-size:14px;margin:6px 0 12px">Compare each answer to the model and award <b>0</b>, <b>1</b>, or <b>2</b>. Be strict — credit only the rubric points you actually made. Your total and grade update live above.</p>
