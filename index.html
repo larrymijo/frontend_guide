@@ -815,6 +815,7 @@ const TOPICS = {
     </tr>
   </tbody>
 </table>`,'html')}</pre>
+        <div class="callout tip"><b>Table accessibility (an exam favourite):</b> add a <code class="inl">&lt;caption&gt;</code> right inside <code class="inl">&lt;table&gt;</code> to name it for screen readers, mark headers with <code class="inl">&lt;th scope="col"&gt;</code> / <code class="inl">scope="row"</code> so each cell is announced with its header, and use tables only for tabular <i>data</i>, never page layout.</div>
         <p><code class="inl">&lt;th&gt;</code> = header cell, <code class="inl">&lt;td&gt;</code> = data cell, <code class="inl">&lt;tr&gt;</code> = row. Tables are for tabular data, not layout.</p>`
     },
     {
@@ -828,6 +829,15 @@ const TOPICS = {
           <li><kbd>alt</kbd> — alternative text: read by screen readers and shown if the image fails to load. Critical for accessibility.</li>
           <li><code class="inl">&lt;img&gt;</code> is a void element — no closing tag.</li>
         </ul>
+        <h4>Responsive images — srcset &amp; sizes (asked on the re-exam!)</h4>
+        <pre class="code"><span class="code-label">html</span>${hl(`<img src="m.jpg"
+     srcset="s.jpg 480w, m.jpg 800w, l.jpg 1200w"
+     sizes="(max-width: 600px) 100vw, 50vw"
+     alt="Mountain view">
+<!-- srcset = the menu of files (+ their real widths)
+     sizes  = how wide the image will RENDER per viewport
+     the BROWSER then picks the best file for the device -->`,'html')}</pre>
+        <p>One <code class="inl">&lt;img&gt;</code>, several candidate files: phones download the small one (bandwidth, speed), retina/desktop gets the sharp one. Use it for heroes, galleries, any image whose displayed size varies; skip it for tiny fixed icons.</p>
         <h4>Audio & video (HTML5)</h4>
         <pre class="code"><span class="code-label">html</span>${hl(`<video controls width="640" muted loop>
   <source src="clip.mp4" type="video/mp4">
@@ -934,6 +944,9 @@ const TOPICS = {
           <tr><td><code>none</code></td><td>Removed entirely — takes up no space.</td><td>hidden panels</td></tr>
         </table>
         <div class="callout warn"><b>Classic MCQ pair:</b> <code class="inl">display: none</code> removes the element from layout (no space left behind), while <code class="inl">visibility: hidden</code> hides it but <b>keeps its space reserved</b>. And setting <code class="inl">width</code> on an <code class="inl">inline</code> element silently does nothing — switch to <code class="inl">inline-block</code>.</div>
+        <h4>overflow — when content is bigger than the box</h4>
+        <p><code class="inl">overflow: visible</code> (default — spills out) · <code class="inl">hidden</code> (clipped) · <code class="inl">scroll</code> (scrollbars always) · <code class="inl">auto</code> (scrollbars <i>only when needed</i> — the usual choice for dynamic panels, chat windows, code blocks).</p>
+        <div class="callout warn"><b>Two graded-paper caveats:</b> the <b>margin shorthand takes at most 4 values</b> (top right bottom left — <code class="inl">margin: 0 0 0 0 0;</code> is invalid), and <b>unitless <code class="inl">line-height: 1.5</code> is perfectly valid</b> — it’s a multiplier of the element’s own font-size. On the real re-exam, "correcting" it to px cost −0.25 for circling correct code.</div>
 <div class="callout tip"><b>Exam maths:</b> with the default <code class="inl">content-box</code>, rendered width = <code class="inl">width + left/right padding + left/right border</code>. Margin sits <i>outside</i> and doesn't count toward the box's own width. Add it up in that order and the box-model MCQ is automatic.</div>`
     },
     {
@@ -1152,6 +1165,7 @@ do { ... } while (cond);   // runs AT LEAST ONCE`,'javascript')}</pre>
     {
       id:'js-objects', ico:'🧱', lec:'Lec 11–12', title:'Objects, "this", prototypes & classes',
       body:`
+        <div class="callout tip"><b>Immutable state (re-exam topic):</b> instead of mutating, build a <b>new</b> value — <code class="inl">const next = [...items, x]</code>, <code class="inl">{...user, name:"B"}</code>. Why it matters in frontends: change detection becomes a cheap reference check (<code class="inl">old !== new</code>) so frameworks re-render efficiently, shared-mutation bugs disappear, and history/undo becomes possible.</div>
         <pre class="code"><span class="code-label">javascript</span>${hl(`const user = { name: 'Ada', greet() { return this.name; } };
 user.role = 'admin';        // add a property (dot notation)
 user['age'] = 30;           // or bracket notation`,'javascript')}</pre>
@@ -1231,6 +1245,14 @@ clearInterval(t);`,'javascript')}</pre>
       body:`
         <p>An <b>event</b> is something that happens in the page (click, keydown, change, submit, load). You attach an <b>event handler</b> with <code class="inl">addEventListener</code>.</p>
         ${DIAG.eventBubbling}
+        <h4>Three families of events + the ready moment</h4>
+        <table class="ctable">
+          <tr><th>Family</th><th>Source</th><th>Examples</th></tr>
+          <tr><td><b>User</b></td><td>the person’s actions</td><td>click, keydown, input, submit</td></tr>
+          <tr><td><b>Browser</b></td><td>page / browser lifecycle</td><td>DOMContentLoaded, load, resize, scroll</td></tr>
+          <tr><td><b>Environmental</b></td><td>device / system context</td><td>online, offline, visibilitychange, orientation</td></tr>
+        </table>
+        <div class="callout tip"><b><code class="inl">DOMContentLoaded</code></b> fires when the HTML is fully parsed and the DOM is ready — <i>without</i> waiting for images/CSS (unlike <code class="inl">load</code>). It’s the safe early hook for setup code: <code class="inl">document.addEventListener("DOMContentLoaded", init)</code>.</div>
         <pre class="code"><span class="code-label">javascript</span>${hl(`const btn = document.getElementById('save');
 btn.addEventListener('click', function (event) {
   event.preventDefault();          // stop default (e.g. form submit)
@@ -1285,6 +1307,7 @@ if (!res.ok) {                            // ok = status is 200-299
 }
 const data = await res.json();            // parses the JSON body (async)`,'javascript')}</pre>
         <div class="callout tip"><b>Subtle but tested:</b> <code class="inl">fetch</code> only rejects on <i>network</i> failure. A 404 or 500 still <b>fulfils</b> the promise — you must check <code class="inl">res.ok</code> / <code class="inl">res.status</code> yourself.</div>
+        <div class="callout tip"><b>Lazy loading (re-exam topic):</b> defer a resource until it’s needed — <code class="inl">&lt;img loading="lazy"&gt;</code> for below-the-fold images, dynamic <code class="inl">import()</code> for optional code. Cuts initial load time and bandwidth; never lazy-load critical above-the-fold content.</div>
 
         <h4>fetch</h4>
         <pre class="code"><span class="code-label">javascript</span>${hl(`fetch('https://api.example.com/data')
@@ -1770,6 +1793,74 @@ MCQ.push(
   {tag:'html', src:'new', q:'What makes a set of radio buttons mutually exclusive (pick one)?',
    opts:['Sharing the same <code>id</code>','Sharing the same <code>name</code>','Being inside the same <code>&lt;fieldset&gt;</code>','The <code>type="radio"</code> alone'], c:1,
    ex:'Radios group by identical <code>name</code>; the chosen one\u2019s <code>value</code> is submitted under that key. Shared <code>id</code>s are invalid HTML, and fieldsets are visual/semantic grouping — they don\u2019t create the exclusivity.'}
+);
+
+/* ===== inlined: data-mcq-real.js ===== */
+/* ============================================================
+   REAL RE-EXAM MCQs — transcribed verbatim from the paper.
+   src:'past' so they're labelled as genuine exam questions.
+   ============================================================ */
+MCQ.push(
+  {tag:'html', src:'past', q:'Which HTML element is intended to represent tangentially related content?',
+   opts:['<code>&lt;section&gt;</code>','<code>&lt;article&gt;</code>','<code>&lt;aside&gt;</code>','<code>&lt;main&gt;</code>'], c:2,
+   ex:'"Tangentially related" is the literal spec wording for <code>&lt;aside&gt;</code> (sidebars, pull-quotes). <code>&lt;section&gt;</code> groups thematic content, <code>&lt;article&gt;</code> is self-contained, <code>&lt;main&gt;</code> is the dominant content.'},
+  {tag:'html', src:'past', q:'Which attribute is required on the <code>&lt;img&gt;</code> element for accessibility compliance?',
+   opts:['<code>src</code>','<code>alt</code>','<code>title</code>','<code>role</code>'], c:1,
+   ex:'<code>alt</code> is what screen readers announce. <code>src</code> is required for the image to <i>work</i> but isn\u2019t the accessibility attribute; <code>title</code> is just a tooltip; <code>role</code> is rarely needed on img.'},
+  {tag:'css', src:'past', q:'Which CSS property determines how overflowing content is handled?',
+   opts:['<code>overflow</code>','<code>display</code>','<code>clip</code>','<code>visibility</code>'], c:0,
+   ex:'<code>overflow</code> (visible | hidden | scroll | auto) controls content that exceeds the box. <code>visibility</code> hides the element itself; <code>display</code> changes layout participation; <code>clip</code> is a deprecated rect property.'},
+  {tag:'css', src:'past', q:'What does <code>display: inline-block</code> allow that <code>inline</code> does not?',
+   opts:['Margin collapsing','Width and height control','Line wrapping','Positioning'], c:1,
+   ex:'<code>inline</code> ignores width/height (and vertical margins); <code>inline-block</code> flows in the line <i>and</i> respects them. Both wrap in text; positioning works on any display value.'},
+  {tag:'css', src:'past', q:'Which unit is relative to the root element\u2019s font size?',
+   opts:['<code>px</code>','<code>%</code>','<code>em</code>','<code>rem</code>'], c:3,
+   ex:'<b>r</b>em = <b>root</b> em. <code>em</code> is relative to the <i>parent/current</i> font-size (compounds when nested), <code>%</code> to the containing block, <code>px</code> is absolute.'},
+  {tag:'css', src:'past', q:'Which pseudo-class targets elements when they receive keyboard focus?',
+   opts:['<code>:hover</code>','<code>:visited</code>','<code>:focus</code>','<code>:active</code>'], c:2,
+   ex:'<code>:focus</code> fires when the element holds keyboard/input focus (Tab). <code>:hover</code> is mouse-over, <code>:active</code> is while being clicked, <code>:visited</code> is followed links.'},
+  {tag:'css', src:'past', q:'What is the default <code>flex-direction</code> value?',
+   opts:['<code>row</code>','<code>column</code>','<code>row-reverse</code>','<code>column-reverse</code>'], c:0,
+   ex:'Flex containers lay out along a horizontal main axis by default: <code>row</code>. You must opt into <code>column</code> explicitly — assuming column-by-default is the trap.'},
+  {tag:'css', src:'past', q:'Which media query condition targets devices with pointer accuracy?',
+   opts:['<code>(hover: none)</code>','<code>(pointer: fine)</code>','<code>(screen: touch)</code>','<code>(input: mouse)</code>'], c:1,
+   ex:'<code>pointer: fine</code> = precise input (mouse/trackpad); <code>pointer: coarse</code> = touch. <code>hover: none</code> tests hover <i>capability</i>, and the other two aren\u2019t real media features.'},
+  {tag:'html', src:'past', q:'Which HTML element represents the dominant content of the <code>&lt;body&gt;</code>?',
+   opts:['<code>&lt;article&gt;</code>','<code>&lt;div&gt;</code>','<code>&lt;section&gt;</code>','<code>&lt;main&gt;</code>'], c:3,
+   ex:'"Dominant content" is the spec definition of <code>&lt;main&gt;</code> — one per page, the unique content. <code>&lt;article&gt;</code>/<code>&lt;section&gt;</code> can appear many times inside it; <code>&lt;div&gt;</code> is meaningless.'},
+  {tag:'css', src:'past', q:'Which CSS property aligns grid items along the column axis?',
+   opts:['<code>justify-content</code>','<code>align-content</code>','<code>justify-items</code>','<code>place-items</code>'], c:3,
+   ex:'Of the listed options, <code>place-items</code> is the one that aligns the <i>items</i> on the column/block axis (it\u2019s the shorthand for <code>align-items</code> + <code>justify-items</code>). <code>justify-items</code> works on the row axis only; the two <code>-content</code> properties move whole <i>tracks</i>, not items. (The precise single-axis property, <code>align-items</code>, isn\u2019t offered — spotting that is the question\u2019s trick.)'},
+  {tag:'js', src:'past', q:'Which keyword limits variable scope to a block?',
+   opts:['<code>let</code>','<code>var</code>','<code>static</code>','<code>function</code>'], c:0,
+   ex:'<code>let</code> (and <code>const</code>) are block-scoped. <code>var</code> is function-scoped — it leaks out of <code>if</code>/<code>for</code> blocks, which is exactly why this question exists.'},
+  {tag:'js', src:'past', q:'Which array method transforms each element and returns a new array?',
+   opts:['<code>forEach()</code>','<code>filter()</code>','<code>map()</code>','<code>reduce()</code>'], c:2,
+   ex:'<code>map</code> = transform → new same-length array. <code>forEach</code> returns nothing, <code>filter</code> selects a subset, <code>reduce</code> collapses to a single value.'},
+  {tag:'js', src:'past', q:'What does <code>Array.prototype.reduce()</code> return?',
+   opts:['An array','A single accumulated value','Always a number','A boolean'], c:1,
+   ex:'<code>reduce</code> folds the array into one accumulated value — which can be a number, string, object, even an array. "Always a number" is the bait; the accumulator\u2019s type is whatever you build.'},
+  {tag:'js', src:'past', q:'Which operator checks both value and type equality?',
+   opts:['<code>!==</code>','<code>==</code>','<code>!=</code>','<code>===</code>'], c:3,
+   ex:'<code>===</code> is strict equality: no coercion, type + value. <code>==</code> coerces; <code>!==</code>/<code>!=</code> are the inequality forms.'},
+  {tag:'js', src:'past', q:'What happens when a Promise is rejected and not handled?',
+   opts:['Script stops immediately','Nothing','An unhandled rejection error may occur','Promise restarts'], c:2,
+   ex:'The runtime reports an <i>unhandled promise rejection</i> (console error / process warning). It doesn\u2019t halt all script execution, isn\u2019t silently fine, and promises never "restart" — they settle once.'},
+  {tag:'js', src:'past', q:'Which API schedules a macrotask?',
+   opts:['<code>queueMicrotask</code>','<code>Promise.then</code>','<code>async</code>','<code>setTimeout</code>'], c:3,
+   ex:'<code>setTimeout</code> callbacks go on the macrotask queue. <code>queueMicrotask</code> and <code>Promise.then</code> schedule <i>micro</i>tasks (drained before the next macrotask); <code>async</code> is syntax, not a scheduler.'},
+  {tag:'js', src:'past', q:'What does <code>typeof null</code> return?',
+   opts:['<code>null</code>','<code>undefined</code>','<code>number</code>','<code>object</code>'], c:3,
+   ex:'<code>"object"</code> — the famous historic bug kept for compatibility. It appeared on the real paper exactly like this; don\u2019t overthink it.'},
+  {tag:'js', src:'past', q:'Which method converts JSON text into a JavaScript object?',
+   opts:['<code>JSON.convert()</code>','<code>JSON.stringify()</code>','<code>JSON.parse()</code>','<code>JSON.decode()</code>'], c:2,
+   ex:'<code>parse</code>: string → object. <code>stringify</code> is the reverse direction (the classic swap-trap); <code>convert</code>/<code>decode</code> don\u2019t exist.'},
+  {tag:'js', src:'past', q:'Which DOM method returns the first matching element?',
+   opts:['<code>querySelectorAll()</code>','<code>getElementsByTagName()</code>','<code>getElementsByClassName()</code>','<code>querySelector()</code>'], c:3,
+   ex:'<code>querySelector</code> returns the <b>first</b> match (or null). The other three return <i>collections</i> — note the plural "Elements" / "All" in their names.'},
+  {tag:'js', src:'past', q:'What will <code>Boolean("")</code> evaluate to?',
+   opts:['<code>true</code>','<code>false</code>','<code>null</code>','<code>undefined</code>'], c:1,
+   ex:'The empty string is one of the six falsy values, so <code>Boolean("")</code> is <code>false</code>. <code>Boolean()</code> always returns a real boolean — never null/undefined.'}
 );
 
 /* ===== inlined: data-fe.js ===== */
@@ -2543,6 +2634,108 @@ const FE = [
   }
 ];
 
+/* ===== inlined: data-fe-real.js ===== */
+/* ============================================================
+   REAL RE-EXAM FIND-THE-ERROR SNIPPETS — 9 snippets, 30 errors,
+   transcribed from the actual paper. line-height: 1.5 in CSS 3/3
+   is deliberately CORRECT (unitless is valid) — circling it cost
+   real students −0.25 on the exam.
+   ============================================================ */
+FE.push(
+  { lang:'html', src:'past', title:'Re-exam HTML 1/3 — basic page',
+    lines:[
+      '<!DOCTYPE html>','<html lang="en">','<head>','  <meta charset="UTF-8">','  <title>Basic Page</title>','</head>','<body>','  <header>',
+      {code:'    <h1>Welcome</h2>', errs:[{e:'</h2>', why:'Mismatched: opened <h1>, must close with </h1>.', ref:'html-struct'}]},
+      '  </header>','  <main>',
+      {code:'    <p>This is a simple HTML document.', errs:[{e:'<p>', why:'This paragraph is never closed — a </p> is missing at the end of the line.', ref:'html-struct'}]},
+      '    <p>It demonstrates basic structure.</p>',
+      {code:'  </main', errs:[{e:'</main', why:'The closing tag is missing its final > — it must be </main>.', ref:'html-struct'}]},
+      '</body>','</html>'
+    ]},
+  { lang:'html', src:'past', title:'Re-exam HTML 2/3 — articles',
+    lines:[
+      '<!DOCTYPE html>','<html lang="en">','<head>',
+      {code:'  <meta char="UTF-8">', errs:[{e:'char=', why:'The attribute is charset, not char: <meta charset="UTF-8">.', ref:'html-struct'}]},
+      {code:'  <header>Articles</header>', errs:[{e:'<header>', why:'Inside <head> this should be <title> — <header> is a visible body landmark, not metadata.', ref:'html-struct'}]},
+      '</head>','<body>','  <nav>',
+      {code:'    <a link="#">Home</a>', errs:[{e:'link=', why:'Anchors use href, not link: <a href="#">.', ref:'html-struct'}]},
+      '  </nav>','  <section>','    <article>','      <h2>News Item</h2>','      <p>This is an article section.</p>',
+      {code:'    </section>', errs:[{e:'</section>', why:'This closes the <article> — tags must nest, so it should be </article> (the outer </section> comes after).', ref:'html-semantic'}]},
+      '  </section>','</body>','</html>'
+    ]},
+  { lang:'html', src:'past', title:'Re-exam HTML 3/3 — contact form',
+    lines:[
+      '<!DOCTYPE html>','<html lang="en">','<head>','  <meta charset="UTF-8">','  <title>Form Example</title>','</head>','<body>',
+      {code:'  <h1>Contact Us</h1>>', errs:[{e:'</h1>>', why:'A stray extra > after the closing tag — it should end at </h1>.', ref:'html-struct'}]},
+      '  <form>','    <label>Email:</label>',
+      {code:'    <input type="mailer">', errs:[{e:'"mailer"', why:'No such input type — email validation uses type="email".', ref:'html-forms'}]},
+      '    <button type="submit">Send</button>','  </form>',
+      {code:'  <img href="image.jpg" alt="Sample image">', errs:[{e:'href=', why:'<img> takes its file via src, not href.', ref:'html-media'}]},
+      '</body>','</html>'
+    ]},
+  { lang:'css', src:'past', title:'Re-exam CSS 1/3 — base layout',
+    lines:[
+      'body {',
+      {code:'  margin: 0 0 0 0 0;', errs:[{e:'0 0 0 0 0', why:'The margin shorthand takes at most four values (top right bottom left) — five is invalid.', ref:'css-box'}]},
+      '  font-family: Arial, sans-serif;','}','','main {',
+      {code:'  max-width: 800;', errs:[{e:'800', why:'A length needs a unit: max-width: 800px.', ref:'css-box'}]},
+      '  margin: auto;','  padding: 1rem;','}','','header {',
+      {code:'  background-color: f4f4f4;', errs:[{e:'f4f4f4', why:'Hex colours need the # prefix: #f4f4f4.', ref:'css-basics'}]},
+      '  padding: 1rem;','}'
+    ]},
+  { lang:'css', src:'past', title:'Re-exam CSS 2/3 — navigation',
+    lines:[
+      '.nav {',
+      {code:'  display: flexer;', errs:[{e:'flexer', why:'The value is flex — flexer does not exist.', ref:'css-flexgrid'}]},
+      '  justify-content: space-between;','  align-items: center;','}','','.nav a {',
+      {code:'  decoration: none;', errs:[{e:'decoration', why:'The property is text-decoration (decoration alone is not a CSS property).', ref:'css-basics'}]},
+      {code:'  pad: 0.5rem 1rem;', errs:[{e:'pad', why:'The property is padding — pad is not valid CSS.', ref:'css-box'}]},
+      '}','',
+      {code:'.nav a:hover', errs:[{e:':hover', why:'The declaration block never opens — a { is missing after the selector.', ref:'css-basics'}]},
+      '  background-color: #ddd;','}'
+    ]},
+  { lang:'css', src:'past', title:'Re-exam CSS 3/3 — card & media query',
+    lines:[
+      '.card {','  width: 300px;','  padding: 1rem;',
+      {code:'  border: 1px #ccc;', errs:[{e:'1px #ccc', why:'The border shorthand needs a style to render: border: 1px solid #ccc.', ref:'css-basics'}]},
+      '}','','.card p {',
+      '  line-height: 1.5;','}','',
+      {code:'@responive (max-width: 600px) {', errs:[{e:'@responive', why:'Media queries use @media — @responive is not a real at-rule.', ref:'css-responsive'}]},
+      '  .card {',
+      {code:'    width: 100;', errs:[{e:'100', why:'Needs a unit — width: 100% (or 100px) inside the media query.', ref:'css-box'}]},
+      '  }','}'
+    ]},
+  { lang:'js', src:'past', title:'Re-exam JS 1/3 — user category',
+    lines:[
+      'function getUserCategory(age) {',
+      {code:'  if (isInt(age !== "number")) {', errs:[{e:'isInt(', why:'Type checks use the typeof operator: if (typeof age !== "number") — isInt is not a JS function.', ref:'js-vars'}]},
+      '    return "Invalid input";','  }','',
+      {code:'  if (age >> 18) {', errs:[{e:'>>', why:'>> is the bitwise right-shift — the comparison needs > (greater than).', ref:'js-vars'}]},
+      '    return "Adult";','  } else if (age >= 13) {','    return "Teenager";','  }','','  return "Child";','}','',
+      {code:'constant category = getUserCategory(20);', errs:[{e:'constant', why:'The keyword is const — constant is not valid JavaScript.', ref:'js-vars'}]},
+      'console.log("Category:", category);'
+    ]},
+  { lang:'js', src:'past', title:'Re-exam JS 2/3 — click counter',
+    lines:[
+      'let clickCount = 0;','',
+      {code:'function handleClick {', errs:[{e:'handleClick {', why:'A function declaration needs a parameter list: function handleClick() {.', ref:'js-functions'}]},
+      '  clickCount++;','','  console.log("Button clicked", clickCount, "times");','',
+      {code:'  if (clickCount = 3) {', errs:[{e:'= 3', why:'= assigns (and makes the condition always truthy) — comparison needs === 3.', ref:'js-vars'}]},
+      '    console.log("Clicked three times");','  }','}','',
+      {code:'document.addListener("click", handleClick);', errs:[{e:'addListener', why:'The method is addEventListener — addListener does not exist on document.', ref:'js-dom'}]}
+    ]},
+  { lang:'js', src:'past', title:'Re-exam JS 3/3 — average',
+    lines:[
+      'function calculateAverage(numbers) {','  let sum = 0;','',
+      {code:'  for (let i = 0, i < numbers.length, i++) {', errs:[{e:'0,', why:'The for header separates its parts with semicolons — this first comma must be ;', ref:'js-control'},{e:'length,', why:'…and the second separator must also be a semicolon, not a comma.', ref:'js-control'}]},
+      {code:'    sum += numbers(i);', errs:[{e:'numbers(i)', why:'Array indexing uses brackets: numbers[i] — parentheses call it as a function.', ref:'js-control'}]},
+      '  }','',
+      {code:'  else (numbers.length === 0) {', errs:[{e:'else', why:'An else cannot follow a for loop — this guard should be if (numbers.length === 0) (ideally before the loop).', ref:'js-control'}]},
+      '    return 0;','  }','','  return sum / numbers.length;','}','',
+      'const values = [2, 4, 6, 8, 10];','console.log("Average:", calculateAverage(values));'
+    ]}
+);
+
 /* ===== inlined: data-oe.js ===== */
 /* ============================================================
    OPEN-ENDED BANK  (2 points each in the real exam)
@@ -2849,6 +3042,73 @@ next(); // 2`,'javascript')+'</pre>',
      'The <b>event loop</b> continuously checks: when the call stack is empty, it takes the next callback from the queue and runs it. Microtasks are drained before the next macrotask. Because the main thread is never blocked waiting, the UI stays responsive — that’s what “non-blocking” means.'
    ],
    rubric:['Single-threaded / one call stack','Async work offloaded to Web APIs','Completed callbacks are queued','Event loop runs them when the stack is empty (bonus: microtask vs macrotask)']}
+);
+
+/* ===== inlined: data-oe-real.js ===== */
+/* ============================================================
+   REAL RE-EXAM OPEN-ENDED — the 10 questions verbatim (a+b parts).
+   ============================================================ */
+OE.push(
+  {tag:'html', src:'past', q:'<b>Semantic HTML &amp; Accessibility.</b> a) Explain how semantic HTML elements contribute to web accessibility. b) Compare the <code>&lt;article&gt;</code> and <code>&lt;section&gt;</code> elements — when should each be used?',
+   model:[
+     '<b>a)</b> Semantic elements describe the <i>role</i> of content, so assistive technology can use them: screen readers announce landmarks (<code class="inl">&lt;nav&gt;</code>, <code class="inl">&lt;main&gt;</code>, <code class="inl">&lt;header&gt;</code>) and let users jump directly between them instead of reading linearly. They also give a meaningful document outline (headings, regions) that conveys structure a bare <code class="inl">&lt;div&gt;</code> cannot.',
+     '<b>b)</b> <code class="inl">&lt;article&gt;</code> = self-contained content that makes sense on its own and could be syndicated (blog post, news item, product card). <code class="inl">&lt;section&gt;</code> = a thematic grouping <i>within</i> a page, normally with its own heading, but not independent. Rule of thumb: would it stand alone in an RSS feed? article. Is it a chapter of the current page? section.'
+   ],
+   rubric:['a: assistive tech / screen readers use the semantics','a: landmark navigation or document outline mentioned','b: article = self-contained/standalone','b: section = thematic grouping, not independent; sensible when-to-use']},
+  {tag:'html', src:'past', q:'<b>Images &amp; Media.</b> a) Explain how responsive images work using <code>srcset</code> and <code>sizes</code>. b) Describe when it is appropriate to use responsive images.',
+   model:[
+     '<b>a)</b> <code class="inl">srcset</code> lists several candidate files with their widths (<code class="inl">srcset="s.jpg 480w, m.jpg 800w, l.jpg 1200w"</code>); <code class="inl">sizes</code> tells the browser how wide the image will render at given viewports (<code class="inl">sizes="(max-width: 600px) 100vw, 50vw"</code>). The <b>browser</b> then picks the best candidate for the device\u2019s viewport and pixel density — one <code class="inl">&lt;img&gt;</code>, many sources.',
+     '<b>b)</b> Use them when the same image is shown at meaningfully different sizes — hero banners, photo galleries, content images on responsive layouts — so phones download a small file (saving data and load time) while large/retina screens still get a sharp one. Tiny icons or fixed-size images don\u2019t need it.'
+   ],
+   rubric:['a: srcset = multiple candidates with widths/densities','a: sizes = rendered width hints; browser chooses','b: different display sizes / save bandwidth on small screens','b: sharpness on large or high-density screens']},
+  {tag:'html', src:'past', q:'<b>Tables &amp; Semantics.</b> a) Explain the semantic structure of an HTML table. b) Describe key accessibility considerations when using tables.',
+   model:[
+     '<b>a)</b> A table is built from <code class="inl">&lt;table&gt;</code> containing row groups: <code class="inl">&lt;thead&gt;</code> (header rows), <code class="inl">&lt;tbody&gt;</code> (data), optionally <code class="inl">&lt;tfoot&gt;</code>. Each <code class="inl">&lt;tr&gt;</code> holds cells: <code class="inl">&lt;th&gt;</code> for header cells and <code class="inl">&lt;td&gt;</code> for data cells. A <code class="inl">&lt;caption&gt;</code> directly inside the table names it.',
+     '<b>b)</b> Use tables only for tabular data (not layout); give a <code class="inl">&lt;caption&gt;</code> so screen-reader users know what the table is; mark every header with <code class="inl">&lt;th&gt;</code> and add <code class="inl">scope="col"</code>/<code class="inl">scope="row"</code> so cells are announced with their headers; keep the structure simple (avoid merged cells where possible).'
+   ],
+   rubric:['a: table/thead/tbody(/tfoot) row groups','a: tr rows, th vs td distinction (+caption bonus)','b: caption / only for data, not layout','b: th + scope so headers are associated with cells']},
+  {tag:'css', src:'past', q:'<b>Layout &amp; Containment.</b> a) Explain what the CSS <code>overflow</code> property does. b) Describe when <code>overflow: auto</code> is preferred.',
+   model:[
+     '<b>a)</b> <code class="inl">overflow</code> controls what happens when content is bigger than its box: <code class="inl">visible</code> (default — spills out), <code class="inl">hidden</code> (clipped), <code class="inl">scroll</code> (always shows scrollbars), <code class="inl">auto</code> (scrollbars only when needed). It applies to block containers with a constrained size.',
+     '<b>b)</b> <code class="inl">auto</code> is preferred when content <i>might</i> overflow but usually doesn\u2019t — chat panels, code blocks, sidebars with dynamic content. Users keep access to everything (unlike <code class="inl">hidden</code>) but you avoid the permanent, ugly scrollbars of <code class="inl">scroll</code> when they\u2019re unnecessary.'
+   ],
+   rubric:['a: controls content exceeding the box','a: names the main values (visible/hidden/scroll/auto)','b: scrollbars only when needed','b: a sensible use case (dynamic content) / contrast with hidden or scroll']},
+  {tag:'css', src:'past', q:'<b>Transitions vs Animations.</b> a) Compare CSS transitions and keyframe animations. b) Give one typical use case for each.',
+   model:[
+     '<b>a)</b> A <b>transition</b> animates a property change <i>between two states</i> and needs a trigger (hover, focus, class change): <code class="inl">transition: property duration timing-function delay</code>. An <b>animation</b> runs on its own via <code class="inl">@keyframes</code>, supports many intermediate steps, looping (<code class="inl">infinite</code>), and direction — no trigger required.',
+     '<b>b)</b> Transition: a button smoothly changing background on <code class="inl">:hover</code>. Animation: a continuously rotating loading spinner (<code class="inl">@keyframes spin</code> + <code class="inl">animation: spin 1s linear infinite</code>).'
+   ],
+   rubric:['a: transition = A→B with a trigger','a: animation = @keyframes, multi-step / can loop autonomously','b: valid transition example','b: valid animation example']},
+  {tag:'css', src:'past', q:'<b>Responsive Units.</b> a) Compare <code>px</code>, <code>em</code>, <code>rem</code>, and <code>vw</code>. b) Explain when relative units are preferred over absolute units.',
+   model:[
+     '<b>a)</b> <code class="inl">px</code> is absolute — fixed regardless of context. <code class="inl">em</code> is relative to the <i>current/parent</i> font-size (so nested ems compound). <code class="inl">rem</code> is relative to the <b>root</b> font-size — predictable and consistent across the page. <code class="inl">vw</code> is 1% of the viewport width, so it scales with the window itself.',
+     '<b>b)</b> Relative units are preferred for anything that should adapt: text and spacing in responsive layouts, and accessibility — <code class="inl">rem</code> respects the user\u2019s browser font-size setting, while <code class="inl">px</code> ignores it. Absolute px remains fine for things that genuinely shouldn\u2019t scale, like 1px borders.'
+   ],
+   rubric:['a: px absolute','a: em vs rem (parent/current vs root; compounding)','a/b: vw = viewport-relative','b: accessibility (user font-size) / responsive adaptation; px ok for borders']},
+  {tag:'js', src:'past', q:'<b>Scope &amp; Hoisting.</b> a) Explain how hoisting works for <code>var</code>, <code>let</code>, and <code>const</code>. b) Give an example of a common bug caused by hoisting.',
+   model:[
+     '<b>a)</b> All declarations are processed before code runs. <code class="inl">var</code> is hoisted <i>and initialised to undefined</i> (function-scoped), so reading it early gives <code class="inl">undefined</code>. <code class="inl">let</code>/<code class="inl">const</code> are hoisted but left uninitialised in the <b>Temporal Dead Zone</b> — touching them before their line throws a ReferenceError. Function declarations hoist with their whole body.',
+     '<b>b)</b> Classic bug: <code class="inl">console.log(count); var count = 5;</code> silently prints <code class="inl">undefined</code> instead of erroring — the declaration hoisted but the assignment didn\u2019t, hiding the mistake. (With <code class="inl">let</code> it would throw, surfacing the bug immediately.)'
+   ],
+   rubric:['a: var → hoisted, initialised undefined, function scope','a: let/const → TDZ, ReferenceError before the line','b: concrete example (var read before assignment → undefined)','b: why it\u2019s a bug / let-const contrast']},
+  {tag:'js', src:'past', q:'<b>State Management.</b> a) Explain what immutable state is. b) Describe why immutability matters in frontend applications.',
+   model:[
+     '<b>a)</b> Immutable state is state you never modify in place — instead of mutating the existing object/array, you create a <b>new</b> one with the change applied (e.g. <code class="inl">const next = [...items, newItem]</code> or <code class="inl">{...user, name: "B"}</code>), leaving the old value untouched.',
+     '<b>b)</b> It makes change detection trivial and reliable — frameworks can compare references (<code class="inl">old !== new</code>) instead of deep-inspecting, enabling efficient re-rendering. It also prevents shared-reference bugs (two parts of the UI mutating the same object), makes state history possible (undo, time-travel debugging), and makes code easier to reason about and test.'
+   ],
+   rubric:['a: never mutate — produce a new copy with the change','a: example pattern (spread/copy)','b: cheap change detection by reference → efficient re-render','b: avoids shared-mutation bugs / enables undo-history']},
+  {tag:'js', src:'past', q:'<b>Event Handling.</b> a) Explain what an event is in JavaScript and the difference between user, browser, and environmental events. b) Explain the purpose of the <code>DOMContentLoaded</code> event.',
+   model:[
+     '<b>a)</b> An event is a signal that something happened, which code can listen for with <code class="inl">addEventListener</code>. <b>User events</b> come from the person\u2019s actions (click, keydown, input, submit). <b>Browser events</b> come from the browser/page lifecycle (load, DOMContentLoaded, resize, scroll). <b>Environmental events</b> come from the device/system context changing (online/offline, visibilitychange, orientation/battery changes).',
+     '<b>b)</b> <code class="inl">DOMContentLoaded</code> fires when the HTML has been fully parsed and the DOM tree is ready — <i>without</i> waiting for images and stylesheets (unlike <code class="inl">load</code>). It\u2019s the safe, early moment to run DOM-manipulating setup code, which is why init scripts hook into it.'
+   ],
+   rubric:['a: event = signal + listener concept','a: three categories with an example each','b: fires when HTML parsed / DOM ready','b: doesn\u2019t wait for images/CSS (vs load) → safe init point']},
+  {tag:'js', src:'past', q:'<b>Performance.</b> a) Explain what lazy loading is. b) Describe when lazy loading should be used.',
+   model:[
+     '<b>a)</b> Lazy loading defers loading a resource until it is actually needed — typically when it\u2019s about to scroll into view — instead of at initial page load. Natively: <code class="inl">&lt;img loading="lazy"&gt;</code>; for code, dynamic <code class="inl">import()</code> loads a module on demand.',
+     '<b>b)</b> Use it for below-the-fold images, long media-heavy pages (galleries, feeds), and large optional scripts/routes — it cuts initial load time, bandwidth, and memory. Don\u2019t lazy-load above-the-fold/critical content (it would pop in late and hurt the first impression / LCP).'
+   ],
+   rubric:['a: defer until needed / near viewport','a: a mechanism named (loading="lazy" or dynamic import)','b: below-the-fold images, heavy pages, optional code','b: benefit (faster initial load) + not for critical content']}
 );
 
 /* ===== inlined: app-core.js ===== */
