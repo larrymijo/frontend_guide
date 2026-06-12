@@ -856,6 +856,15 @@ const TOPICS = {
   <button type="submit">Send</button>
 </form>`,'html')}</pre>
         ${DIAG.formFlow}
+        <h4>Input types & radio grouping</h4>
+        <pre class="code"><span class="code-label">html</span>${hl(`<input type="text">      <input type="email">    <input type="number">
+<input type="password">  <input type="date">     <input type="checkbox">
+
+<!-- radios become ONE group (pick-one) by SHARING the same name -->
+<input type="radio" name="size" value="s"> Small
+<input type="radio" name="size" value="m"> Medium`,'html')}</pre>
+        <div class="callout warn"><b>Radio rule:</b> it’s the shared <code class="inl">name</code> that makes radios mutually exclusive — different names = independently tickable. The <code class="inl">value</code> is what gets submitted for the chosen one.</div>
+
         <h4>Key points</h4>
         <ul>
           <li><kbd>&lt;label for="x"&gt;</kbd> must match an input's <kbd>id="x"</kbd> — this links them so clicking the label focuses the field (accessibility + usability).</li>
@@ -876,7 +885,17 @@ const TOPICS = {
         <pre class="code"><span class="code-label">css</span>${hl(`h1 { color: #333; font-size: 2rem; }   /* type selector */
 .btn { padding: 10px; }                  /* class selector */
 #hero { background: #faf; }              /* id selector */`,'css')}</pre>
-        <h4>Specificity (who wins)</h4>
+        
+        <h4>Combining selectors</h4>
+        <table class="ctable">
+          <tr><th>Selector</th><th>Reads as</th><th>Matches</th></tr>
+          <tr><td><code>div p</code></td><td>descendant</td><td>every <code>&lt;p&gt;</code> anywhere inside a <code>&lt;div&gt;</code></td></tr>
+          <tr><td><code>div &gt; p</code></td><td>direct child</td><td>only <code>&lt;p&gt;</code> whose <i>parent</i> is the <code>&lt;div&gt;</code></td></tr>
+          <tr><td><code>h2 + p</code></td><td>adjacent sibling</td><td>the first <code>&lt;p&gt;</code> immediately after an <code>&lt;h2&gt;</code></td></tr>
+          <tr><td><code>[type="text"]</code></td><td>attribute</td><td>elements with that attribute value</td></tr>
+          <tr><td><code>h1, h2</code></td><td>group</td><td>both lists — one shared rule</td></tr>
+        </table>
+<h4>Specificity (who wins)</h4>
         <p>When two rules set the same property on the same element, the browser keeps the one with higher <b>specificity</b> — a score based on the selector's "weight". From weakest to strongest: element/pseudo-element → class/attribute/pseudo-class → id → inline <code class="inl">style</code>. Treat it as a tie-break ladder, not exact arithmetic.</p>
         ${DIAG.specificity}
         <ul>
@@ -905,7 +924,17 @@ const TOPICS = {
         </table>
         ${DIAG.boxSizing}
         <p>With <code class="inl">box-sizing: border-box;</code>, a <code class="inl">width: 200px</code> box <b>stays 200px</b> however much padding or border you add — the content shrinks to make room. That predictability is why nearly every reset applies <code class="inl">*, *::before, *::after { box-sizing: border-box; }</code> globally.</p>
-        <div class="callout tip"><b>Exam maths:</b> with the default <code class="inl">content-box</code>, rendered width = <code class="inl">width + left/right padding + left/right border</code>. Margin sits <i>outside</i> and doesn't count toward the box's own width. Add it up in that order and the box-model MCQ is automatic.</div>`
+        
+        <h4>The display property — how a box behaves in flow</h4>
+        <table class="ctable">
+          <tr><th>Value</th><th>Behaviour</th><th>Typical elements</th></tr>
+          <tr><td><code>block</code></td><td>Starts on a new line, fills the available width, respects width/height.</td><td>div, p, h1, section</td></tr>
+          <tr><td><code>inline</code></td><td>Flows within text; <b>ignores width/height</b> and vertical margins.</td><td>span, a, strong</td></tr>
+          <tr><td><code>inline-block</code></td><td>Flows inline <i>but</i> accepts width/height — the hybrid.</td><td>buttons, nav pills</td></tr>
+          <tr><td><code>none</code></td><td>Removed entirely — takes up no space.</td><td>hidden panels</td></tr>
+        </table>
+        <div class="callout warn"><b>Classic MCQ pair:</b> <code class="inl">display: none</code> removes the element from layout (no space left behind), while <code class="inl">visibility: hidden</code> hides it but <b>keeps its space reserved</b>. And setting <code class="inl">width</code> on an <code class="inl">inline</code> element silently does nothing — switch to <code class="inl">inline-block</code>.</div>
+<div class="callout tip"><b>Exam maths:</b> with the default <code class="inl">content-box</code>, rendered width = <code class="inl">width + left/right padding + left/right border</code>. Margin sits <i>outside</i> and doesn't count toward the box's own width. Add it up in that order and the box-model MCQ is automatic.</div>`
     },
     {
       id:'css-position', ico:'📌', lec:'Lec 5–6', title:'Positioning & float',
@@ -1031,6 +1060,22 @@ shapes.forEach(s => console.log(s.area())); // same call, different result`,'jav
       body:`
         <p>JavaScript values come in two families — <b>primitives</b> (simple, immutable, compared by value) and <b>objects</b> (collections, compared by reference). Knowing which is which explains most "surprising" exam results.</p>
         ${DIAG.typesMap}
+        <h4>Strings you must know cold</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`const name = "Ada Lovelace";
+name.length;            // 12  — a PROPERTY, no ()
+name.toUpperCase();     // "ADA LOVELACE"
+name.includes("Ada");   // true  (boolean)
+name.slice(0, 3);       // "Ada" — end index NOT included
+\`Hi \${name}!\`;         // template literal: backticks + \${ }`,'javascript')}</pre>
+        <div class="callout warn"><b>Coercion bait:</b> <code class="inl">"5" + 3</code> → <code class="inl">"53"</code> (+ with a string concatenates) but <code class="inl">"5" - 3</code> → <code class="inl">2</code> (− forces numbers). A favourite one-mark trap.</div>
+        <h4>Boolean logic & short-circuiting</h4>
+        <p><code class="inl">&amp;&amp;</code> and <code class="inl">||</code> don’t return true/false — they return <b>one of their operands</b>, stopping early ("short-circuit"):</p>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`a && b   // a falsy -> returns a (b never evaluated); else returns b
+a || b   // a truthy -> returns a;  else returns b
+const port = config.port || 3000;   // classic default (careful: 0 would be replaced!)
+const safe = user && user.name;     // guard: only read .name if user exists
+!value   // NOT - flips truthiness; !!value coerces to a real boolean`,'javascript')}</pre>
+
         <table class="ctable">
           <tr><th>Keyword</th><th>Reassign?</th><th>Scope</th><th>Hoisting</th></tr>
           <tr><td><code>const</code></td><td>No</td><td>Block</td><td>Not usable before declaration (TDZ)</td></tr>
@@ -1072,6 +1117,20 @@ next(); // 2`,'javascript')}</pre>
         <h4>Loops</h4>
         <p>A <code class="inl">for</code> loop has three semicolon-separated parts, and they run in a specific order. The <kbd>;</kbd> separators (not commas) are a favourite error-spotting plant.</p>
         ${DIAG.loopAnatomy}
+        <h4>switch — multi-way branching</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`switch (fruit) {
+  case "apple":            // compared with === (strict!)
+    price = 10;
+    break;                 // without break, execution FALLS THROUGH
+  case "pear":
+  case "plum":             // stacked cases share one branch
+    price = 12;
+    break;
+  default:                 // runs when nothing matched
+    price = 0;
+}`,'javascript')}</pre>
+        <div class="callout warn"><b>The plant:</b> a missing <code class="inl">break</code> makes execution fall through into the next case — and <code class="inl">switch</code> compares with <b>strict</b> equality, so <code class="inl">"2"</code> won’t match <code class="inl">case 2</code>.</div>
+
         <pre class="code"><span class="code-label">javascript</span>${hl(`for (let i = 0; i < arr.length; i++) { ... }   // note ; separators
 while (cond) { ... }
 do { ... } while (cond);   // runs AT LEAST ONCE`,'javascript')}</pre>
@@ -1119,6 +1178,8 @@ class Dog extends Animal {
       body:`
         <p>Almost every interactive feature is the same four-step loop. Internalise it and the DOM stops feeling like a grab-bag of methods.</p>
         ${DIAG.domCycle}
+        <div class="callout tip"><b>Why <code class="inl">&lt;script&gt;</code> goes before <code class="inl">&lt;/body&gt;</code>:</b> the browser builds the DOM top-to-bottom; a script in <code class="inl">&lt;head&gt;</code> runs before the elements exist, so <code class="inl">getElementById</code> returns <code class="inl">null</code>. Either place the script at the end of body, or keep it in head with the <code class="inl">defer</code> attribute (downloads now, runs after parsing).</div>
+
         <h4>1 · Selecting elements</h4>
         <table class="ctable">
           <tr><th>Method</th><th>Returns</th></tr>
@@ -1213,6 +1274,18 @@ btn.addEventListener('click', function (event) {
         <h4>Promises</h4>
         <p>A <b>Promise</b> is an object representing a value that isn't ready yet. It starts <b>pending</b> and later <b>settles</b> exactly once — either <b>fulfilled</b> with a value or <b>rejected</b> with an error — and can never change again. You react with <code class="inl">.then()</code> (fulfilled) and <code class="inl">.catch()</code> (rejected).</p>
         ${DIAG.promiseStates}
+        <h4>JSON & checking the response</h4>
+        <pre class="code"><span class="code-label">javascript</span>${hl(`// JSON = the text format APIs speak. Two converters:
+const text = JSON.stringify({ id: 1 });   // object -> string  '{"id":1}'
+const obj  = JSON.parse('{"id":1}');      // string -> object
+
+const res = await fetch(url);
+if (!res.ok) {                            // ok = status is 200-299
+  throw new Error("HTTP " + res.status);  // fetch does NOT reject on 404!
+}
+const data = await res.json();            // parses the JSON body (async)`,'javascript')}</pre>
+        <div class="callout tip"><b>Subtle but tested:</b> <code class="inl">fetch</code> only rejects on <i>network</i> failure. A 404 or 500 still <b>fulfils</b> the promise — you must check <code class="inl">res.ok</code> / <code class="inl">res.status</code> yourself.</div>
+
         <h4>fetch</h4>
         <pre class="code"><span class="code-label">javascript</span>${hl(`fetch('https://api.example.com/data')
   .then(res => res.json())
@@ -1642,286 +1715,830 @@ MCQ.push(
    ex:'<code>push</code> appends <code>4</code>, so <code>length</code> is <b>4</b>. Crucially, <code>const</code> forbids <i>reassigning</i> the binding (<code>a = …</code>), but you <b>can</b> mutate the array’s contents — so no error.'}
 );
 
-/* ===== inlined: data-fe.js ===== */
+/* ===== inlined: data-mcq-extra2.js ===== */
 /* ============================================================
-   FIND-THE-ERROR BANK  (token-level)
-   A line is either:
-     • a plain string  -> all correct, every word is a clickable decoy
-     • {code:'full line', errs:[{e:'exact wrong substring', why:'...'}]}
-        -> the engine isolates each `e` as a clickable ERROR token,
-           the rest of the line becomes clickable CORRECT tokens.
-   Circling a correct token costs -0.25 (mirrors the real exam).
+   MCQ EXPANSION 2 — caveat concepts added in the gap-fill pass
+   display, combinators, strings/coercion, short-circuit, switch,
+   JSON/res.ok, script loading, radio grouping.
    ============================================================ */
+MCQ.push(
+  {tag:'css', src:'new', q:'What is the difference between <code>display: none</code> and <code>visibility: hidden</code>?',
+   opts:['No difference','<code>none</code> removes the element and its space; <code>hidden</code> hides it but keeps the space reserved','<code>hidden</code> removes the space; <code>none</code> keeps it','Both keep the space'], c:1,
+   ex:'<code>display:none</code> takes the element out of layout entirely — siblings close the gap. <code>visibility:hidden</code> only makes it invisible; the empty space stays. The reversed option is the trap.'},
+  {tag:'css', src:'new', q:'Setting <code>width: 200px</code> on a <code>&lt;span&gt;</code> (default styling) does what?',
+   opts:['Makes it 200px wide','Throws a CSS error','Nothing — inline elements ignore width/height','Converts it to a block'], c:2,
+   ex:'<code>span</code> is <code>display:inline</code>, which ignores width/height and vertical margins. To size it, switch to <code>inline-block</code> (or <code>block</code>). CSS never "throws errors" — invalid/inapplicable declarations are silently ignored.'},
+  {tag:'css', src:'new', q:'Which selector matches only <code>&lt;p&gt;</code> elements that are <b>direct children</b> of a <code>&lt;div&gt;</code>?',
+   opts:['<code>div p</code>','<code>div &gt; p</code>','<code>div + p</code>','<code>div, p</code>'], c:1,
+   ex:'<code>&gt;</code> is the child combinator. A space (<code>div p</code>) matches descendants at any depth; <code>+</code> matches the adjacent sibling <i>after</i> the div; the comma just groups two independent selectors.'},
+  {tag:'css', src:'new', q:'What does <code>h2 + p</code> select?',
+   opts:['Every <code>&lt;p&gt;</code> inside an <code>&lt;h2&gt;</code>','All <code>&lt;p&gt;</code>s after any <code>&lt;h2&gt;</code>','The first <code>&lt;p&gt;</code> immediately following an <code>&lt;h2&gt;</code> (same parent)','Both elements'], c:2,
+   ex:'<code>+</code> is the adjacent-sibling combinator: the very next sibling only. It does not reach into the h2 (p can\u2019t be inside h2 anyway) and does not match later paragraphs.'},
+  {tag:'js', src:'new', q:'What does <code>"5" + 3</code> evaluate to, and <code>"5" - 3</code>?',
+   opts:['<code>8</code> and <code>2</code>','<code>"53"</code> and <code>2</code>','<code>"53"</code> and <code>"2"</code>','<code>8</code> and <code>"53"</code>'], c:1,
+   ex:'With a string operand, <code>+</code> concatenates → <code>"53"</code>. But <code>-</code> has no string meaning, so both sides are coerced to numbers → <code>2</code>. The asymmetry is the whole question.'},
+  {tag:'js', src:'new', q:'<code>name.length</code> vs <code>name.toUpperCase</code> — which needs parentheses to give a useful value?',
+   opts:['Both','Neither','<code>toUpperCase</code> — it\u2019s a method; <code>length</code> is a property','<code>length</code> — it\u2019s a method'], c:2,
+   ex:'<code>length</code> is a property (no call). <code>toUpperCase</code> is a function — without <code>()</code> you get the function object itself, not the uppercased string. Mixing these up is a classic find-the-error plant too.'},
+  {tag:'js', src:'new', q:'What does <code>"JavaScript".slice(0, 4)</code> return?',
+   opts:['<code>"Java"</code>','<code>"JavaS"</code>','<code>"avaS"</code>','<code>"Script"</code>'], c:0,
+   ex:'<code>slice(start, end)</code> includes <code>start</code> but <b>excludes</b> <code>end</code> — indices 0,1,2,3 → "Java". Off-by-one on the end index is the bait.'},
+  {tag:'js', src:'new', q:'What is the correct syntax for a template literal inserting a variable?',
+   opts:['<code>"Hi ${name}"</code>','<code>`Hi ${name}`</code>','<code>\'Hi ${name}\'</code>','<code>`Hi $(name)`</code>'], c:1,
+   ex:'Template literals need <b>backticks</b>; inside them <code>${ }</code> interpolates. With normal quotes, <code>${name}</code> is just literal text; <code>$( )</code> is jQuery-flavoured nothing.'},
+  {tag:'js', src:'new', q:'What does <code>0 || "fallback"</code> evaluate to, and <code>0 ?? "fallback"</code>?',
+   opts:['<code>0</code> and <code>0</code>','<code>"fallback"</code> and <code>0</code>','<code>"fallback"</code> and <code>"fallback"</code>','<code>0</code> and <code>"fallback"</code>'], c:1,
+   ex:'<code>||</code> rejects every falsy value, so 0 falls through to "fallback". <code>??</code> only rejects <code>null</code>/<code>undefined</code>, so 0 survives. Exactly why <code>??</code> exists.'},
+  {tag:'js', src:'new', q:'<code>user && user.name</code> — what is this pattern doing?',
+   opts:['Comparing user to user.name','A syntax error','Short-circuit guard: only reads <code>.name</code> if <code>user</code> is truthy','Always returns a boolean'], c:2,
+   ex:'<code>&amp;&amp;</code> stops at the first falsy operand and returns it — so if <code>user</code> is null, <code>.name</code> is never touched (no TypeError). It returns an <i>operand</i>, not necessarily a boolean.'},
+  {tag:'js', src:'new', q:'In a <code>switch</code>, what happens if a matched <code>case</code> has no <code>break</code>?',
+   opts:['A SyntaxError','Execution falls through into the next case\u2019s code','The switch exits immediately','Only <code>default</code> runs'], c:1,
+   ex:'Fall-through: execution continues into the following case(s) until a <code>break</code> or the end. Sometimes used deliberately (stacked cases) — but unintended fall-through is the classic bug, and a likely error-hunt plant.'},
+  {tag:'js', src:'new', q:'Which comparison does <code>switch (x) { case 2: … }</code> use — will <code>x = "2"</code> match?',
+   opts:['Loose <code>==</code> — yes it matches','Strict <code>===</code> — no, string ≠ number','It compares by typeof only','It always matches the first case'], c:1,
+   ex:'<code>switch</code> uses strict equality. <code>"2" === 2</code> is false, so the case is skipped (likely landing in <code>default</code>). The loose-equality option is the trap.'},
+  {tag:'js', src:'new', q:'A <code>fetch</code> call returns a 404. What happens to the promise?',
+   opts:['It rejects, jumping to <code>.catch</code>','It fulfils — you must check <code>res.ok</code> / <code>res.status</code> yourself','The browser retries automatically','It returns <code>null</code>'], c:1,
+   ex:'<code>fetch</code> rejects only on <i>network</i> failure (offline, DNS, CORS block). HTTP error statuses still fulfil — hence the standard <code>if (!res.ok) throw …</code> guard. Assuming 404 → catch is the most common fetch misconception.'},
+  {tag:'js', src:'new', q:'Which converts a JavaScript object into a JSON string?',
+   opts:['<code>JSON.parse(obj)</code>','<code>JSON.stringify(obj)</code>','<code>obj.toJSON()</code> always exists','<code>String(obj)</code>'], c:1,
+   ex:'<code>stringify</code> = object → string; <code>parse</code> = string → object (the reverse). <code>String(obj)</code> gives <code>"[object Object]"</code> — useless. Swapping parse/stringify is the standard one-marker.'},
+  {tag:'js', src:'new', q:'Why does a script in <code>&lt;head&gt;</code> (no attributes) find <code>getElementById(…)</code> returning <code>null</code>?',
+   opts:['The id must be unique','Scripts can\u2019t run in head at all','The DOM below hasn\u2019t been parsed yet when the script runs','getElementById only works on forms'], c:2,
+   ex:'Parsing is top-to-bottom: the script executes before the body elements exist. Fixes: move the script before <code>&lt;/body&gt;</code>, or add <code>defer</code> so it runs after parsing. Scripts run fine in head — just too early for DOM access.'},
+  {tag:'html', src:'new', q:'What makes a set of radio buttons mutually exclusive (pick one)?',
+   opts:['Sharing the same <code>id</code>','Sharing the same <code>name</code>','Being inside the same <code>&lt;fieldset&gt;</code>','The <code>type="radio"</code> alone'], c:1,
+   ex:'Radios group by identical <code>name</code>; the chosen one\u2019s <code>value</code> is submitted under that key. Shared <code>id</code>s are invalid HTML, and fieldsets are visual/semantic grouping — they don\u2019t create the exclusivity.'}
+);
+
+/* ===== inlined: data-fe.js ===== */
+/* FIND-THE-ERROR BANK (token-level, theory-linked)
+   line = string (all-correct decoys) | {code, errs:[{e, why, ref}]}
+   ref = study-topic id opened by openTopic() when reviewing. */
 const FE = [
-  /* ---------------- HTML ---------------- */
   {
-    lang:'html', src:'past', title:'HTML — landing page',
-    lines:[
-      '<!DOCTYPE html>',
-      {code:'<html lang="english">', errs:[{e:'lang="english"', why:'lang takes a 2-letter code: lang="en", not "english".'}]},
-      '<head>',
-      '  <meta charset="UTF-8">',
-      {code:'  <css rel="stylesheet" href="style.css">', errs:[{e:'<css', why:'Stylesheets load via the <link> element, not an invented <css> tag.'}]},
-      '</head>',
-      '<body>',
-      '  <h1>Welcome to My Website</h1>',
-      {code:'  <p>This is text with <a href="page.html">link</p>', errs:[{e:'</p>', why:'The <a> is never closed — a </a> is needed before this </p>. The link is left open.'}]},
-      {code:'  <img href="image.jpg" alt="My Image">', errs:[{e:'href="image.jpg"', why:'<img> uses src, not href, to set the source: src="image.jpg".'}]},
-      '</body>',
-      '</html>'
+    "lang": "html",
+    "src": "past",
+    "title": "HTML — landing page",
+    "lines": [
+      "<!DOCTYPE html>",
+      {
+        "code": "<html lang=\"english\">",
+        "errs": [
+          {
+            "e": "lang=\"english\"",
+            "why": "lang takes a 2-letter code: lang=\"en\", not \"english\".",
+            "ref": "html-struct"
+          }
+        ]
+      },
+      "<head>",
+      "  <meta charset=\"UTF-8\">",
+      {
+        "code": "  <css rel=\"stylesheet\" href=\"style.css\">",
+        "errs": [
+          {
+            "e": "<css",
+            "why": "Stylesheets load via the <link> element, not an invented <css> tag.",
+            "ref": "html-struct"
+          }
+        ]
+      },
+      "</head>",
+      "<body>",
+      "  <h1>Welcome to My Website</h1>",
+      {
+        "code": "  <p>This is text with <a href=\"page.html\">link</p>",
+        "errs": [
+          {
+            "e": "</p>",
+            "why": "The <a> is never closed — a </a> is needed before this </p>. The link is left open.",
+            "ref": "html-struct"
+          }
+        ]
+      },
+      {
+        "code": "  <img href=\"image.jpg\" alt=\"My Image\">",
+        "errs": [
+          {
+            "e": "href=\"image.jpg\"",
+            "why": "<img> uses src, not href, to set the source: src=\"image.jpg\".",
+            "ref": "html-media"
+          }
+        ]
+      },
+      "</body>",
+      "</html>"
     ]
   },
   {
-    lang:'html', src:'past', title:'HTML — sample page',
-    lines:[
-      '<!DOCTYPE html>',
-      '<html lang="en">',
-      '<head>',
-      '  <title>Sample Page</title>',
-      '</head>',
-      '<body>',
-      {code:'  <h1>Welcome</h2>', errs:[{e:'</h2>', why:'Mismatched tags: opened <h1> but closed </h2>.'}]},
-      '  <ul>',
-      {code:'    <li>Item 1', errs:[{e:'<li>', why:'This <li> is never closed with </li> (the closing tag is missing).'}]},
-      '    <li>Item 2</li>',
-      '    <li>Item 3</li>',
-      {code:'  </ol>', errs:[{e:'</ol>', why:'A list opened with <ul> must close with </ul>, not </ol>.'}]},
-      {code:'  <button><a href="/click">BUY</a></button>', errs:[{e:'<a', why:'A <button> must not contain an <a> — interactive elements cannot be nested like this.'}]},
-      '</body>',
-      '</html>'
+    "lang": "html",
+    "src": "past",
+    "title": "HTML — sample page",
+    "lines": [
+      "<!DOCTYPE html>",
+      "<html lang=\"en\">",
+      "<head>",
+      "  <title>Sample Page</title>",
+      "</head>",
+      "<body>",
+      {
+        "code": "  <h1>Welcome</h2>",
+        "errs": [
+          {
+            "e": "</h2>",
+            "why": "Mismatched tags: opened <h1> but closed </h2>.",
+            "ref": "html-struct"
+          }
+        ]
+      },
+      "  <ul>",
+      {
+        "code": "    <li>Item 1",
+        "errs": [
+          {
+            "e": "<li>",
+            "why": "This <li> is never closed with </li> (the closing tag is missing).",
+            "ref": "html-headings"
+          }
+        ]
+      },
+      "    <li>Item 2</li>",
+      "    <li>Item 3</li>",
+      {
+        "code": "  </ol>",
+        "errs": [
+          {
+            "e": "</ol>",
+            "why": "A list opened with <ul> must close with </ul>, not </ol>.",
+            "ref": "html-headings"
+          }
+        ]
+      },
+      {
+        "code": "  <button><a href=\"/click\">BUY</a></button>",
+        "errs": [
+          {
+            "e": "<a",
+            "why": "A <button> must not contain an <a> — interactive elements cannot be nested like this.",
+            "ref": "html-semantic"
+          }
+        ]
+      },
+      "</body>",
+      "</html>"
     ]
   },
   {
-    lang:'html', src:'mod', title:'HTML — contact form',
-    lines:[
-      '<!DOCTYPE html>',
-      '<html lang="en">',
-      '<body>',
-      {code:'<header>', errs:[{e:'<header>', why:'<meta>/<title> are metadata and belong in <head>, not the visible <header> landmark.'}]},
-      '    <meta charset="UTF-8">',
-      '    <title>Contact Us</title>',
-      '   <section id="contact-form">',
-      '       <h1>Contact Us</h1>',
-      '       <form>',
-      {code:'          <label for="text">Name</label>', errs:[{e:'for="text"', why:'for="text" matches no input id — the matching input below has id="name".'}]},
-      '          <input type="text" id="name" required>',
-      '          <label for="email">Email</label>',
-      '          <input type="email" id="email" required>',
-      '          <label for="message">Message</label>',
-      {code:'          <textarea id="message" required><textarea>', errs:[{e:'<textarea>', why:'A <textarea> must be closed with </textarea>, not a second opening <textarea>.'}]},
-      '          <button type="submit">Send</button>',
-      '       </form>',
-      '    </section>',
-      '</body>'
+    "lang": "html",
+    "src": "mod",
+    "title": "HTML — contact form",
+    "lines": [
+      "<!DOCTYPE html>",
+      "<html lang=\"en\">",
+      "<body>",
+      {
+        "code": "<header>",
+        "errs": [
+          {
+            "e": "<header>",
+            "why": "<meta>/<title> are metadata and belong in <head>, not the visible <header> landmark.",
+            "ref": "html-struct"
+          }
+        ]
+      },
+      "    <meta charset=\"UTF-8\">",
+      "    <title>Contact Us</title>",
+      "   <section id=\"contact-form\">",
+      "       <h1>Contact Us</h1>",
+      "       <form>",
+      {
+        "code": "          <label for=\"text\">Name</label>",
+        "errs": [
+          {
+            "e": "for=\"text\"",
+            "why": "for=\"text\" matches no input id — the matching input below has id=\"name\".",
+            "ref": "html-forms"
+          }
+        ]
+      },
+      "          <input type=\"text\" id=\"name\" required>",
+      "          <label for=\"email\">Email</label>",
+      "          <input type=\"email\" id=\"email\" required>",
+      "          <label for=\"message\">Message</label>",
+      {
+        "code": "          <textarea id=\"message\" required><textarea>",
+        "errs": [
+          {
+            "e": "<textarea>",
+            "why": "A <textarea> must be closed with </textarea>, not a second opening <textarea>.",
+            "ref": "html-forms"
+          }
+        ]
+      },
+      "          <button type=\"submit\">Send</button>",
+      "       </form>",
+      "    </section>",
+      "</body>"
     ]
   },
   {
-    lang:'html', src:'new', title:'HTML — blog article',
-    lines:[
-      '<!DOCTYPE html>',
-      '<html lang="en">',
-      '<head>',
-      '  <meta charset="UTF-8">',
-      '  <title>My Blog</title>',
-      '</head>',
-      '<body>',
-      '  <nav>',
-      '    <a href="/">Home</a>',
-      '    <a href="/about">About</a>',
-      '  </nav>',
-      '  <article>',
-      {code:'    <h1>Post Title</h2>', errs:[{e:'</h2>', why:'Mismatched heading tags: opened <h1> but closed </h2>.'}]},
-      {code:'    <image src="hero.jpg" alt="Hero">', errs:[{e:'<image', why:'The element is <img>, not <image>. <image> is not a real HTML tag.'}]},
-      '    <p>Some great content here.</p>',
-      '  </article>',
-      '  <footer>',
-      {code:'    <p>&copy; 2025', errs:[{e:'<p>', why:'This <p> is never closed with </p> before </footer>.'}]},
-      '  </footer>',
-      '</body>',
-      '</html>'
+    "lang": "html",
+    "src": "new",
+    "title": "HTML — blog article",
+    "lines": [
+      "<!DOCTYPE html>",
+      "<html lang=\"en\">",
+      "<head>",
+      "  <meta charset=\"UTF-8\">",
+      "  <title>My Blog</title>",
+      "</head>",
+      "<body>",
+      "  <nav>",
+      "    <a href=\"/\">Home</a>",
+      "    <a href=\"/about\">About</a>",
+      "  </nav>",
+      "  <article>",
+      {
+        "code": "    <h1>Post Title</h2>",
+        "errs": [
+          {
+            "e": "</h2>",
+            "why": "Mismatched heading tags: opened <h1> but closed </h2>.",
+            "ref": "html-struct"
+          }
+        ]
+      },
+      {
+        "code": "    <image src=\"hero.jpg\" alt=\"Hero\">",
+        "errs": [
+          {
+            "e": "<image",
+            "why": "The element is <img>, not <image>. <image> is not a real HTML tag.",
+            "ref": "html-media"
+          }
+        ]
+      },
+      "    <p>Some great content here.</p>",
+      "  </article>",
+      "  <footer>",
+      {
+        "code": "    <p>&copy; 2025",
+        "errs": [
+          {
+            "e": "<p>",
+            "why": "This <p> is never closed with </p> before </footer>.",
+            "ref": "html-struct"
+          }
+        ]
+      },
+      "  </footer>",
+      "</body>",
+      "</html>"
     ]
   },
   {
-    lang:'html', src:'new', title:'HTML — product card',
-    lines:[
-      '<section class="card">',
-      {code:'  <h2>Wireless Headphones<h2>', errs:[{e:'Headphones<h2>', why:'The closing tag is missing its slash: it should be </h2>, not a second <h2>.'}]},
-      '  <img src="phones.png" alt="Headphones">',
-      '  <ul>',
-      '    <li>Bluetooth 5.0</li>',
-      '    <li>30h battery</li>',
-      {code:'  <ul>', errs:[{e:'<ul>', why:'The list is closed with another opening <ul> — it should be </ul>.'}]},
-      '  <a href="/buy">Buy now</a>',
-      {code:'  <p>In stock</strong>', errs:[{e:'</strong>', why:'Tags must match: a <p> is opened but closed with </strong>.'}]},
-      '</section>'
-    ]
-  },
-
-  /* ---------------- CSS ---------------- */
-  {
-    lang:'css', src:'past', title:'CSS — base styles',
-    lines:[
-      'body {',
-      {code:'    font-type: Arial, sans-serif;', errs:[{e:'font-type', why:'No such property — the font family is set with font-family.'}]},
-      '    background: #f0f0f0;',
-      '}',
-      '#main-content h2 {',
-      '    color: #333;',
-      {code:'    margin-top: 0px', errs:[{e:'0px', why:'Missing semicolon at the end of the declaration: margin-top: 0px;'}]},
-      '    padding: 20px 0;',
-      '}',
-      'a:hover {',
-      '    color: #0088cc;',
-      {code:'    underliner: underline;', errs:[{e:'underliner', why:'Not a real property — underlines use text-decoration: underline;.'}]},
-      '}'
-    ]
-  },
-  {
-    lang:'css', src:'past', title:'CSS — container & feedback',
-    lines:[
-      '.container {',
-      '    width: 80%;',
-      '    margin: 0 auto;',
-      {code:'    padding: 20px 0 20px 0 20px 0;', errs:[{e:'20px 0 20px 0 20px 0', why:'padding takes at most 4 values (top right bottom left). Six values are invalid.'}]},
-      '}',
-      'h1 {',
-      {code:'    font-size: 24;', errs:[{e:'24', why:'A length needs a unit: 24px (or rem). A bare number is invalid for font-size.'}]},
-      '    color: #000;',
-      {code:'    margin-bottom: 20px', errs:[{e:'20px', why:'Missing semicolon at the end of this declaration.'}]},
-      {code:'.invalid-feedback {', errs:[{e:'.invalid-feedback', why:'The h1 block above was never closed with }, so this selector is broken/nested.'}]},
-      '    color: red;',
-      {code:'    display; none;', errs:[{e:'display;', why:'A declaration uses a colon: display: none; (a semicolon after the property name is wrong).'}]},
-      '}'
+    "lang": "html",
+    "src": "new",
+    "title": "HTML — product card",
+    "lines": [
+      "<section class=\"card\">",
+      {
+        "code": "  <h2>Wireless Headphones<h2>",
+        "errs": [
+          {
+            "e": "Headphones<h2>",
+            "why": "The closing tag is missing its slash: it should be </h2>, not a second <h2>.",
+            "ref": "html-struct"
+          }
+        ]
+      },
+      "  <img src=\"phones.png\" alt=\"Headphones\">",
+      "  <ul>",
+      "    <li>Bluetooth 5.0</li>",
+      "    <li>30h battery</li>",
+      {
+        "code": "  <ul>",
+        "errs": [
+          {
+            "e": "<ul>",
+            "why": "The list is closed with another opening <ul> — it should be </ul>.",
+            "ref": "html-headings"
+          }
+        ]
+      },
+      "  <a href=\"/buy\">Buy now</a>",
+      {
+        "code": "  <p>In stock</strong>",
+        "errs": [
+          {
+            "e": "</strong>",
+            "why": "Tags must match: a <p> is opened but closed with </strong>.",
+            "ref": "html-struct"
+          }
+        ]
+      },
+      "</section>"
     ]
   },
   {
-    lang:'css', src:'mod', title:'CSS — navbar',
-    lines:[
-      '.navbar {',
-      {code:'    background-img: #333;', errs:[{e:'background-img', why:'No such property. Use background-color for a colour (or background-image for an image).'}]},
-      {code:'    overflow: hide-x-axis;', errs:[{e:'hide-x-axis', why:'Invalid value. To clip horizontal overflow use overflow-x: hidden;.'}]},
-      '}',
-      '.navbar a {',
-      {code:'    float: top;', errs:[{e:'top', why:'float only accepts left, right, or none — never top/down.'}]},
-      '    color: white;',
-      '    text-align: center;',
-      '    padding: 14px 16px;',
-      '    text-decoration: none;',
-      '}',
-      '.active {',
-      '    background-color: #4CAF50;',
-      '}'
+    "lang": "css",
+    "src": "past",
+    "title": "CSS — base styles",
+    "lines": [
+      "body {",
+      {
+        "code": "    font-type: Arial, sans-serif;",
+        "errs": [
+          {
+            "e": "font-type",
+            "why": "No such property — the font family is set with font-family.",
+            "ref": "css-basics"
+          }
+        ]
+      },
+      "    background: #f0f0f0;",
+      "}",
+      "#main-content h2 {",
+      "    color: #333;",
+      {
+        "code": "    margin-top: 0px",
+        "errs": [
+          {
+            "e": "0px",
+            "why": "Missing semicolon at the end of the declaration: margin-top: 0px;",
+            "ref": "css-box"
+          }
+        ]
+      },
+      "    padding: 20px 0;",
+      "}",
+      "a:hover {",
+      "    color: #0088cc;",
+      {
+        "code": "    underliner: underline;",
+        "errs": [
+          {
+            "e": "underliner",
+            "why": "Not a real property — underlines use text-decoration: underline;.",
+            "ref": "css-basics"
+          }
+        ]
+      },
+      "}"
     ]
   },
   {
-    lang:'css', src:'new', title:'CSS — card layout',
-    lines:[
-      '.card {',
-      '    display: flex;',
-      {code:'    flex-direction: colum;', errs:[{e:'colum', why:'Misspelled value — it should be column (or row).'}]},
-      '    padding: 16px;',
-      {code:'    border-radius: 8;', errs:[{e:'8', why:'A length needs a unit: 8px (a bare number is invalid here).'}]},
-      '}',
-      '.card h2 {',
-      {code:'    color: #222', errs:[{e:'#222', why:'Missing semicolon at the end of this declaration.'}]},
-      '    font-weight: bold;',
-      '}',
-      '.card:hover {',
-      '    box-shadow: 0 2px 8px gray;',
-      '    cursor: pointer;',
-      '}'
+    "lang": "css",
+    "src": "past",
+    "title": "CSS — container & feedback",
+    "lines": [
+      ".container {",
+      "    width: 80%;",
+      "    margin: 0 auto;",
+      {
+        "code": "    padding: 20px 0 20px 0 20px 0;",
+        "errs": [
+          {
+            "e": "20px 0 20px 0 20px 0",
+            "why": "padding takes at most 4 values (top right bottom left). Six values are invalid.",
+            "ref": "css-box"
+          }
+        ]
+      },
+      "}",
+      "h1 {",
+      {
+        "code": "    font-size: 24;",
+        "errs": [
+          {
+            "e": "24",
+            "why": "A length needs a unit: 24px (or rem). A bare number is invalid for font-size.",
+            "ref": "css-box"
+          }
+        ]
+      },
+      "    color: #000;",
+      {
+        "code": "    margin-bottom: 20px",
+        "errs": [
+          {
+            "e": "20px",
+            "why": "Missing semicolon at the end of this declaration.",
+            "ref": "css-basics"
+          }
+        ]
+      },
+      {
+        "code": ".invalid-feedback {",
+        "errs": [
+          {
+            "e": ".invalid-feedback",
+            "why": "The h1 block above was never closed with }, so this selector is broken/nested.",
+            "ref": "css-basics"
+          }
+        ]
+      },
+      "    color: red;",
+      {
+        "code": "    display; none;",
+        "errs": [
+          {
+            "e": "display;",
+            "why": "A declaration uses a colon: display: none; (a semicolon after the property name is wrong).",
+            "ref": "css-basics"
+          }
+        ]
+      },
+      "}"
     ]
   },
   {
-    lang:'css', src:'new', title:'CSS — grid gallery',
-    lines:[
-      '.gallery {',
-      '    display: grid;',
-      '    grid-template-columns: repeat(3, 1fr);',
-      '    gap: 20px;',
-      {code:'    justify-items: centre;', errs:[{e:'centre', why:'CSS uses the American spelling: center, not centre.'}]},
-      '}',
-      '.gallery img {',
-      '    width: 100%;',
-      {code:'    height: auto', errs:[{e:'auto', why:'Missing semicolon at the end of the declaration.'}]},
-      '    object-fit: cover;',
-      '}',
-      '.gallery .featured {',
-      '    grid-column: span 2;',
-      {code:'    background-color: redish;', errs:[{e:'redish', why:'Not a valid colour keyword — use red (or crimson, #e33, etc.).'}]},
-      '}'
+    "lang": "css",
+    "src": "mod",
+    "title": "CSS — navbar",
+    "lines": [
+      ".navbar {",
+      {
+        "code": "    background-img: #333;",
+        "errs": [
+          {
+            "e": "background-img",
+            "why": "No such property. Use background-color for a colour (or background-image for an image).",
+            "ref": "css-basics"
+          }
+        ]
+      },
+      {
+        "code": "    overflow: hide-x-axis;",
+        "errs": [
+          {
+            "e": "hide-x-axis",
+            "why": "Invalid value. To clip horizontal overflow use overflow-x: hidden;.",
+            "ref": "css-box"
+          }
+        ]
+      },
+      "}",
+      ".navbar a {",
+      {
+        "code": "    float: top;",
+        "errs": [
+          {
+            "e": "top",
+            "why": "float only accepts left, right, or none — never top/down.",
+            "ref": "css-position"
+          }
+        ]
+      },
+      "    color: white;",
+      "    text-align: center;",
+      "    padding: 14px 16px;",
+      "    text-decoration: none;",
+      "}",
+      ".active {",
+      "    background-color: #4CAF50;",
+      "}"
     ]
   },
-
-  /* ---------------- JavaScript ---------------- */
   {
-    lang:'js', src:'past', title:'JavaScript — area calculator',
-    lines:[
-      'function calculateArea(width, height) {',
-      {code:'    const area = width * height;', errs:[{e:'const', why:'area is reassigned on the next line, so it cannot be const — use let (const + reassignment throws a TypeError).'}]},
-      '    area *= 2;',
-      '    return area;',
-      {code:'})', errs:[{e:')', why:'Stray closing parenthesis — the function body should close with } only.'}]},
-      {code:"document.getElementsByDiv('area')", errs:[{e:'getElementsByDiv', why:'No such method — use getElementById or querySelector to select an element.'}]},
-      {code:'    .textContent = calculateArea[5, 10];', errs:[{e:'[5, 10]', why:'Functions are called with parentheses: calculateArea(5, 10), not square brackets.'}]}
+    "lang": "css",
+    "src": "new",
+    "title": "CSS — card layout",
+    "lines": [
+      ".card {",
+      "    display: flex;",
+      {
+        "code": "    flex-direction: colum;",
+        "errs": [
+          {
+            "e": "colum",
+            "why": "Misspelled value — it should be column (or row).",
+            "ref": "css-flexgrid"
+          }
+        ]
+      },
+      "    padding: 16px;",
+      {
+        "code": "    border-radius: 8;",
+        "errs": [
+          {
+            "e": "8",
+            "why": "A length needs a unit: 8px (a bare number is invalid here).",
+            "ref": "css-box"
+          }
+        ]
+      },
+      "}",
+      ".card h2 {",
+      {
+        "code": "    color: #222",
+        "errs": [
+          {
+            "e": "#222",
+            "why": "Missing semicolon at the end of this declaration.",
+            "ref": "css-basics"
+          }
+        ]
+      },
+      "    font-weight: bold;",
+      "}",
+      ".card:hover {",
+      "    box-shadow: 0 2px 8px gray;",
+      "    cursor: pointer;",
+      "}"
     ]
   },
   {
-    lang:'js', src:'past', title:'JavaScript — colour loop',
-    lines:[
+    "lang": "css",
+    "src": "new",
+    "title": "CSS — grid gallery",
+    "lines": [
+      ".gallery {",
+      "    display: grid;",
+      "    grid-template-columns: repeat(3, 1fr);",
+      "    gap: 20px;",
+      {
+        "code": "    justify-items: centre;",
+        "errs": [
+          {
+            "e": "centre",
+            "why": "CSS uses the American spelling: center, not centre.",
+            "ref": "css-flexgrid"
+          }
+        ]
+      },
+      "}",
+      ".gallery img {",
+      "    width: 100%;",
+      {
+        "code": "    height: auto",
+        "errs": [
+          {
+            "e": "auto",
+            "why": "Missing semicolon at the end of the declaration.",
+            "ref": "css-basics"
+          }
+        ]
+      },
+      "    object-fit: cover;",
+      "}",
+      ".gallery .featured {",
+      "    grid-column: span 2;",
+      {
+        "code": "    background-color: redish;",
+        "errs": [
+          {
+            "e": "redish",
+            "why": "Not a valid colour keyword — use red (or crimson, #e33, etc.).",
+            "ref": "css-basics"
+          }
+        ]
+      },
+      "}"
+    ]
+  },
+  {
+    "lang": "js",
+    "src": "past",
+    "title": "JavaScript — area calculator",
+    "lines": [
+      "function calculateArea(width, height) {",
+      {
+        "code": "    const area = width * height;",
+        "errs": [
+          {
+            "e": "const",
+            "why": "area is reassigned on the next line, so it cannot be const — use let (const + reassignment throws a TypeError).",
+            "ref": "js-vars"
+          }
+        ]
+      },
+      "    area *= 2;",
+      "    return area;",
+      {
+        "code": "})",
+        "errs": [
+          {
+            "e": ")",
+            "why": "Stray closing parenthesis — the function body should close with } only.",
+            "ref": "js-functions"
+          }
+        ]
+      },
+      {
+        "code": "document.getElementsByDiv('area')",
+        "errs": [
+          {
+            "e": "getElementsByDiv",
+            "why": "No such method — use getElementById or querySelector to select an element.",
+            "ref": "js-dom"
+          }
+        ]
+      },
+      {
+        "code": "    .textContent = calculateArea[5, 10];",
+        "errs": [
+          {
+            "e": "[5, 10]",
+            "why": "Functions are called with parentheses: calculateArea(5, 10), not square brackets.",
+            "ref": "js-functions"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "lang": "js",
+    "src": "past",
+    "title": "JavaScript — colour loop",
+    "lines": [
       "const colors = ['Red', 'Green', 'Blue']",
-      {code:'for(let i = 0, i < colors.length; i++) {', errs:[{e:'0,', why:'A for header separates its three parts with semicolons — this comma should be a semicolon: i = 0;'}]},
-      {code:"    colors.add('Orange');", errs:[{e:'add', why:'Arrays have no add() method — use push() to append.'}]},
-      {code:'    console.log(colors(i));', errs:[{e:'colors(i)', why:'Index access uses brackets: colors[i], not parentheses colors(i).'}]},
-      '}',
-      {code:'if (colors.length >> 3) {', errs:[{e:'>>', why:'>> is a bitwise right-shift, not a comparison. Use > (greater-than).'}]},
-      {code:'    colors = "red";', errs:[{e:'colors = "red"', why:'colors is const — reassigning the binding throws a TypeError.'}]},
-      '}'
+      {
+        "code": "for(let i = 0, i < colors.length; i++) {",
+        "errs": [
+          {
+            "e": "0,",
+            "why": "A for header separates its three parts with semicolons — this comma should be a semicolon: i = 0;",
+            "ref": "js-control"
+          }
+        ]
+      },
+      {
+        "code": "    colors.add('Orange');",
+        "errs": [
+          {
+            "e": "add",
+            "why": "Arrays have no add() method — use push() to append.",
+            "ref": "js-control"
+          }
+        ]
+      },
+      {
+        "code": "    console.log(colors(i));",
+        "errs": [
+          {
+            "e": "colors(i)",
+            "why": "Index access uses brackets: colors[i], not parentheses colors(i).",
+            "ref": "js-vars"
+          }
+        ]
+      },
+      "}",
+      {
+        "code": "if (colors.length >> 3) {",
+        "errs": [
+          {
+            "e": ">>",
+            "why": ">> is a bitwise right-shift, not a comparison. Use > (greater-than).",
+            "ref": "js-vars"
+          }
+        ]
+      },
+      {
+        "code": "    colors = \"red\";",
+        "errs": [
+          {
+            "e": "colors = \"red\"",
+            "why": "colors is const — reassigning the binding throws a TypeError.",
+            "ref": "js-vars"
+          }
+        ]
+      },
+      "}"
     ]
   },
   {
-    lang:'js', src:'mod', title:'JavaScript — toggle handler',
-    lines:[
-      {code:'func toggleClass() {', errs:[{e:'func', why:'The keyword is function, not func.'}]},
+    "lang": "js",
+    "src": "mod",
+    "title": "JavaScript — toggle handler",
+    "lines": [
+      {
+        "code": "func toggleClass() {",
+        "errs": [
+          {
+            "e": "func",
+            "why": "The keyword is function, not func.",
+            "ref": "js-functions"
+          }
+        ]
+      },
       "    const el = document.getElementById('target');",
       "    el.classList.toggle('active');",
-      {code:"    el.textContent = el.classList.contains('active') & 'On' : 'Off';", errs:[{e:'&', why:'A ternary uses ? not &: condition ? a : b.'}]},
-      '}',
-      {code:"document.getElementById('btn').createEventListener('click', toggleClass);", errs:[{e:'createEventListener', why:'The method is addEventListener, not createEventListener.'}]}
+      {
+        "code": "    el.textContent = el.classList.contains('active') & 'On' : 'Off';",
+        "errs": [
+          {
+            "e": "&",
+            "why": "A ternary uses ? not &: condition ? a : b.",
+            "ref": "js-vars"
+          }
+        ]
+      },
+      "}",
+      {
+        "code": "document.getElementById('btn').createEventListener('click', toggleClass);",
+        "errs": [
+          {
+            "e": "createEventListener",
+            "why": "The method is addEventListener, not createEventListener.",
+            "ref": "js-dom"
+          }
+        ]
+      }
     ]
   },
   {
-    lang:'js', src:'new', title:'JavaScript — form validation',
-    lines:[
+    "lang": "js",
+    "src": "new",
+    "title": "JavaScript — form validation",
+    "lines": [
       "const form = document.querySelector('#signup');",
       "form.addEventListener('submit', function (event) {",
-      '    event.preventDefault();',
+      "    event.preventDefault();",
       "    const email = document.getElementById('email').value;",
-      {code:'    if (email = "") {', errs:[{e:'= ""', why:'= is assignment; a comparison needs === (this also overwrites email).'}]},
+      {
+        "code": "    if (email = \"\") {",
+        "errs": [
+          {
+            "e": "= \"\"",
+            "why": "= is assignment; a comparison needs === (this also overwrites email).",
+            "ref": "js-vars"
+          }
+        ]
+      },
       "        alert('Email is required');",
-      '        return;',
-      '    }',
-      '    const data = { email: email };',
-      {code:"    data.add('verified', true);", errs:[{e:'add', why:'Objects have no .add() method — set a property: data.verified = true.'}]},
-      '    console.log(data);',
-      {code:'}', errs:[{e:'}', why:'The addEventListener callback/call is never closed — this should be }); to close the function and the call.'}]}
+      "        return;",
+      "    }",
+      "    const data = { email: email };",
+      {
+        "code": "    data.add('verified', true);",
+        "errs": [
+          {
+            "e": "add",
+            "why": "Objects have no .add() method — set a property: data.verified = true.",
+            "ref": "js-objects"
+          }
+        ]
+      },
+      "    console.log(data);",
+      {
+        "code": "}",
+        "errs": [
+          {
+            "e": "}",
+            "why": "The addEventListener callback/call is never closed — this should be }); to close the function and the call.",
+            "ref": "js-dom"
+          }
+        ]
+      }
     ]
   },
   {
-    lang:'js', src:'new', title:'JavaScript — fetch users',
-    lines:[
-      'async function loadUsers() {',
-      '    try {',
+    "lang": "js",
+    "src": "new",
+    "title": "JavaScript — fetch users",
+    "lines": [
+      "async function loadUsers() {",
+      "    try {",
       "        const response = await fetch('/api/users');",
-      {code:'        const users = response.json();', errs:[{e:'response.json()', why:'response.json() returns a Promise — it needs await: const users = await response.json();'}]},
-      {code:'        users.foreach(user => {', errs:[{e:'foreach', why:'The method is forEach (capital E) — JavaScript is case-sensitive.'}]},
-      '            console.log(user.name);',
-      '        });',
-      '    } catch (err) {',
-      '        console.log(err);',
-      '    }',
-      '}',
-      {code:'loadUsers;', errs:[{e:'loadUsers;', why:'The function is referenced but never called — it needs parentheses: loadUsers();'}]}
+      {
+        "code": "        const users = response.json();",
+        "errs": [
+          {
+            "e": "response.json()",
+            "why": "response.json() returns a Promise — it needs await: const users = await response.json();",
+            "ref": "js-async"
+          }
+        ]
+      },
+      {
+        "code": "        users.foreach(user => {",
+        "errs": [
+          {
+            "e": "foreach",
+            "why": "The method is forEach (capital E) — JavaScript is case-sensitive.",
+            "ref": "js-control"
+          }
+        ]
+      },
+      "            console.log(user.name);",
+      "        });",
+      "    } catch (err) {",
+      "        console.log(err);",
+      "    }",
+      "}",
+      {
+        "code": "loadUsers;",
+        "errs": [
+          {
+            "e": "loadUsers;",
+            "why": "The function is referenced but never called — it needs parentheses: loadUsers();",
+            "ref": "js-functions"
+          }
+        ]
+      }
     ]
   }
 ];
@@ -2290,6 +2907,13 @@ document.getElementById('tabs').addEventListener('click', e=>{
   window.scrollTo({top:0,behavior:'smooth'});
 });
 function go(v){ document.querySelector(`.tab[data-v="${v}"]`).click(); }
+function openTopic(id){
+  go('study');
+  const t=document.querySelector(`.topic[data-id="${id}"]`);
+  if(!t) return;
+  if(!t.classList.contains('open')) t.querySelector('.t-head').click();
+  setTimeout(()=>t.scrollIntoView({behavior:'smooth',block:'start'}),60);
+}
 
 /* ============================================================
    HOME / OVERVIEW
@@ -2720,7 +3344,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
       if(pick===correct) score+=1; else score-=0.5;
       const exp=v.querySelector('#exp');
       exp.className='explain show';
-      exp.innerHTML=`<div class="verdict ${pick===correct?'right':'miss'}">${pick===correct?'✓ Correct':'✗ Not quite'} <span style="color:var(--ink-dim);font-size:13px;font-weight:400">— answer: ${'ABCD'[correct]}</span></div><p>${q.ex}</p>`;
+      exp.innerHTML=`<div class="verdict ${pick===correct?'right':'miss'}">${pick===correct?'✓ Correct':'✗ Not quite'} <span style="color:var(--ink-dim);font-size:13px;font-weight:400">— answer: ${'ABCD'[correct]}</span></div><p>${q.ex}${pick!==correct?` <a class="ei-ref" onclick="go('study')">→ brush up in the study guide</a>`:''}</p>`;
       v.querySelector('#next').disabled=false;
       v.querySelector('#skip').disabled=true;
     }));
@@ -2798,15 +3422,15 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
       });
       return out;
     };
-    const emitError=(text,why)=>{ const id='t'+(tokId++); reasons[id]=why; errCount++; return `<span class="tok" data-id="${id}" data-err="1">${esc(text)}</span>`; };
+    const emitError=(text,why,ref)=>{ const id='t'+(tokId++); reasons[id]={why,ref}; errCount++; return `<span class="tok" data-id="${id}" data-err="1">${esc(text)}</span>`; };
     const renderLine=(line)=>{
       if(typeof line==='string') return '<div>'+emitCorrect(line)+'</div>';
       const code=line.code, errs=line.errs||[];
       const spans=[]; let cursor=0;
-      errs.forEach(({e,why})=>{ const i=code.indexOf(e,cursor); if(i===-1) return; spans.push({start:i,end:i+e.length,why}); cursor=i+e.length; });
+      errs.forEach(({e,why,ref})=>{ const i=code.indexOf(e,cursor); if(i===-1) return; spans.push({start:i,end:i+e.length,why,ref}); cursor=i+e.length; });
       spans.sort((a,b)=>a.start-b.start);
       let out='', pos=0;
-      spans.forEach(sp=>{ if(sp.start>pos) out+=emitCorrect(code.slice(pos,sp.start)); out+=emitError(code.slice(sp.start,sp.end),sp.why); pos=sp.end; });
+      spans.forEach(sp=>{ if(sp.start>pos) out+=emitCorrect(code.slice(pos,sp.start)); out+=emitError(code.slice(sp.start,sp.end),sp.why,sp.ref); pos=sp.end; });
       if(pos<code.length) out+=emitCorrect(code.slice(pos));
       return '<div>'+out+'</div>';
     };
@@ -2860,7 +3484,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
       // explanation list
       const el=v.querySelector('#errlist'); el.classList.add('show');
       let items='<h5>The errors in this snippet</h5>';
-      Object.keys(reasons).forEach(id=>{ items+=`<div class="ei">${reasons[id]}</div>`; });
+      Object.keys(reasons).forEach(id=>{ const r=reasons[id]; items+=`<div class="ei">${r.why}${r.ref?` <a class="ei-ref" onclick="openTopic('${r.ref}')">→ review the theory</a>`:''}</div>`; });
       el.innerHTML=items;
       v.querySelector('#reveal').disabled=true;
       v.querySelector('#next').disabled=false;
@@ -3008,13 +3632,13 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
   function tokenize(snip, si){
     let n=0; const errIds=new Set(); const reasons={};
     const emitC=t=>{let o='';t.split(/(\s+)/).forEach(p=>{if(p==='')return;if(/^\s+$/.test(p)){o+=p;}else{o+=`<span class="tok" data-id="s${si}t${n}">${esc(p)}</span>`;n++;}});return o;};
-    const emitE=(t,w)=>{const id='s'+si+'t'+n;n++;errIds.add(id);reasons[id]=w;return `<span class="tok" data-id="${id}" data-err="1">${esc(t)}</span>`;};
+    const emitE=(t,w,ref)=>{const id='s'+si+'t'+n;n++;errIds.add(id);reasons[id]={why:w,ref};return `<span class="tok" data-id="${id}" data-err="1">${esc(t)}</span>`;};
     const line=ln=>{
       if(typeof ln==='string') return '<div>'+emitC(ln)+'</div>';
       const code=ln.code, errs=ln.errs||[], spans=[]; let cur=0;
-      errs.forEach(({e,why})=>{const i=code.indexOf(e,cur);if(i===-1)return;spans.push({s:i,e:i+e.length,why});cur=i+e.length;});
+      errs.forEach(({e,why,ref})=>{const i=code.indexOf(e,cur);if(i===-1)return;spans.push({s:i,e:i+e.length,why,ref});cur=i+e.length;});
       spans.sort((a,b)=>a.s-b.s); let o='',pos=0;
-      spans.forEach(sp=>{if(sp.s>pos)o+=emitC(code.slice(pos,sp.s));o+=emitE(code.slice(sp.s,sp.e),sp.why);pos=sp.e;});
+      spans.forEach(sp=>{if(sp.s>pos)o+=emitC(code.slice(pos,sp.s));o+=emitE(code.slice(sp.s,sp.e),sp.why,sp.ref);pos=sp.e;});
       if(pos<code.length)o+=emitC(code.slice(pos)); return '<div>'+o+'</div>';
     };
     return {html:snip.lines.map(line).join(''), errIds, reasons, errCount:errIds.size};
@@ -3383,7 +4007,7 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.rando
         <div class="q-top"><span class="q-counter">Snippet ${i+1}</span><span class="q-badge ${s.lang}">${s.lang.toUpperCase()}</span>
           <span class="q-counter" style="margin-left:auto">${f}/${m.errCount} found · ${wr} wrong</span></div>
         <div class="fe-code">${reviewTokens(s,i)}</div>
-        <div class="errlist show"><h5>Errors in this snippet</h5>${Object.keys(m.reasons).map(id=>`<div class="ei">${m.reasons[id]}</div>`).join('')}</div>
+        <div class="errlist show"><h5>Errors in this snippet</h5>${Object.keys(m.reasons).map(id=>{const r=m.reasons[id];return `<div class="ei">${r.why}${r.ref?` <a class="ei-ref" onclick="openTopic('${r.ref}')">→ review the theory</a>`:''}</div>`;}).join('')}</div>
       </div>`; }).join('');
 
     v.innerHTML = `
